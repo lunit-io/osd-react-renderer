@@ -16,6 +16,7 @@ module.exports = {
         // Insert custom scopes below:
         'root',
         'release',
+        'renderer',
       ],
     ],
     'scope-empty': [2, 'never'],
