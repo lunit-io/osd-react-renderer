@@ -1,11 +1,17 @@
-# `renderer`
+# `osd-react-renderer`
 
-> TODO: description
+A custom React renderer for OpenSeadragon viewer, built using react-reconciler package.
 
-## Usage
+## Install
 
+### npm
+
+```sh
+$ npm install @lunit/osd-react-renderer
 ```
-const renderer = require('renderer');
 
-// TODO: DEMONSTRATE API
+### yarn
+
+```sh
+$ yarn add @lunit/osd-react-renderer
 ```
