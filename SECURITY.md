@@ -11,4 +11,4 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Please make an [Issue](https://github.com/lunit-io/frontend-components/issues)
+Please make an [Issue](https://github.com/lunit-io/osd-react-renderer/issues)
