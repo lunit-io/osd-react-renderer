@@ -1,5 +1,5 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 * @tchung1118
-/packages/renderer/ @tchung1118
-/apps/osd-viewer-demo/ @tchung1118
+/packages/renderer/ @tchung1118 @hyunjin-lunit
+/apps/viewer-demo/ @tchung1118 @hyunjin-lunit
