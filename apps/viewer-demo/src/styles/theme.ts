@@ -510,6 +510,54 @@ const theme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          width: 'auto',
+          height: '36px',
+          padding: '8px 12px',
+          ...typographyOptions.body6,
+          color: palette.scope1,
+          textTransform: 'none',
+          '&:hover, &:focus-visible': {
+            boxShadow: 'none',
+          },
+          '&:disabled': {
+            background: 'transparent',
+            cursor: 'default',
+            opacity: 0.3,
+          },
+        },
+        sizeSmall: {
+          height: '28px',
+          padding: '4px 12px',
+        },
+        sizeLarge: {
+          ...typographyOptions.button,
+          height: '44px',
+          paddingTop: '10px',
+        },
+        contained: {
+          boxShadow: 'none',
+          color: palette.darkGrey[5],
+          '&:hover, &:focus-visible': {
+            boxShadow: 'none',
+          },
+          '&:disabled': {
+            backgroundColor: palette.scope2,
+            opacity: 0.3,
+            cursor: 'default',
+          },
+        },
+        containedSizeMedium: {
+          padding: '0',
+        },
+      },
+      defaultProps: {
+        color: 'secondary',
+      },
+    },
   },
 })
 export default theme
