@@ -38,6 +38,9 @@
     "test-watch": "jest"
   },
   "dependencies": {
+    "openseadragon": "^2.4.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-reconciler": "^0.26.2"
   },
   "devDependencies": {
@@ -46,9 +49,6 @@
     "@types/react-reconciler": "^0.26.3",
     "jest": "^27.0.6",
     "microbundle": "^0.14.2",
-    "openseadragon": "^2.4.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "ts-jest": "^27.0.5"
   },
   "peerDependencies": {
