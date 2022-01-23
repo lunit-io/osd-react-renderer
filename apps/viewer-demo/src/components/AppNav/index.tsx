@@ -62,16 +62,18 @@ export default function AppNav(): JSX.Element {
           <Link href="/" passHref>
             <ListItemButton component="a">Getting Started</ListItemButton>
           </Link>
-          <Link href="/tiled-image" passHref>
+          <Link href={LINKS[0].href} passHref>
             <ListItemButton component="a">Basic Features</ListItemButton>
           </Link>
-          {LINKS.map(({ href, name }) => (
-            <Link key={href} href={`/${href}`} passHref>
-              <ListItemButton component="a" sx={{ paddingLeft: 2 }}>
-                {name}
-              </ListItemButton>
-            </Link>
-          ))}
+          <List disablePadding sx={{ pt: 0.5 }}>
+            {LINKS.map(({ href, name }) => (
+              <Link key={href} href={`/${href}`} passHref>
+                <ListItemButton component="a" sx={{ pt: 0.5, pb: 0.5, pl: 4 }}>
+                  <Typography variant="body5">{name}</Typography>
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
         </List>
       </Drawer>
     </Box>

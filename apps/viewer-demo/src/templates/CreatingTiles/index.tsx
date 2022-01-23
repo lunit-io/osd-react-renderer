@@ -1,5 +1,5 @@
 import React from 'react'
-import { OSDViewer } from '../../components/OSDViewer'
+import OSDViewer from '../../components/OSDViewer'
 import Code from '../../components/Code'
 import Description from '../../components/Description'
 import Section from '../../components/Section'
@@ -28,7 +28,7 @@ const VIEWER_OPTIONS = {
   },
 }
 
-export default function TiledImage(): JSX.Element {
+export default function CreatingTiles(): JSX.Element {
   return (
     <Section>
       <Description>
@@ -39,7 +39,7 @@ export default function TiledImage(): JSX.Element {
       <Code
         source={SOURCE}
         fullSource={FULL_SOURCE}
-        codesandboxUrl={CODE_SANDBOX.tiledImage}
+        codesandboxUrl={CODE_SANDBOX.creatingTiles}
       />
     </Section>
   )

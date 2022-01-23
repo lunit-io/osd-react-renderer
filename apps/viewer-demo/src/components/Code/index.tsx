@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, IconButton } from '@mui/material'
 import Prism from 'prismjs'
+import Image from 'next/image'
 
 interface CodeProps {
   source: string
@@ -33,7 +34,9 @@ export default function Code({
         padding: 3,
       }}
     >
-      <Button onClick={handleSourceToggleClick}>{'<>'}</Button>
+      <IconButton onClick={handleSourceToggleClick}>
+        <Image src="/code-black.svg" alt="Code" width="24" height="24" />
+      </IconButton>
       <Button
         variant="contained"
         sx={{ padding: '0 4px' }}
@@ -43,7 +46,7 @@ export default function Code({
       >
         CODESANDBOX
       </Button>
-      <pre>
+      <pre style={{ marginTop: 16 }}>
         <code className="language-javascript">
           {expanded ? fullSource : source}
         </code>

@@ -10,6 +10,7 @@ export default function Description({
   return (
     <Box
       sx={{
+        position: 'relative',
         flex: '1 0 auto',
         width: 0,
         padding: 3,
