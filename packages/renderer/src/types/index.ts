@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-explicit-any, no-shadow */
 import OpenSeadragon from 'openseadragon'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 export interface BaseProps {
   [key: string]: any
@@ -11,9 +11,9 @@ interface NodeProps {
   key?: React.Key
 }
 
-export interface OSDViewerProps {
+export interface OSDViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: ReactNode | undefined
-  options: OpenSeadragon.Options
+  options?: OpenSeadragon.Options
 }
 
 export interface DZIMetaData {
