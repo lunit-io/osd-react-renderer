@@ -3,7 +3,7 @@ import ReactOSDDOM from '../ReactOSDDOM'
 import { OSDViewerProps, OSDViewerRef } from '../types'
 
 const OSDViewer = React.forwardRef<OSDViewerRef, OSDViewerProps>(
-  ({ children, options = {} }, ref) => {
+  ({ children, options = {}, ...props }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null)
 
     // on mount / unmount
@@ -34,13 +34,7 @@ const OSDViewer = React.forwardRef<OSDViewerRef, OSDViewerProps>(
       }
     }, [children, options, ref])
 
-    return (
-      <div
-        style={{ width: '100%', height: '100%' }}
-        className="openseadragon"
-        ref={containerRef}
-      />
-    )
+    return <div {...props} ref={containerRef} />
   }
 )
 
