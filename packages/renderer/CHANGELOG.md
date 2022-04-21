@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.16](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.16) (2022-04-21)
+
+
+### Bug Fixes
+
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
 # [1.0.0-alpha.15](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.15) (2022-01-24)
 
 
