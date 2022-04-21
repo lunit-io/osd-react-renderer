@@ -83,13 +83,17 @@ class TiledImage extends Base {
         throw new Error('Either tileSource or url should be defined')
       }
     } catch (error) {
-      this.handleError(error)
+      this.handleError(error as Error)
     }
   }
 
-  private handleError(error: unknown): void {
-    if (this.props?.onOpenTiledImageFailed) {
-      this.props.onOpenTiledImageFailed(error)
+  private handleError(error: Error): void {
+    const viewer = this._parent?.viewer
+    if (viewer) {
+      viewer.raiseEvent('open-failed', {
+        eventSource: viewer,
+        message: error?.message ? error?.message : error,
+      })
     } else {
       throw error
     }

@@ -40,7 +40,6 @@ export interface TiledImageProps extends NodeProps {
   url?: string
   tileUrlBase?: string
   tileSource?: OpenSeadragon.TileSource
-  onOpenTiledImageFailed?: (error: any) => void
 }
 
 export interface ViewportEventHandlers
