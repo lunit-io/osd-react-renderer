@@ -48,35 +48,56 @@ class TiledImage extends Base {
   private _openImage(): void {
     const viewer = this._parent?.viewer
     if (!viewer) return
-    viewer.close()
-    if (!this.props.tileSource && !this.props.tileUrlBase && this.props.url) {
-      // Real-time tiling
-      viewer.open(this.props.url)
-    } else if (
-      !this.props.tileSource &&
-      this.props.tileUrlBase &&
-      this.props.url
-    ) {
-      // Real-time tiling with custom tile url
-      loadDZIMeta(this.props.url).then(dziMeta => {
-        const { format, ...tileSource } = dziMeta
-        viewer.open({
-          ...tileSource,
-          getTileUrl: (level: number, x: number, y: number) =>
-            `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
-              format || 'jpeg'
-            }`,
-        })
+    try {
+      viewer.close()
+      if (!this.props.tileSource && !this.props.tileUrlBase && this.props.url) {
+        // Real-time tiling
+        viewer.open(this.props.url)
+      } else if (
+        !this.props.tileSource &&
+        this.props.tileUrlBase &&
+        this.props.url
+      ) {
+        // Real-time tiling with custom tile url
+        loadDZIMeta(this.props.url)
+          .then(dziMeta => {
+            const { format, ...tileSource } = dziMeta
+            viewer.open({
+              ...tileSource,
+              getTileUrl: (level: number, x: number, y: number) =>
+                `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
+                  format || 'jpeg'
+                }`,
+            })
+          })
+          .catch(error => {
+            this.handleError(error)
+          })
+        // viewer.open({ url: this.props.url, getTileUrl: this.props.getTileUrl })
+      } else if (this.props.tileSource) {
+        // Static(Glob) tiling
+        // https://github.com/openseadragon/openseadragon/issues/1032#issuecomment-248323573
+        // https://github.com/openseadragon/openseadragon/blob/master/test/modules/ajax-tiles.js
+        viewer.open(this.props.tileSource)
+      } else {
+        throw new Error('Either tileSource or url should be defined')
+      }
+    } catch (error) {
+      this.handleError(error as Error)
+    }
+  }
+
+  private handleError(error: Error): void {
+    const viewer = this._parent?.viewer
+    if (viewer) {
+      viewer.raiseEvent('open-failed', {
+        eventSource: viewer,
+        message: error?.message ? error?.message : error,
       })
-      // viewer.open({ url: this.props.url, getTileUrl: this.props.getTileUrl })
-    } else if (this.props.tileSource) {
-      // Static(Glob) tiling
-      // https://github.com/openseadragon/openseadragon/issues/1032#issuecomment-248323573
-      // https://github.com/openseadragon/openseadragon/blob/master/test/modules/ajax-tiles.js
-      viewer.open(this.props.tileSource)
     } else {
-      throw new Error('Either tileSource or url should be defined')
+      throw error
     }
   }
 }
+
 export default TiledImage
