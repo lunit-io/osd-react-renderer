@@ -95,7 +95,7 @@ class TiledImage extends Base {
     // if maxRetry is -1, then try forever
     if (
       this.props.maxRetry !== -1 &&
-      (!this.props.maxRetry || this._retryCount > this.props.maxRetry)
+      (!this.props.maxRetry || this._retryCount >= this.props.maxRetry)
     ) {
       this._retryCount = 0
       if (viewer) {
