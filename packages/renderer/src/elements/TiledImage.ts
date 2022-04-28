@@ -30,6 +30,8 @@ async function loadDZIMeta(url: string) {
 class TiledImage extends Base {
   props: TiledImageProps
 
+  _retryCount: number
+
   set parent(p: Base | null) {
     this._parent = p
     this._openImage()
@@ -38,6 +40,7 @@ class TiledImage extends Base {
   constructor(viewer: OpenSeadragon.Viewer, props: TiledImageProps) {
     super(viewer)
     this.props = props
+    this._retryCount = 0
   }
 
   commitUpdate(props: TiledImageProps): void {
@@ -89,13 +92,28 @@ class TiledImage extends Base {
 
   private handleError(error: Error): void {
     const viewer = this._parent?.viewer
-    if (viewer) {
-      viewer.raiseEvent('open-failed', {
-        eventSource: viewer,
-        message: error?.message ? error?.message : error,
-      })
+    // if maxRetry is -1, then try forever
+    if (
+      this.props.maxRetry !== -1 &&
+      (!this.props.maxRetry || this._retryCount > this.props.maxRetry)
+    ) {
+      this._retryCount = 0
+      if (viewer) {
+        viewer.raiseEvent('open-failed', {
+          eventSource: viewer,
+          message: error?.message ? error?.message : error,
+        })
+      } else {
+        throw error
+      }
     } else {
-      throw error
+      this._retryCount += 1
+      setTimeout(
+        () => {
+          this._openImage()
+        },
+        this.props.retryInterval ? this.props.retryInterval : 1000
+      )
     }
   }
 }
