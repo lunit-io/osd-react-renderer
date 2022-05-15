@@ -4,6 +4,7 @@ import Viewport from '../elements/Viewport'
 import InvalidElement from '../elements/InvalidElement'
 import Base from '../elements/Base'
 import Root from '../elements/Root'
+import MouseTracker from '../elements/MouseTracker'
 
 export namespace HostConfig {
   export type Type = string
@@ -18,7 +19,12 @@ export namespace HostConfig {
 
   export type Container = Root
 
-  export type Instance = TiledImage | Viewport | Base | InvalidElement
+  export type Instance =
+    | TiledImage
+    | Viewport
+    | Base
+    | InvalidElement
+    | MouseTracker
 
   export type TextInstance = InvalidInstance
 

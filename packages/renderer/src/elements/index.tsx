@@ -6,9 +6,11 @@ import Root from './Root'
 import Scalebar from './Scalebar'
 import CanvasOverlay from './CanvasOverlay'
 import TooltipOverlay from './TooltipOverlay'
+import MouseTracker from './MouseTracker'
 
 const ElementConstructors = {
   tiledImage: TiledImage,
+  mouseTracker: MouseTracker,
   viewport: Viewport,
   scalebar: Scalebar,
   canvasOverlay: CanvasOverlay,
