@@ -5,7 +5,7 @@ import Base from './Base'
 
 type MouseTrackerEventOptions = {
   [key in MouseTrackerEventHandlers]?: OpenSeadragon.EventHandler<
-    /* eslint-disable @typescript-eslint/no-explicit-any */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     OpenSeadragon.OSDEvent<any>
   >
 }
@@ -39,6 +39,10 @@ class MouseTracker extends Base {
       this.eventHandlers,
       props
     )
+  }
+
+  destroy(): void {
+    this.tracker?.destroy()
   }
 
   private static extractEventHandlers(props: MouseTrackerProps) {

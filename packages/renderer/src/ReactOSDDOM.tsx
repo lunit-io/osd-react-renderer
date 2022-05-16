@@ -111,6 +111,7 @@ const reconciler = ReactReconciler<
 
   removeChildFromContainer(container, child) {
     container.removeChild(child)
+    child.destroy()
   },
 
   commitUpdate(instance, _updatePayload, _type, _prevProps, nextProps) {
@@ -151,6 +152,10 @@ const ReactOSDDOM = {
     }
   },
   destroy(): void {
+    const tmpContainer = container as any
+    tmpContainer?.containerInfo?.children?.forEach((child: any) => {
+      child?.destroy()
+    })
     if (viewer?.canvasOverlayExists()) viewer?.canvasOverlay().destroy()
     if (viewer?.tooltipOverlayExists()) viewer?.tooltipOverlay().destroy()
     viewer?.scalebarInstance?.destroy()
