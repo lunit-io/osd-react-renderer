@@ -31,6 +31,8 @@ class MouseTracker extends Base {
   commitUpdate(props: MouseTrackerProps): void {
     this.props = props
     this.eventHandlers = MouseTracker.extractEventHandlers(props)
+    // tracker handler can be updated after calling the constructor.
+    // TODO: update handler without destroying previous instance
     this.tracker?.destroy()
     this.tracker = MouseTracker.createTrackerInstance(
       this.viewer?.element,
