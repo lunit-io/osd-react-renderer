@@ -28,6 +28,8 @@ class Base {
     }
   }
 
+  destroy(): void {}
+
   removeChild(child: Base): void {
     const index = this.children.indexOf(child)
     if (index !== -1) {
