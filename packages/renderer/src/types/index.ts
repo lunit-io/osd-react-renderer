@@ -54,11 +54,18 @@ export interface MouseTrackerProps extends MouseTrackerEventHandlerOptions {
   userData?: any | undefined
 }
 
+export type MouseTrackerEvent =
+  OpenSeadragon.OSDEvent<OpenSeadragon.MouseTracker> &
+    Omit<
+      OpenSeadragon.ViewerEvent,
+      keyof OpenSeadragon.OSDEvent<OpenSeadragon.Viewer>
+    >
+
 export interface MouseTrackerEventHandlerOptions
   extends Partial<
       Record<
         keyof typeof MouseTrackerEventHandlers,
-        OpenSeadragon.EventHandler<OpenSeadragon.OSDEvent<any>>
+        OpenSeadragon.EventHandler<MouseTrackerEvent>
       >
     >,
     NodeProps {}
