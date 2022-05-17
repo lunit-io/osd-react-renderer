@@ -22,7 +22,11 @@ class MouseTracker extends Base {
     this.props = props
     this.eventHandlers = MouseTracker.extractEventHandlers(props)
     this.tracker = MouseTracker.createTrackerInstance(
-      viewer?.element,
+      (props?.element &&
+        (typeof props.element === 'function'
+          ? props.element(viewer)
+          : props.element)) ||
+        viewer?.element,
       this.eventHandlers,
       props
     )
@@ -35,7 +39,11 @@ class MouseTracker extends Base {
     // TODO: update handler without destroying previous instance
     this.tracker?.destroy()
     this.tracker = MouseTracker.createTrackerInstance(
-      this.viewer?.element,
+      (props?.element &&
+        (typeof props.element === 'function'
+          ? props.element(this.viewer)
+          : props.element)) ||
+        this.viewer?.element,
       this.eventHandlers,
       props
     )
