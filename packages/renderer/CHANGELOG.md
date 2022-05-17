@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.18](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.18) (2022-05-17)
+
+
+### Bug Fixes
+
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** fix a logical error in retry process ([0e4e976](https://github.com/lunit-io/osd-react-renderer/commit/0e4e976acb65f0b42fef117920644da24cd25e47))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** add destroy process during unmount ([1ec18ef](https://github.com/lunit-io/osd-react-renderer/commit/1ec18ef013bc221682de8363e77a3c833843b5cc))
+* **renderer:** add mouse tracker component ([f3f9d39](https://github.com/lunit-io/osd-react-renderer/commit/f3f9d399e6be3d931d71f291ac4ff3d27d966111))
+* **renderer:** add retry logic during loading tiled image ([cedb1b1](https://github.com/lunit-io/osd-react-renderer/commit/cedb1b13f15fd2a60cd23980e2d9ed49fcdb93a2))
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** change event type ([5e54c73](https://github.com/lunit-io/osd-react-renderer/commit/5e54c73376b0b8d3d6514482d2ce0f1e7feb724c))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
 # [1.0.0-alpha.17](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.17) (2022-04-28)
 
 
