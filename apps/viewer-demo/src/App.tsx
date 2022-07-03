@@ -3,6 +3,7 @@ import OSDViewer, {
   ViewportProps,
   TooltipOverlayProps,
   CanvasOverlayProps,
+  MouseTrackerProps,
   OSDViewerRef,
 } from '@lunit/osd-react-renderer'
 import OpenSeadragon from 'openseadragon'
@@ -67,8 +68,9 @@ const VIEWER_OPTIONS = {
     dblClickToZoom: false,
   },
 }
+const WHEEL_BUTTON = 1
 
-const onCanvasOverlayRedraw: CanvasOverlayProps['onRedraw'] = (
+const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
   canvas: HTMLCanvasElement
 ) => {
   const ctx = canvas.getContext('2d')
@@ -78,7 +80,7 @@ const onCanvasOverlayRedraw: CanvasOverlayProps['onRedraw'] = (
   }
 }
 
-const onTooltipOverlayRedraw: TooltipOverlayProps['onRedraw'] = ({
+const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   tooltipCoord,
   overlayCanvasEl,
   viewer,
@@ -109,6 +111,15 @@ function App() {
 
   const canvasOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
+  const lastPoint = useRef<OpenSeadragon.Point | null>(null)
+  const prevDelta = useRef<OpenSeadragon.Point | null>(null)
+  const prevTime = useRef<number>(-1)
+
+  const cancelPanning = useCallback(() => {
+    lastPoint.current = null
+    prevDelta.current = null
+    prevTime.current = -1
+  }, [])
 
   const refreshScaleFactor = useCallback(() => {
     const viewer = osdViewerRef.current?.viewer
@@ -166,24 +177,81 @@ function App() {
     [scaleFactor]
   )
 
-  const handleUpdatedCanvasOverlayRedraw: CanvasOverlayProps['onRedraw'] =
-    useCallback(
-      (canvas: HTMLCanvasElement, viewer: OpenSeadragon.Viewer) => {
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.fillStyle = 'rgba(0,0,0,0.3)'
-          ctx.fillRect(50, 50, rectSize[0], rectSize[1])
+  const handleUpdatedCanvasOverlayRedraw = useCallback<
+    NonNullable<CanvasOverlayProps['onRedraw']>
+  >(
+    (canvas: HTMLCanvasElement, viewer: OpenSeadragon.Viewer) => {
+      const ctx = canvas.getContext('2d')
+      if (ctx) {
+        ctx.fillStyle = 'rgba(0,0,0,0.3)'
+        ctx.fillRect(50, 50, rectSize[0], rectSize[1])
+      }
+      if (viewer.world && viewer.world.getItemAt(0)) {
+        const imgSize = viewer.world.getItemAt(0).getContentSize()
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          setRectSize([Math.random() * imgSize.x, Math.random() * imgSize.y])
+        }, 5000)
+      }
+    },
+    [rectSize]
+  )
+
+  const handleMouseTrackerLeave = useCallback<
+    NonNullable<MouseTrackerProps['onLeave']>
+  >(() => {
+    // temporary fix about malfunction(?) of mouseup and onNonPrimaryRelease event
+    cancelPanning?.()
+  }, [cancelPanning])
+
+  const handleMouseTrackerNonPrimaryPress = useCallback<
+    NonNullable<MouseTrackerProps['onNonPrimaryPress']>
+  >(event => {
+    if (event.button === WHEEL_BUTTON) {
+      lastPoint.current = event.position?.clone() || null
+      prevDelta.current = new OpenSeadragon.Point(0, 0)
+      prevTime.current = 0
+    }
+  }, [])
+
+  const handleMouseTrackerNonPrimaryRelease = useCallback<
+    NonNullable<MouseTrackerProps['onNonPrimaryRelease']>
+  >(
+    event => {
+      if (event.button === WHEEL_BUTTON) {
+        cancelPanning()
+      }
+    },
+    [cancelPanning]
+  )
+
+  const handleMouseTrackerMove = useCallback<
+    NonNullable<MouseTrackerProps['onMove']>
+  >(event => {
+    const viewer = osdViewerRef.current?.viewer
+    const throttle = 150
+    if (viewer && viewer.viewport) {
+      if (lastPoint.current && event.position) {
+        const deltaPixels = lastPoint.current.minus(event.position)
+        const deltaPoints = viewer.viewport.deltaPointsFromPixels(deltaPixels)
+        lastPoint.current = event.position.clone()
+        if (!throttle || throttle < 0) {
+          viewer.viewport.panBy(deltaPoints)
+        } else if (prevDelta.current) {
+          const newTimeDelta = Date.now() - prevTime.current
+          const newDelta = prevDelta.current.plus(deltaPoints)
+          if (newTimeDelta > throttle) {
+            viewer.viewport.panBy(newDelta)
+            prevDelta.current = new OpenSeadragon.Point(0, 0)
+            prevTime.current = 0
+          } else {
+            prevDelta.current = newDelta
+            prevTime.current = newTimeDelta
+          }
         }
-        if (viewer.world && viewer.world.getItemAt(0)) {
-          const imgSize = viewer.world.getItemAt(0).getContentSize()
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            setRectSize([Math.random() * imgSize.x, Math.random() * imgSize.y])
-          }, 5000)
-        }
-      },
-      [rectSize]
-    )
+      }
+    }
+  }, [])
 
   return (
     <BrowserRouter>
@@ -236,7 +304,11 @@ function App() {
               </OSDViewer>
             </Route>
             <Route exact path="/">
-              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
                 <viewport
                   zoom={viewportZoom}
                   refPoint={refPoint}
@@ -248,7 +320,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -264,6 +336,12 @@ function App() {
                   onRedraw={onCanvasOverlayRedraw}
                 />
                 <tooltipOverlay onRedraw={onTooltipOverlayRedraw} />
+                <mouseTracker
+                  onLeave={handleMouseTrackerLeave}
+                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+                  onMove={handleMouseTrackerMove}
+                />
               </OSDViewer>
               <ZoomController
                 zoom={viewportZoom / scaleFactor}
