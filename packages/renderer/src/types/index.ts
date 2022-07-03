@@ -2,6 +2,130 @@
 import OpenSeadragon from 'openseadragon'
 import React, { ReactNode } from 'react'
 
+export const MouseTrackerEventHandlerNames = {
+  onPreProcessEvent: 'preProcessEventHandler',
+  onContextMenu: 'contextMenuHandler',
+  onEnter: 'enterHandler',
+  /**
+   * @deprecated use onLeave instead
+   */
+  onExit: 'exitHandler',
+  onLeave: 'leaveHandler',
+  onOver: 'overHandler',
+  onOut: 'outHandler',
+  onPress: 'pressHandler',
+  onNonPrimaryPress: 'nonPrimaryPressHandler',
+  onRelease: 'releaseHandler',
+  onNonPrimaryRelease: 'nonPrimaryReleaseHandler',
+  onMove: 'moveHandler',
+  onScroll: 'scrollHandler',
+  onClick: 'clickHandler',
+  onDblClick: 'dblClickHandler',
+  onDrag: 'dragHandler',
+  onDragEnd: 'dragEndHandler',
+  onPinch: 'pinchHandler',
+  onKeyDown: 'keyDownHandler',
+  onKeyUp: 'keyUpHandler',
+  onKey: 'keyHandler',
+  onFocus: 'focusHandler',
+  onBlur: 'blurHandler',
+} as const
+
+export type MouseTrackerEventHandlerNames = {
+  -readonly [N in keyof typeof MouseTrackerEventHandlerNames]: typeof MouseTrackerEventHandlerNames[N]
+}
+
+export const ViewerEventHandlerNames = {
+  onAddItemFailed: 'add-item-failed',
+  onAddOverlay: 'add-overlay',
+  onAnimation: 'animation',
+  onAnimationFinish: 'animation-finish',
+  onAnimationStart: 'animation-start',
+  onCanvasClick: 'canvas-click',
+  onCanvasContextMenu: 'canvas-contextmenu',
+  onCanvasDoubleClick: 'canvas-double-click',
+  onCanvasDrag: 'canvas-drag',
+  onCanvasDragEnd: 'canvas-drag-end',
+  onCanvasEnter: 'canvas-enter',
+  onCanvasExit: 'canvas-exit',
+  onCanvasKey: 'canvas-key',
+  onCanvasNonprimaryPress: 'canvas-nonprimary-press',
+  onCanvasNonprimaryRelease: 'canvas-nonprimary-release',
+  onCanvasPinch: 'canvas-pinch',
+  onCanvasPress: 'canvas-press',
+  onCanvasRelease: 'canvas-release',
+  onCanvasScroll: 'canvas-scroll',
+  onClearOverlay: 'clear-overlay',
+  onClose: 'close',
+  onConstrain: 'constrain',
+  onContainerEnter: 'container-enter',
+  onContainerExit: 'container-exit',
+  onControlsEnabled: 'controls-enabled',
+  onFlip: 'flip',
+  onFullPage: 'full-page',
+  onFullScreen: 'full-screen',
+  onHome: 'home',
+  onMouseEnabled: 'mouse-enabled',
+  onNavigatorClick: 'navigator-click',
+  onNavigatorDrag: 'navigator-drag',
+  onNavigatorScroll: 'navigator-scroll',
+  onOpen: 'open',
+  onOpenFailed: 'open-failed',
+  onPage: 'page',
+  onPan: 'pan',
+  onPreFullPage: 'pre-full-page',
+  onPreFullScreen: 'pre-full-screen',
+  onRemoveOverlay: 'remove-overlay',
+  onResetSize: 'reset-size',
+  onResize: 'resize',
+  onRotate: 'rotate',
+  onTileDrawing: 'tile-drawing',
+  onTileDrawn: 'tile-drawn',
+  onTileLoadFailed: 'tile-load-failed',
+  onTileLoaded: 'tile-loaded',
+  onTileUnloaded: 'tile-unloaded',
+  onUpdateLevel: 'update-level',
+  onUpdateOverlay: 'update-overlay',
+  onUpdateTile: 'update-tile',
+  onUpdateViewport: 'update-viewport',
+  onViewportChange: 'viewport-change',
+  onVisible: 'visible',
+  onZoom: 'zoom',
+} as const
+
+export type ViewerEventHandlerNames = {
+  -readonly [N in keyof typeof ViewerEventHandlerNames]: typeof ViewerEventHandlerNames[N]
+}
+
+export type MouseTrackerEventHandlerMap = {
+  /** @todo OpenSeadragon.MouseTrackerOptions의 *Handler 타입이 정상화되면 아래 주석으로 코드 대체 */
+  // [N in keyof MouseTrackerEventHandlerNames]: NonNullable<OpenSeadragon.MouseTrackerOptions[MouseTrackerEventHandlerNames[N]]>
+  [N in keyof MouseTrackerEventHandlerNames]: OpenSeadragon.EventHandler<
+    {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      [P in string]: any
+    } & Parameters<
+      NonNullable<
+        OpenSeadragon.MouseTrackerOptions[MouseTrackerEventHandlerNames[N]]
+      >
+    >[0]
+  >
+}
+
+export type ViewerEventHandlerMap = {
+  [N in keyof ViewerEventHandlerNames]: OpenSeadragon.EventHandler<
+    OpenSeadragon.ViewerEventMap[ViewerEventHandlerNames[N]]
+  >
+}
+
+export interface MouseTrackerEventHandlers
+  extends Partial<MouseTrackerEventHandlerMap>,
+    NodeProps {}
+
+export interface ViewportEventHandlers
+  extends Partial<ViewerEventHandlerMap>,
+    NodeProps {}
+
 export interface BaseProps {
   [key: string]: any
 }
@@ -44,7 +168,7 @@ export interface TiledImageProps extends NodeProps {
   retryInterval?: number
 }
 
-export interface MouseTrackerProps extends MouseTrackerEventHandlerOptions {
+export interface MouseTrackerProps extends MouseTrackerEventHandlers {
   startDisabled?: boolean | undefined
   clickTimeThreshold?: number | undefined
   clickDistThreshold?: number | undefined
@@ -53,31 +177,6 @@ export interface MouseTrackerProps extends MouseTrackerEventHandlerOptions {
   stopDelay?: number | undefined
   userData?: any | undefined
 }
-
-export type MouseTrackerEvent =
-  OpenSeadragon.OSDEvent<OpenSeadragon.MouseTracker> &
-    Omit<
-      OpenSeadragon.ViewerEvent,
-      keyof OpenSeadragon.OSDEvent<OpenSeadragon.Viewer>
-    >
-
-export interface MouseTrackerEventHandlerOptions
-  extends Partial<
-      Record<
-        keyof typeof MouseTrackerEventHandlers,
-        OpenSeadragon.EventHandler<MouseTrackerEvent>
-      >
-    >,
-    NodeProps {}
-
-export interface ViewportEventHandlers
-  extends Partial<
-      Record<
-        keyof typeof ViewerEventHandlers,
-        OpenSeadragon.EventHandler<OpenSeadragon.ViewerEvent>
-      >
-    >,
-    NodeProps {}
 
 export interface ViewportProps extends ViewerProps {
   defaultZoomLevel?: number
@@ -111,94 +210,15 @@ export interface ScalebarProps extends NodeProps {
   stayInsideImage?: boolean
 }
 
-export enum MouseTrackerEventHandlers {
-  onEnter = 'enterHandler',
-  onExit = 'exitHandler',
-  onPress = 'pressHandler',
-  onNonPrimaryPress = 'nonPrimaryPressHandler',
-  onRelease = 'releaseHandler',
-  onNonPrimaryRelease = 'nonPrimaryReleaseHandler',
-  onMove = 'moveHandler',
-  onScroll = 'scrollHandler',
-  onClick = 'clickHandler',
-  onDblClick = 'dblClickHandler',
-  onDrag = 'dragHandler',
-  onDragEnd = 'dragEndHandler',
-  onPinch = 'pinchHandler',
-  onKeyDown = 'keyDownHandler',
-  onKeyUp = 'keyUpHandler',
-  onKey = 'keyHandler',
-  onFocus = 'focusHandler',
-  onBlur = 'blurHandler',
-}
-
-export enum ViewerEventHandlers {
-  onAddItemFailed = 'add-item-failed',
-  onAddOverlay = 'add-overlay',
-  onAnimation = 'animation',
-  onAnimationFinish = 'animation-finish',
-  onAnimationStart = 'animation-start',
-  onCanvasClick = 'canvas-click',
-  onCanvasContextMenu = 'canvas-contextmenu',
-  onCanvasDoubleClick = 'canvas-double-click',
-  onCanvasDrag = 'canvas-drag',
-  onCanvasDragEnd = 'canvas-drag-end',
-  onCanvasEnter = 'canvas-enter',
-  onCanvasExit = 'canvas-exit',
-  onCanvasKey = 'canvas-key',
-  onCanvasNonprimaryPress = 'canvas-nonprimary-press',
-  onCanvasNonprimaryRelease = 'canvas-nonprimary-release',
-  onCanvasPinch = 'canvas-pinch',
-  onCanvasPress = 'canvas-press',
-  onCanvasRelease = 'canvas-release',
-  onCanvasScroll = 'canvas-scroll',
-  onClearOverlay = 'clear-overlay',
-  onClose = 'close',
-  onConstrain = 'constrain',
-  onContainerEnter = 'container-enter',
-  onContainerExit = 'container-exit',
-  onControlsEnabled = 'controls-enabled',
-  onFlip = 'flip',
-  onFullPage = 'full-page',
-  onFullScreen = 'full-screen',
-  onHome = 'home',
-  onMouseEnabled = 'mouse-enabled',
-  onNavigatorClick = 'navigator-click',
-  onNavigatorDrag = 'navigator-drag',
-  onNavigatorScroll = 'navigator-scroll',
-  onOpen = 'open',
-  onOpenFailed = 'open-failed',
-  onPage = 'page',
-  onPan = 'pan',
-  onPreFullPage = 'pre-full-page',
-  onPreFullScreen = 'pre-full-screen',
-  onRemoveOverlay = 'remove-overlay',
-  onResetSize = 'reset-size',
-  onResize = 'resize',
-  onRotate = 'rotate',
-  onTileDrawing = 'tile-drawing',
-  onTileDrawn = 'tile-drawn',
-  onTileLoadFailed = 'tile-load-failed',
-  onTileLoad = 'tile-loaded',
-  onTileUnload = 'tile-unloaded',
-  onUpdateLevel = 'update-level',
-  onUpdateOverlay = 'update-overlay',
-  onUpdateTile = 'update-tile',
-  onUpdateViewport = 'update-viewport',
-  onViewportChange = 'viewport-change',
-  onVisible = 'visible',
-  onZoom = 'zoom',
-}
-
 export interface CanvasOverlayProps extends NodeProps {
-  onRedraw: (
+  onRedraw?: (
     overlayCanvasEl: HTMLCanvasElement,
     viewer: OpenSeadragon.Viewer
   ) => void
 }
 
 export interface TooltipOverlayProps extends NodeProps {
-  onRedraw: (event: {
+  onRedraw?: (event: {
     overlayCanvasEl: HTMLCanvasElement
     viewer: OpenSeadragon.Viewer
     tooltipCoord?: OpenSeadragon.Point

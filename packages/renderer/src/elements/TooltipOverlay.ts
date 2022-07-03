@@ -8,7 +8,7 @@ declare module 'openseadragon' {
     forceRedraw(): void
     reset(): void
     canvas(): HTMLCanvasElement
-    onRedraw: (e?: MouseEvent) => void
+    onRedraw?: (e?: MouseEvent) => void
     tooltipLocation?: OpenSeadragon.Point
     redrawOnViewportChange: boolean
   }
@@ -73,7 +73,7 @@ class TooltipOverlay extends Base {
     } = this
     const canvas = this.overlay.canvas()
     this.overlay.onRedraw = e => {
-      onRedraw({
+      onRedraw?.({
         overlayCanvasEl: canvas,
         viewer,
         tooltipCoord: this.overlay.tooltipLocation,
