@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-explicit-any, no-shadow */
+/* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-explicit-any, no-shadow, import/no-unresolved */
 import OpenSeadragon from 'openseadragon'
+import OpenSeadragonV2 from 'openseadragonV2'
 import React, { ReactNode } from 'react'
 
 export const MouseTrackerEventHandlerNames = {
@@ -217,7 +218,7 @@ export interface ScalebarProps extends NodeProps {
 export interface CanvasOverlayProps extends NodeProps {
   onRedraw?: (
     overlayCanvasEl: HTMLCanvasElement,
-    viewer: OpenSeadragon.Viewer
+    viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
   ) => void
 }
 
