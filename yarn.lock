@@ -3168,6 +3168,11 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
+"@types/openseadragon@^2.4.5":
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-2.4.8.tgz#dfaf0206030f7e860e3c4123f44817d76c9f1867"
+  integrity sha512-vPmpmigVdMYgdPJLUbQJgpFIQCeRnoUQW4bT/l9u1yajJLSx2BUKFhURvdTDxJWYFA/+oqMeXfJl2/NLhPZq7A==
+
 "@types/openseadragon@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-3.0.3.tgz#a8ae0b84da721652a240d17db4c06b0bc43ddfff"
@@ -11428,6 +11433,11 @@ open@^7.0.2:
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
+
+openseadragon@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-2.4.2.tgz#f25d833d0ab9941599d65a3e2b44bec546c9f15c"
+  integrity sha512-398KbZwRtOYA6OmeWRY4Q0737NTacQ9Q6whmr9Lp1MNQO3p0eBz5LIASRne+4gwequcSM1vcHcjfy3dIndQziw==
 
 openseadragon@^3.1.0:
   version "3.1.0"
