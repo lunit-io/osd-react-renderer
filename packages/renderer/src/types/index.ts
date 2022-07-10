@@ -169,6 +169,10 @@ export interface TiledImageProps extends NodeProps {
 }
 
 export interface MouseTrackerProps extends MouseTrackerEventHandlers {
+  element?:
+    | ((viewer: OpenSeadragon.Viewer) => string | HTMLElement)
+    | string
+    | HTMLElement
   startDisabled?: boolean | undefined
   clickTimeThreshold?: number | undefined
   clickDistThreshold?: number | undefined
