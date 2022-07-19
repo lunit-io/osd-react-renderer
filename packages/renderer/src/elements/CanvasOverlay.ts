@@ -8,11 +8,11 @@ declare module 'openseadragon' {
     forceRedraw(): void
     reset(): void
     canvas(): HTMLCanvasElement
-    onRedraw: () => void
+    onRedraw?: () => void
   }
 
   interface Viewer {
-    canvasOverlay: (options?: { onRedraw: () => void }) => CanvasOverlay
+    canvasOverlay: (options?: { onRedraw?: () => void }) => CanvasOverlay
     canvasOverlayExists: () => boolean
   }
 }
@@ -60,7 +60,7 @@ class CanvasOverlay extends Base {
     } = this
     const canvas = this.overlay.canvas()
     this.overlay.onRedraw = () => {
-      onRedraw(canvas, viewer)
+      onRedraw?.(canvas, viewer)
     }
     this.overlay.forceRedraw()
   }

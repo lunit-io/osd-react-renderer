@@ -1,7 +1,7 @@
 import OpenSeadragon from 'openseadragon'
 import Base from './Base'
 import {
-  ViewerEventHandlers,
+  ViewerEventHandlerNames,
   ViewportEventHandlers,
   ViewportProps,
 } from '../types'
@@ -51,13 +51,16 @@ class Viewport extends Base {
     this.updateEventHandler('add')
   }
 
-  private static extractEventHandlers(props: ViewportProps) {
-    return Object.keys(props).reduce<ViewportEventHandlers>((handlers, key) => {
-      if (hasOwnProperty(ViewerEventHandlers, key)) {
-        handlers[key] = props[key]
-      }
-      return handlers
-    }, {})
+  private static extractEventHandlers(props: Partial<ViewportProps>) {
+    return Object.entries(props).reduce<ViewportEventHandlers>(
+      (handlers, [name, handler]) => {
+        if (handler && hasOwnProperty(ViewerEventHandlerNames, name)) {
+          Object.defineProperty(handlers, name, handler)
+        }
+        return handlers
+      },
+      {} as ViewportEventHandlers
+    )
   }
 
   private updateEventHandler(update: 'add' | 'remove') {
@@ -66,15 +69,11 @@ class Viewport extends Base {
       return
     }
     const checkEventHandler = update === 'add' ? 'addHandler' : 'removeHandler'
-    Object.keys(this.eventHandlers).forEach(key => {
-      if (!hasOwnProperty(ViewerEventHandlers, key)) {
-        return
-      }
-      const handler = this.eventHandlers[key]
-      if (handler) {
+    Object.entries(this.eventHandlers).forEach(([name, handler]) => {
+      if (handler && hasOwnProperty(ViewerEventHandlerNames, name)) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        parent.viewer[checkEventHandler](ViewerEventHandlers[key], handler)
+        parent.viewer[checkEventHandler](ViewerEventHandlerNames[name], handler)
       }
     })
   }

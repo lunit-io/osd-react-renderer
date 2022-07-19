@@ -1,17 +1,14 @@
 import OpenSeadragon from 'openseadragon'
 import { hasOwnProperty } from '../utils/object'
-import { MouseTrackerProps, MouseTrackerEventHandlers } from '../types'
+import {
+  MouseTrackerProps,
+  MouseTrackerEventHandlerNames,
+  MouseTrackerEventHandlers,
+} from '../types'
 import Base from './Base'
 
-type MouseTrackerEventOptions = {
-  [key in MouseTrackerEventHandlers]?: OpenSeadragon.EventHandler<
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    OpenSeadragon.OSDEvent<any>
-  >
-}
-
 class MouseTracker extends Base {
-  eventHandlers: MouseTrackerEventOptions
+  eventHandlers: MouseTrackerEventHandlers
 
   props: Partial<MouseTrackerProps>
 
@@ -22,7 +19,11 @@ class MouseTracker extends Base {
     this.props = props
     this.eventHandlers = MouseTracker.extractEventHandlers(props)
     this.tracker = MouseTracker.createTrackerInstance(
-      viewer?.element,
+      (props?.element &&
+        (typeof props.element === 'function'
+          ? props.element(viewer)
+          : props.element)) ||
+        viewer?.element,
       this.eventHandlers,
       props
     )
@@ -35,7 +36,11 @@ class MouseTracker extends Base {
     // TODO: update handler without destroying previous instance
     this.tracker?.destroy()
     this.tracker = MouseTracker.createTrackerInstance(
-      this.viewer?.element,
+      (props?.element &&
+        (typeof props.element === 'function'
+          ? props.element(this.viewer)
+          : props.element)) ||
+        this.viewer?.element,
       this.eventHandlers,
       props
     )
@@ -45,11 +50,11 @@ class MouseTracker extends Base {
     this.tracker?.destroy()
   }
 
-  private static extractEventHandlers(props: MouseTrackerProps) {
-    return Object.keys(props).reduce<MouseTrackerEventOptions>(
-      (handlers, key) => {
-        if (hasOwnProperty(MouseTrackerEventHandlers, key)) {
-          handlers[MouseTrackerEventHandlers[key]] = props[key]
+  private static extractEventHandlers(props: Partial<MouseTrackerProps>) {
+    return Object.entries(props).reduce<MouseTrackerEventHandlers>(
+      (handlers, [name, handler]) => {
+        if (handler && hasOwnProperty(MouseTrackerEventHandlerNames, name)) {
+          Object.defineProperty(handlers, name, handler)
         }
         return handlers
       },
@@ -59,7 +64,7 @@ class MouseTracker extends Base {
 
   private static createTrackerInstance(
     elem: string | Element,
-    handler: MouseTrackerEventOptions,
+    handlers: MouseTrackerEventHandlers,
     props: MouseTrackerProps
   ) {
     const {
@@ -73,7 +78,7 @@ class MouseTracker extends Base {
     } = props
     return new OpenSeadragon.MouseTracker({
       element: elem,
-      ...handler,
+      ...handlers,
       startDisabled,
       clickTimeThreshold,
       clickDistThreshold,
