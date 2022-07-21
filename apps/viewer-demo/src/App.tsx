@@ -8,9 +8,12 @@ import OSDViewer, {
 } from '@lunit/osd-react-renderer'
 import OpenSeadragon from 'openseadragon'
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
+import Webworker from './classes/WebWorker'
+import testWorker from './classes/test.worker'
+// import { OffscreenOverlayProps } from 'packages/renderer/dist/types/types'
 
 const Container = styled.div`
   width: 100%;
@@ -100,20 +103,51 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   }
 }
 
-let timer: ReturnType<typeof setTimeout>
+let offscreen: OffscreenCanvas | null = null
+// let timer: ReturnType<typeof setTimeout>
 
 function App() {
   const [viewportZoom, setViewportZoom] = useState<number>(1)
   const [refPoint, setRefPoint] = useState<OpenSeadragon.Point>()
   const [rotation, setRotation] = useState<number>(0)
   const [scaleFactor, setScaleFactor] = useState<number>(1)
-  const [rectSize, setRectSize] = useState<[number, number]>([5000, 5000])
-
+  // const [rectSize, setRectSize] = useState<[number, number]>([5000, 5000])
+  const [worker, setWorker] = useState<any>()
   const canvasOverlayRef = useRef(null)
+  // const offscreenOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
   const lastPoint = useRef<OpenSeadragon.Point | null>(null)
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
+
+  useEffect(() => {
+    setWorker(new Webworker(testWorker))
+    if (canvasOverlayRef.current) {
+      const canvasInfo = canvasOverlayRef.current as any
+      // const offscreenInfo = offscreenOverlayRef.current as any
+      // offscreen = offscreenInfo.viewer._offscreenOverlayInfo._offscreen
+      offscreen = canvasInfo.viewer._canvasOverlayInfo._offscreen
+      offscreen!.height = canvasInfo.viewer.container.clientHeight
+      offscreen!.width = canvasInfo.viewer.container.clientWidth
+    }
+    return () => {
+      worker?.terminate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (worker && offscreen) {
+      worker.postMessage(
+        {
+          action: 'canvas',
+          canvas: offscreen,
+        },
+        [offscreen]
+      )
+      worker.postMessage({ action: 'prepare' })
+    }
+  }, [worker])
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -177,25 +211,97 @@ function App() {
     [scaleFactor]
   )
 
-  const handleUpdatedCanvasOverlayRedraw = useCallback<
-    NonNullable<CanvasOverlayProps['onRedraw']>
-  >(
-    (canvas: HTMLCanvasElement, viewer: OpenSeadragon.Viewer) => {
-      const ctx = canvas.getContext('2d')
-      if (ctx) {
-        ctx.fillStyle = 'rgba(0,0,0,0.3)'
-        ctx.fillRect(50, 50, rectSize[0], rectSize[1])
-      }
-      if (viewer.world && viewer.world.getItemAt(0)) {
-        const imgSize = viewer.world.getItemAt(0).getContentSize()
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-          setRectSize([Math.random() * imgSize.x, Math.random() * imgSize.y])
-        }, 5000)
-      }
-    },
-    [rectSize]
-  )
+  // const handleUpdatedOffscreenOverlayRedraw: OffscreenOverlayProps['onRedraw'] =
+  //   useCallback(
+  //     (offscreen: OffscreenCanvas, viewer: OpenSeadragon.Viewer) => {
+  //       console.log('redraw!')
+  //       const ctx = offscreen.getContext('2d')
+  //       console.log('ctx :', ctx)
+  //       console.log('viewer :', viewer)
+
+  //       const viewportZoom = viewer.viewport.getZoom(true)
+  //       const image1 = viewer.world.getItemAt(0)
+  //       const zoom = image1.viewportToImageZoom(viewportZoom)
+
+  //       const containerWidth = viewer.container.clientWidth
+  //       const containerHeight = viewer.container.clientHeight
+  //       const viewportOrigin = new OpenSeadragon.Point(0, 0)
+  //       const boundsRect = viewer.viewport.getBounds(true)
+  //       const imgWidth = image1.source.dimensions.x
+  //       const imgHeight = image1.source.dimensions.y
+  //       const imgAspectRatio = imgWidth / imgHeight
+  //       viewportOrigin.x = boundsRect.x
+  //       viewportOrigin.y = boundsRect.y * imgAspectRatio
+
+  //       const viewportWidth = boundsRect.width
+  //       const viewportHeight = boundsRect.height * imgAspectRatio
+  //       const x =
+  //         ((viewportOrigin.x / imgWidth - viewportOrigin.x) / viewportWidth) *
+  //         containerWidth
+  //       const y =
+  //         ((viewportOrigin.y / imgHeight - viewportOrigin.y) / viewportHeight) *
+  //         containerHeight
+
+  //       worker.postMessage({
+  //         action: 'redraw',
+  //         position: { x, y },
+  //         zoom,
+  //         imgWidth,
+  //         imgHeight,
+  //       })
+  //     },
+  //     [worker]
+  //   )
+
+  const handleUpdatedCanvasOverlayRedraw: CanvasOverlayProps['onRedraw'] =
+    useCallback(
+      (canvas: HTMLCanvasElement, viewer: OpenSeadragon.Viewer) => {
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          ctx.fillStyle = 'rgba(0,0,0,0.3)'
+          ctx.fillRect(0, 0, 5000, 5000)
+        }
+
+        const viewportZoom = viewer.viewport.getZoom(true)
+        const image1 = viewer.world.getItemAt(0)
+        const zoom = image1.viewportToImageZoom(viewportZoom)
+
+        const containerWidth = viewer.container.clientWidth
+        const containerHeight = viewer.container.clientHeight
+        const viewportOrigin = new OpenSeadragon.Point(0, 0)
+        const boundsRect = viewer.viewport.getBounds(true)
+        const imgWidth = image1.source.dimensions.x
+        const imgHeight = image1.source.dimensions.y
+        const imgAspectRatio = imgWidth / imgHeight
+        viewportOrigin.x = boundsRect.x
+        viewportOrigin.y = boundsRect.y * imgAspectRatio
+
+        const viewportWidth = boundsRect.width
+        const viewportHeight = boundsRect.height * imgAspectRatio
+        const x =
+          ((viewportOrigin.x / imgWidth - viewportOrigin.x) / viewportWidth) *
+          containerWidth
+        const y =
+          ((viewportOrigin.y / imgHeight - viewportOrigin.y) / viewportHeight) *
+          containerHeight
+
+        worker.postMessage({
+          action: 'redraw',
+          position: { x, y },
+          zoom,
+          imgWidth,
+          imgHeight,
+        })
+        // if (viewer.world && viewer.world.getItemAt(0)) {
+        //   const imgSize = viewer.world.getItemAt(0).getContentSize()
+        //   clearTimeout(timer)
+        //   timer = setTimeout(() => {
+        //     setRectSize([Math.random() * imgSize.x, Math.random() * imgSize.y])
+        //   }, 5000)
+        // }
+      },
+      [worker]
+    )
 
   const handleMouseTrackerLeave = useCallback<
     NonNullable<MouseTrackerProps['onLeave']>
@@ -266,7 +372,11 @@ function App() {
         <Switch>
           <OSDContainer>
             <Route exact path="/test">
-              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
                 <viewport
                   zoom={viewportZoom}
                   refPoint={refPoint}
@@ -278,7 +388,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -293,6 +403,10 @@ function App() {
                   ref={canvasOverlayRef}
                   onRedraw={handleUpdatedCanvasOverlayRedraw}
                 />
+                {/* <offscreenOverlay
+                  ref={offscreenOverlayRef}
+                  onRedraw={handleUpdatedOffscreenOverlayRedraw}
+                /> */}
               </OSDViewer>
             </Route>
             <Route exact path="/test-custom">
