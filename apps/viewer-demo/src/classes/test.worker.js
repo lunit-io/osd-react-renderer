@@ -24,7 +24,7 @@ export default () => {
       }
     }
 
-    redraw({ position, size, zoom, imgWidth, imgHeight }) {
+    redraw({ position, zoom, imgWidth, imgHeight }) {
       if (this.context && this.isPrepared) {
         this.context.clearRect(
           0,
@@ -32,13 +32,10 @@ export default () => {
           this.offscreenCanvas.width,
           this.offscreenCanvas.height
         )
-        this.context.drawImage(
-          this.maskImage,
-          position.x,
-          position.y,
-          imgWidth * zoom,
-          imgHeight * zoom
-        )
+        this.context.translate(position.x, position.y)
+        this.context.scale(zoom, zoom)
+        this.context.drawImage(this.maskImage, 0, 0, imgWidth, imgHeight)
+        this.context.setTransform(1, 0, 0, 1, 0, 0)
       }
     }
   }
