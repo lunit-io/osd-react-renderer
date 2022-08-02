@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/openseadragon": "^3.0.3",
+    "@types/offscreencanvas": "^2019.7.0",
     "@types/react-reconciler": "^0.26.3",
     "jest": "^27.0.6",
     "microbundle": "^0.14.2",

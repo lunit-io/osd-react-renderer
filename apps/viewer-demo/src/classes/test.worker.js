@@ -7,35 +7,30 @@ export default () => {
       this.maskImage = null
       this.offscreenCanvas = null
       this.context = null
-      this.isPrepared = false
     }
 
-    setOffscreenCanvas({ canvas }) {
-      this.offscreenCanvas = canvas
-      this.context = canvas.getContext('2d')
+    setOffscreenCanvas({ offscreen }) {
+      this.offscreenCanvas = offscreen
+      this.context = offscreen.getContext('2d')
     }
 
-    prepare({ result }) {
+    onRedraw({ position, zoom, img }) {
       if (this.context) {
-        this.isPrepared = true
-        this.context.fillStyle = 'rgba(0,0,255,0.2)'
-        this.context.fillRect(0, 0, 5000, 5000)
-        this.maskImage = this.offscreenCanvas.transferToImageBitmap()
-      }
-    }
-
-    redraw({ position, zoom, imgWidth, imgHeight }) {
-      if (this.context && this.isPrepared) {
-        this.context.clearRect(
+        const ctx = this.context
+        ctx.clearRect(
           0,
           0,
           this.offscreenCanvas.width,
           this.offscreenCanvas.height
         )
-        this.context.translate(position.x, position.y)
-        this.context.scale(zoom, zoom)
-        this.context.drawImage(this.maskImage, 0, 0, imgWidth, imgHeight)
-        this.context.setTransform(1, 0, 0, 1, 0, 0)
+        ctx.fillStyle = 'rgba(0,0,255,0.2)'
+        ctx.fillRect(0, 0, 5000, 5000)
+        this.maskImage = this.offscreenCanvas.transferToImageBitmap()
+
+        ctx.translate(position.x, position.y)
+        ctx.scale(zoom, zoom)
+        ctx.drawImage(this.maskImage, 0, 0, img.width, img.height)
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
       }
     }
   }
@@ -44,14 +39,11 @@ export default () => {
 
   self.onmessage = e => {
     switch (e.data.action) {
-      case 'canvas':
+      case 'offscreen':
         handler.setOffscreenCanvas(e.data)
         break
-      case 'prepare':
-        handler.prepare(e.data)
-        break
       case 'redraw':
-        handler.redraw(e.data)
+        handler.onRedraw(e.data)
         break
       default:
         return

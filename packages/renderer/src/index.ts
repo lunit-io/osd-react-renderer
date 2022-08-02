@@ -5,5 +5,6 @@ export type {
   CanvasOverlayProps,
   TooltipOverlayProps,
   MouseTrackerProps,
+  OffscreenOverlayProps,
   OSDViewerRef,
 } from './types/index'

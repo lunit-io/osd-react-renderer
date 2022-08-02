@@ -221,6 +221,9 @@ export interface CanvasOverlayProps extends NodeProps {
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
   ) => void
 }
+export interface OffscreenOverlayProps extends NodeProps {
+  worker: Worker | undefined
+}
 
 export interface TooltipOverlayProps extends NodeProps {
   onRedraw?: (event: {
@@ -240,6 +243,7 @@ declare global {
       viewport: ViewportProps
       scalebar: ScalebarProps
       canvasOverlay: CanvasOverlayProps
+      offscreenOverlay: OffscreenOverlayProps
       tooltipOverlay: TooltipOverlayProps
     }
   }
