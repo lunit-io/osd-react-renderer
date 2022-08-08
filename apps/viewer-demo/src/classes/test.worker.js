@@ -14,6 +14,11 @@ export default () => {
       this.context = offscreen.getContext('2d')
     }
 
+    resize({ width, height }) {
+      this.offscreenCanvas.width = width
+      this.offscreenCanvas.height = height
+    }
+
     onRedraw({ position, zoom, img }) {
       if (this.context) {
         const ctx = this.context
@@ -26,7 +31,6 @@ export default () => {
         ctx.fillStyle = 'rgba(0,0,255,0.2)'
         ctx.fillRect(0, 0, 5000, 5000)
         this.maskImage = this.offscreenCanvas.transferToImageBitmap()
-
         ctx.translate(position.x, position.y)
         ctx.scale(zoom, zoom)
         ctx.drawImage(this.maskImage, 0, 0, img.width, img.height)
@@ -44,6 +48,9 @@ export default () => {
         break
       case 'redraw':
         handler.onRedraw(e.data)
+        break
+      case 'resize':
+        handler.resize(e.data)
         break
       default:
         return

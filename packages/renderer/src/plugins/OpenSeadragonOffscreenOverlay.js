@@ -104,13 +104,11 @@ import OpenSeadragon from 'openseadragon'
       if (this._containerWidth !== this._viewer.container.clientWidth) {
         this._containerWidth = this._viewer.container.clientWidth
         this._canvasdiv.setAttribute('width', this._containerWidth)
-        this._offscreen.width = this._containerWidth
       }
 
       if (this._containerHeight !== this._viewer.container.clientHeight) {
         this._containerHeight = this._viewer.container.clientHeight
         this._canvasdiv.setAttribute('height', this._containerHeight)
-        this._offscreen.height = this._containerHeight
       }
       this._viewportOrigin = new OpenSeadragon.Point(0, 0)
       var boundsRect = this._viewer.viewport.getBounds(true)
@@ -123,6 +121,12 @@ import OpenSeadragon from 'openseadragon'
 
       this._viewportWidth = boundsRect.width
       this._viewportHeight = boundsRect.height * this.imgAspectRatio
+
+      this.worker.postMessage({
+        action: 'resize',
+        height: this._containerHeight,
+        width: this._containerWidth,
+      })
     },
     _updateCanvas: function () {
       if (!this?._viewer?.world?.getItemAt(0)) return
