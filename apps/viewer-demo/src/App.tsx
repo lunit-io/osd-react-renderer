@@ -11,8 +11,8 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
-import Webworker from './classes/WebWorker'
-import testWorker from './classes/test.worker'
+import Webworker from './workers/WebWorker'
+import offscreenWorker from './workers/offscreen.worker'
 
 const Container = styled.div`
   width: 100%;
@@ -119,7 +119,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   useEffect(() => {
-    setWorker(new Webworker(testWorker))
+    setWorker(new Webworker(offscreenWorker))
     return () => {
       worker?.terminate()
     }
