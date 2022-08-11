@@ -111,7 +111,7 @@ function App() {
   const [scaleFactor, setScaleFactor] = useState<number>(1)
   const [rectSize, setRectSize] = useState<[number, number]>([5000, 5000])
 
-  const [worker, setWorker] = useState<any>()
+  const [worker, setWorker] = useState<Worker>()
   const canvasOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
   const lastPoint = useRef<OpenSeadragon.Point | null>(null)
@@ -119,6 +119,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   useEffect(() => {
+    // @ts-ignore
     setWorker(new Webworker(offscreenWorker))
     return () => {
       worker?.terminate()

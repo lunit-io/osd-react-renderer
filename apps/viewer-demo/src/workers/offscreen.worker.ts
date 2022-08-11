@@ -1,26 +1,55 @@
 /* eslint no-restricted-globals: 0 */
+
+type Position = {
+  x: number
+  y: number
+}
+
+type Img = {
+  width: number
+  height: number
+}
+
+interface Resize {
+  width: number
+  height: number
+}
+
+interface OnRedraw {
+  position: Position
+  zoom: number
+  img: Img
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   class MaskWorker {
-    constructor(workerContext) {
+    workerContext: Worker
+    maskImage: ImageBitmap | null
+    offscreenCanvas: OffscreenCanvas | null
+    context: OffscreenCanvasRenderingContext2D | null
+
+    constructor(workerContext: Worker) {
       this.workerContext = workerContext
       this.maskImage = null
       this.offscreenCanvas = null
       this.context = null
     }
 
-    setOffscreenCanvas({ offscreen }) {
+    setOffscreenCanvas({ offscreen }: { offscreen: OffscreenCanvas }) {
       this.offscreenCanvas = offscreen
       this.context = offscreen.getContext('2d')
     }
 
-    resize({ width, height }) {
-      this.offscreenCanvas.width = width
-      this.offscreenCanvas.height = height
+    resize({ width, height }: Resize) {
+      if (this.offscreenCanvas) {
+        this.offscreenCanvas.width = width
+        this.offscreenCanvas.height = height
+      }
     }
 
-    onRedraw({ position, zoom, img }) {
-      if (this.context) {
+    onRedraw({ position, zoom, img }: OnRedraw) {
+      if (this.context && this.offscreenCanvas) {
         const ctx = this.context
         ctx.clearRect(
           0,
@@ -39,7 +68,7 @@ export default () => {
     }
   }
 
-  let handler = new MaskWorker(self)
+  let handler = new MaskWorker(self as unknown as Worker)
 
   self.onmessage = e => {
     switch (e.data.action) {

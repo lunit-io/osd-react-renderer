@@ -1,5 +1,5 @@
 export default class Webworker {
-  constructor(worker) {
+  constructor(worker: Worker) {
     const code = worker.toString()
     const blob = new Blob(['(' + code + ')()'])
     return new Worker(URL.createObjectURL(blob))
