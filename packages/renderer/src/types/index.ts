@@ -181,6 +181,11 @@ export interface MouseTrackerProps extends MouseTrackerEventHandlers {
   dblClickDistThreshold?: number | undefined
   stopDelay?: number | undefined
   userData?: any | undefined
+
+  element?:
+    | ((viewer: OpenSeadragon.Viewer) => string | HTMLElement)
+    | string
+    | HTMLElement
 }
 
 export interface ViewportProps extends ViewerProps {
