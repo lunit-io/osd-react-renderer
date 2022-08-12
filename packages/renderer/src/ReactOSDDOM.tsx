@@ -158,6 +158,7 @@ const ReactOSDDOM = {
     })
     if (viewer?.canvasOverlayExists()) viewer?.canvasOverlay().destroy()
     if (viewer?.tooltipOverlayExists()) viewer?.tooltipOverlay().destroy()
+    if (viewer?.offscreenOverlayExists()) viewer?.offscreenOverlay().destroy()
     viewer?.scalebarInstance?.destroy()
     viewer?.destroy()
     if (viewer?.navigator) {

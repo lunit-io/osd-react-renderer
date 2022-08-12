@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
+    "@types/offscreencanvas": "^2019.7.0",
     "@types/react-router-dom": "^5.3.1",
     "@types/styled-components": "^5.1.13"
   }
