@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-viewer-demo-v2@1.0.0-alpha.13...@lunit/osd-viewer-demo-v2@1.0.0) (2022-08-24)
+
+**Note:** Version bump only for package @lunit/osd-viewer-demo-v2
+
+
+
+
+
 # 1.0.0-alpha.13 (2022-08-24)
 
 
