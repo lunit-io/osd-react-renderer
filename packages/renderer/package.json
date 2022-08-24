@@ -1,6 +1,6 @@
 {
   "name": "@lunit/osd-react-renderer",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0",
   "description": "OpenSeadragon viewer component for React using react-reconciler package.",
   "homepage": "https://github.com/lunit-io/osd-react-renderer#readme",
   "license": "MIT",
@@ -42,8 +42,8 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "@types/openseadragon": "^3.0.3",
     "@types/offscreencanvas": "^2019.7.0",
+    "@types/openseadragon": "^3.0.3",
     "@types/react-reconciler": "^0.26.3",
     "jest": "^27.0.6",
     "microbundle": "^0.14.2",

@@ -3,6 +3,122 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.19...@lunit/osd-react-renderer@1.0.0) (2022-08-24)
+
+**Note:** Version bump only for package @lunit/osd-react-renderer
+
+
+
+
+
+# [1.0.0-alpha.19](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.19) (2022-08-24)
+
+
+### Bug Fixes
+
+* **osd-viewer-demo:** add resize function for fix viewport change error ([5f19ed0](https://github.com/lunit-io/osd-react-renderer/commit/5f19ed019447232e3bd070c49f2627bcdd9de8f9))
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** fix a logical error in retry process ([0e4e976](https://github.com/lunit-io/osd-react-renderer/commit/0e4e976acb65f0b42fef117920644da24cd25e47))
+* **renderer:** remove conflict codes in types ([aa5faff](https://github.com/lunit-io/osd-react-renderer/commit/aa5faff094cd83648ca8324bc02933ce6db2258a))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **osd-viewer-demo:** add offscreen overlay plugin ([ff6ff2a](https://github.com/lunit-io/osd-react-renderer/commit/ff6ff2a2d2b0bd4e92a2de642520bded37ac4af4))
+* **renderer:** add destroy process during unmount ([1ec18ef](https://github.com/lunit-io/osd-react-renderer/commit/1ec18ef013bc221682de8363e77a3c833843b5cc))
+* **renderer:** add mouse tracker component ([f3f9d39](https://github.com/lunit-io/osd-react-renderer/commit/f3f9d399e6be3d931d71f291ac4ff3d27d966111))
+* **renderer:** add retry logic during loading tiled image ([cedb1b1](https://github.com/lunit-io/osd-react-renderer/commit/cedb1b13f15fd2a60cd23980e2d9ed49fcdb93a2))
+* **renderer:** add target element select prop on MouseTracker ([d2f5d90](https://github.com/lunit-io/osd-react-renderer/commit/d2f5d90bd7141213028dd75da5693283d6d2464e))
+* **renderer:** add target element selector prop on MouseTracker ([e2f76e2](https://github.com/lunit-io/osd-react-renderer/commit/e2f76e253141f8d338d1332d3a4cf4863631117c))
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** add types for openseadragon v2 ([e52dff8](https://github.com/lunit-io/osd-react-renderer/commit/e52dff85adc0b0a8870515a38b5eee25b5cf4873))
+* **renderer:** change event type ([5e54c73](https://github.com/lunit-io/osd-react-renderer/commit/5e54c73376b0b8d3d6514482d2ce0f1e7feb724c))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+* **renderer:** migrate openseadragon to v3 ([8e6012c](https://github.com/lunit-io/osd-react-renderer/commit/8e6012caa04e6fb00ca7849515825e62745a128e))
+* **renderer:** update openseadragon packages to v3 ([f62cd02](https://github.com/lunit-io/osd-react-renderer/commit/f62cd02ef3a97d61d8fa4200be463238e46f0312))
+
+
+
+
+
+# [1.0.0-alpha.18](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.18) (2022-05-17)
+
+
+### Bug Fixes
+
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** fix a logical error in retry process ([0e4e976](https://github.com/lunit-io/osd-react-renderer/commit/0e4e976acb65f0b42fef117920644da24cd25e47))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** add destroy process during unmount ([1ec18ef](https://github.com/lunit-io/osd-react-renderer/commit/1ec18ef013bc221682de8363e77a3c833843b5cc))
+* **renderer:** add mouse tracker component ([f3f9d39](https://github.com/lunit-io/osd-react-renderer/commit/f3f9d399e6be3d931d71f291ac4ff3d27d966111))
+* **renderer:** add retry logic during loading tiled image ([cedb1b1](https://github.com/lunit-io/osd-react-renderer/commit/cedb1b13f15fd2a60cd23980e2d9ed49fcdb93a2))
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** change event type ([5e54c73](https://github.com/lunit-io/osd-react-renderer/commit/5e54c73376b0b8d3d6514482d2ce0f1e7feb724c))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
+# [1.0.0-alpha.17](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.17) (2022-04-28)
+
+
+### Bug Fixes
+
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** fix a logical error in retry process ([0e4e976](https://github.com/lunit-io/osd-react-renderer/commit/0e4e976acb65f0b42fef117920644da24cd25e47))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** add retry logic during loading tiled image ([cedb1b1](https://github.com/lunit-io/osd-react-renderer/commit/cedb1b13f15fd2a60cd23980e2d9ed49fcdb93a2))
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
+# [1.0.0-alpha.16](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.16) (2022-04-21)
+
+
+### Bug Fixes
+
+* **renderer:** change event from custom handler to osd event ([ecbe022](https://github.com/lunit-io/osd-react-renderer/commit/ecbe022c2e18592572fc4eb441b92d97910b998a))
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** add TiledImage open failure handler ([55e1de3](https://github.com/lunit-io/osd-react-renderer/commit/55e1de35d95f4a7e6146693df2085f6ec67a2c8a))
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
+# [1.0.0-alpha.15](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.14...@lunit/osd-react-renderer@1.0.0-alpha.15) (2022-01-24)
+
+
+### Bug Fixes
+
+* **renderer:** update dependencies ([48c469a](https://github.com/lunit-io/osd-react-renderer/commit/48c469a19894a6fdfddecec289a434c282a16e64))
+
+
+### Features
+
+* **renderer:** fix package dependencies ([d2278a1](https://github.com/lunit-io/osd-react-renderer/commit/d2278a187ed0602c416633491117eca88ffe5395))
+
+
+
+
+
 # 1.0.0-alpha.14 (2022-01-11)
 
 **Note:** Version bump only for package @lunit/osd-react-renderer
