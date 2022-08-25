@@ -55,7 +55,10 @@ class Viewport extends Base {
     return Object.entries(props).reduce<ViewportEventHandlers>(
       (handlers, [name, handler]) => {
         if (handler && hasOwnProperty(ViewerEventHandlerNames, name)) {
-          Object.defineProperty(handlers, name, handler)
+          Object.defineProperty(handlers, name, {
+            value: handler,
+            enumerable: true,
+          })
         }
         return handlers
       },
