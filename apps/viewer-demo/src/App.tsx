@@ -295,7 +295,10 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
+                <tiledImage
+                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -315,8 +318,8 @@ function App() {
             <Route exact path="/test-custom">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
                 <tiledImage
-                  url="https://pdl1.api.dev.scope.lunit.io/slides/dzi/metadata?file=mrxs_test/SIZE_TEST_2.mrxs"
-                  tileUrlBase="https://pdl1.api.dev.scope.lunit.io/slides/images/dzi/mrxs_test/SIZE_TEST_2.mrxs"
+                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
                 />
               </OSDViewer>
             </Route>
@@ -337,7 +340,10 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
+                <tiledImage
+                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -385,7 +391,10 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
+                <tiledImage
+                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -401,7 +410,10 @@ function App() {
             </Route>
             <Route exact path="/no-overlay">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage
+                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
               </OSDViewer>
             </Route>
           </OSDContainer>
