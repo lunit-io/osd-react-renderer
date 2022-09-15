@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0...@lunit/osd-react-renderer@1.0.1) (2022-08-25)
+
+
+### Bug Fixes
+
+* **renderer:** add enumerable option in extract event handlers ([9939f35](https://github.com/lunit-io/osd-react-renderer/commit/9939f356359dec2831721ed7eee1f10cce087ff2))
+
+
+
+
+
 # [1.0.0](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.0-alpha.19...@lunit/osd-react-renderer@1.0.0) (2022-08-24)
 
 **Note:** Version bump only for package @lunit/osd-react-renderer
