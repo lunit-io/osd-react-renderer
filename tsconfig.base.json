@@ -22,8 +22,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false, // may need to change back
+    "noUnusedParameters": false, // may need to change back
     "noFallthroughCasesInSwitch": true
   },
   "exclude": ["node_modules", "spec", "dist", "test"]
