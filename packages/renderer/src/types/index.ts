@@ -235,6 +235,8 @@ export interface TooltipOverlayProps extends NodeProps {
   redrawOnViewportChange?: boolean
 }
 
+export interface SVGOverlayProps extends NodeProps {}
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
