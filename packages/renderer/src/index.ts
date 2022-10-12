@@ -4,6 +4,7 @@ export type {
   ViewportProps,
   CanvasOverlayProps,
   TooltipOverlayProps,
+  SVGOverlayProps,
   MouseTrackerProps,
   OffscreenOverlayProps,
   OSDViewerRef,
