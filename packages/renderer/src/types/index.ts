@@ -247,6 +247,7 @@ declare global {
       canvasOverlay: CanvasOverlayProps
       offscreenOverlay: OffscreenOverlayProps
       tooltipOverlay: TooltipOverlayProps
+      svgOverlay: SVGOverlayProps
     }
   }
 }

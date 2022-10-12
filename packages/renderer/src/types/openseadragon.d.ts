@@ -793,6 +793,11 @@ declare module "openseadragonV2" {
     reset(): void;
   }
 
+  export class SVGOverlay extends Overlay {
+    // does this need redrawCanvas or forceRedraw?
+    reset(): void;
+  }
+
   export class Point {
     x: number;
     y: number;
