@@ -110,7 +110,7 @@ import OpenSeadragon from 'openseadragon'
     onClick: function (node, handler) {
       // TODO: Fast click for mobile browsers
 
-      new $.MouseTracker({
+      new OpenSeadragon.Viewer.MouseTracker({
         element: node,
         clickHandler: handler,
       }).setTracking(true)
