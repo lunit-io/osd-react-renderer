@@ -136,10 +136,10 @@ import OpenSeadragon from 'openseadragon'
           this._viewportHeight) *
         this._containerHeight
       if (this.clearBeforeRedraw) this.clear()
-      this._canvas.getContext('webgl').translate(x, y)
-      this._canvas.getContext('webgl').scale(zoom, zoom)
+      // this._canvas.getContext('webgl').translate(x, y)
+      // this._canvas.getContext('webgl').scale(zoom, zoom)
+      // this._canvas.getContext('webgl').setTransform(1, 0, 0, 1, 0, 0)
       this.onRedraw()
-      this._canvas.getContext('webgl').setTransform(1, 0, 0, 1, 0, 0)
     },
   }
 })()

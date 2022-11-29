@@ -4,7 +4,6 @@ import OSDViewer, {
   TooltipOverlayProps,
   CanvasOverlayProps,
   MouseTrackerProps,
-  WebGLOverlayProps,
   OSDViewerRef,
 } from '@lunit/osd-react-renderer'
 import OpenSeadragon from 'openseadragon'
@@ -12,6 +11,7 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom'
 import { useCallback, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
+import useWebGL from './hooks/useWebGL'
 
 const Container = styled.div`
   width: 100%;
@@ -80,14 +80,14 @@ const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
     ctx.fillRect(50, 50, 5000, 5000)
   }
 }
-const onWebGLOverlayRedraw: NonNullable<WebGLOverlayProps['onRedraw']> = (
-  canvas: HTMLCanvasElement
-) => {
-  const ctx = canvas.getContext('webgl')
-  if (!ctx) {
-    console.log('webgl context not loaded')
-  }
-}
+// const onWebGLOverlayRedraw: NonNullable<WebGLOverlayProps['onRedraw']> = (
+//   canvas: HTMLCanvasElement
+// ) => {
+//   const ctx = canvas.getContext('webgl')
+//   if (!ctx) {
+//     console.log('webgl context not loaded')
+//   }
+// }
 
 const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   tooltipCoord,
@@ -123,6 +123,8 @@ function App() {
   const lastPoint = useRef<OpenSeadragon.Point | null>(null)
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
+
+  const { onWebGLOverlayRedraw } = useWebGL()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -306,7 +308,11 @@ function App() {
               </OSDViewer>
             </Route>
             <Route exact path="/webgl">
-              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
                 <viewport
                   zoom={viewportZoom}
                   refPoint={refPoint}
@@ -318,7 +324,10 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage
+                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -329,10 +338,10 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                <canvasOverlay
+                {/* <canvasOverlay
                   ref={canvasOverlayRef}
-                  onRedraw={handleUpdatedCanvasOverlayRedraw}
-                />
+                  onRedraw={onCanvasOverlayRedraw}
+                /> */}
                 <webGLOverlay
                   ref={canvasOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
@@ -364,7 +373,10 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://api.pdl1.demo.scope.lunit.io/slides/images/dzi/c76175c1-dd83-4e94-8d54-978903c753ec/16/76a4a313-3865-4232-ba26-449a664204f4/Lung_cancer_14-TPS_50-100.svs" />
+                <tiledImage
+                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -396,7 +408,10 @@ function App() {
             </Route>
             <Route exact path="/no-overlay">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage
+                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />{' '}
               </OSDViewer>
             </Route>
           </OSDContainer>
