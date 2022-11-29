@@ -10,6 +10,9 @@ declare module 'openseadragon' {
     forceRedraw(): void
     reset(): void
     canvas(): HTMLCanvasElement
+    glCanvas(): HTMLCanvasElement
+    contextGL(): WebGL2RenderingContext
+    context2D(): CanvasRenderingContext2D
     onRedraw?: () => void
   }
 
@@ -61,8 +64,13 @@ class WebGLOverlay extends Base {
       props: { onRedraw },
     } = this
     const canvas = this.overlay.canvas()
+    const glCanvas = this.overlay.glCanvas()
     this.overlay.onRedraw = () => {
-      onRedraw?.(canvas, viewer)
+      const ctx = canvas.getContext('2d')
+      const glCtx = glCanvas.getContext('webgl', { antialias: false })
+      onRedraw?.(glCanvas, viewer)
+      if (!ctx || !glCtx) return
+      ctx.drawImage(glCtx.canvas, 0, 0, glCanvas.width, glCanvas.height)
     }
     this.overlay.forceRedraw()
   }

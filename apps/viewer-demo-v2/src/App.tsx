@@ -342,10 +342,7 @@ function App() {
                   ref={canvasOverlayRef}
                   onRedraw={onCanvasOverlayRedraw}
                 /> */}
-                <webGLOverlay
-                  ref={canvasOverlayRef}
-                  onRedraw={onWebGLOverlayRedraw}
-                />
+                <webGLOverlay onRedraw={onWebGLOverlayRedraw} />
               </OSDViewer>
             </Route>
             <Route exact path="/test-custom">

@@ -35,6 +35,7 @@ import OpenSeadragon from 'openseadragon'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
     this._canvas = document.createElement('canvas')
+    this._glCanvas = document.createElement('canvas')
     this._canvasdiv.appendChild(this._canvas)
     this._open = false
 
@@ -68,9 +69,17 @@ import OpenSeadragon from 'openseadragon'
     canvas: function () {
       return this._canvas
     },
+
+    glCanvas: function () {
+      return this._glCanvas
+    },
     // ----------
-    context2d: function () {
-      return this._canvas.getContext('webgl')
+    context2D: function () {
+      return this._canvas.getContext('2d')
+    },
+
+    contextGL: function () {
+      return this._GLcanvas.getContext('webgl', { antialias: false })
     },
     // ----------
     clear: function () {
@@ -89,6 +98,7 @@ import OpenSeadragon from 'openseadragon'
     },
     destroy: function () {
       this._canvasdiv.removeChild(this._canvas)
+      this._canvasdiv.removeChild(this._glCanvas)
       this._viewer.canvas.removeChild(this._canvasdiv)
       this.onRedraw = null
       this._canvasdiv = null
@@ -102,12 +112,14 @@ import OpenSeadragon from 'openseadragon'
         this._containerWidth = this._viewer.container.clientWidth
         this._canvasdiv.setAttribute('width', this._containerWidth)
         this._canvas.setAttribute('width', this._containerWidth)
+        this._glCanvas.setAttribute('width', this._containerWidth)
       }
 
       if (this._containerHeight !== this._viewer.container.clientHeight) {
         this._containerHeight = this._viewer.container.clientHeight
         this._canvasdiv.setAttribute('height', this._containerHeight)
         this._canvas.setAttribute('height', this._containerHeight)
+        this._glCanvas.setAttribute('height', this._containerHeight)
       }
       this._viewportOrigin = new OpenSeadragon.Point(0, 0)
       var boundsRect = this._viewer.viewport.getBounds(true)
@@ -136,9 +148,9 @@ import OpenSeadragon from 'openseadragon'
           this._viewportHeight) *
         this._containerHeight
       if (this.clearBeforeRedraw) this.clear()
-      // this._canvas.getContext('webgl').translate(x, y)
-      // this._canvas.getContext('webgl').scale(zoom, zoom)
-      // this._canvas.getContext('webgl').setTransform(1, 0, 0, 1, 0, 0)
+      this._canvas.getContext('2d').translate(x, y)
+      this._canvas.getContext('2d').scale(zoom, zoom)
+      this._canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0)
       this.onRedraw()
     },
   }

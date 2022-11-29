@@ -20,7 +20,7 @@ const fragmentShaderSource = `
   precision mediump float;
 
   void main() {
-    // gl_FragColor is a special constiable a fragment shader
+    // gl_FragColor is a special variable a fragment shader
     // is responsible for setting
     gl_FragColor = vec4(1, 0, 0.5, 1); // return reddish-purple
   }
@@ -74,6 +74,7 @@ function useWebGL() {
   let program: WebGLProgram
 
   function setProgram(gl: WebGLRenderingContext) {
+    let result: WebGLProgram | undefined = undefined
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)
     const fragmentShader = createShader(
       gl,
@@ -81,40 +82,34 @@ function useWebGL() {
       fragmentShaderSource
     )
     if (!vertexShader || !fragmentShader) return
-    const result = createProgram(gl, vertexShader, fragmentShader)
+    result = createProgram(gl, vertexShader, fragmentShader)
     if (result) {
-      program = result
-      const positionAttributeLocation = gl.getAttribLocation(
-        program,
-        'a_position'
-      )
-      const positionBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array(positions),
-        gl.STATIC_DRAW
-      )
-
-      return positionAttributeLocation
+      return result
     }
+    return
   }
 
   function onWebGLOverlayRedraw(canvas: HTMLCanvasElement) {
-    const gl = canvas.getContext('webgl')
-    if (!gl) return
-
-    let positionAttributeLocation
-    if (!program) {
-      positionAttributeLocation = setProgram(gl)
+    const gl = canvas.getContext('webgl', { antialias: false })
+    if (!gl) {
+      console.log('failed to load webgl context')
+      return
     }
-    if (!positionAttributeLocation) return
+    if (!program) {
+      const out = setProgram(gl)
+      if (out) {
+        program = out
+      }
+      return
+    }
 
+    const positionAttributeLocation = gl.getAttribLocation(
+      program,
+      'a_position'
+    )
     const positionBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW)
-
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
 
     gl.clearColor(0, 0, 0, 0)
