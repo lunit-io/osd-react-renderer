@@ -4,6 +4,7 @@ import OSDViewer, {
   TooltipOverlayProps,
   CanvasOverlayProps,
   MouseTrackerProps,
+  WebGLOverlayProps,
   OSDViewerRef,
 } from '@lunit/osd-react-renderer'
 import OpenSeadragon from 'openseadragon'
@@ -77,6 +78,14 @@ const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
   if (ctx) {
     ctx.fillStyle = '#000'
     ctx.fillRect(50, 50, 5000, 5000)
+  }
+}
+const onWebGLOverlayRedraw: NonNullable<WebGLOverlayProps['onRedraw']> = (
+  canvas: HTMLCanvasElement
+) => {
+  const ctx = canvas.getContext('webgl')
+  if (!ctx) {
+    console.log('webgl context not loaded')
   }
 }
 
@@ -262,6 +271,7 @@ function App() {
           <NavLink to="/no-overlay">NO OVERLAY</NavLink>
           <NavLink to="/test">TEST</NavLink>
           <NavLink to="/destroy">TEST DESTROY</NavLink>
+          <NavLink to="/webgl">TEST WEBGL</NavLink>
         </Links>
         <Switch>
           <OSDContainer>
@@ -292,6 +302,40 @@ function App() {
                 <canvasOverlay
                   ref={canvasOverlayRef}
                   onRedraw={handleUpdatedCanvasOverlayRedraw}
+                />
+              </OSDViewer>
+            </Route>
+            <Route exact path="/webgl">
+              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <scalebar
+                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  xOffset={10}
+                  yOffset={30}
+                  barThickness={3}
+                  color="#443aff"
+                  fontColor="#53646d"
+                  backgroundColor={'rgba(255,255,255,0.5)'}
+                  location={ScalebarLocation.BOTTOM_RIGHT}
+                />
+                <canvasOverlay
+                  ref={canvasOverlayRef}
+                  onRedraw={handleUpdatedCanvasOverlayRedraw}
+                />
+                <webGLOverlay
+                  ref={canvasOverlayRef}
+                  onRedraw={onWebGLOverlayRedraw}
                 />
               </OSDViewer>
             </Route>
