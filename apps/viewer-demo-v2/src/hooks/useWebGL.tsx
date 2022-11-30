@@ -95,12 +95,15 @@ function useWebGL() {
       console.log('failed to load webgl context')
       return
     }
+    // initialise program
     if (!program) {
       const out = setProgram(gl)
       if (out) {
         program = out
+      } else {
+        // abort if program failed to load
+        return
       }
-      return
     }
 
     const positionAttributeLocation = gl.getAttribLocation(

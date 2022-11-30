@@ -119,6 +119,7 @@ function App() {
   const [rectSize, setRectSize] = useState<[number, number]>([5000, 5000])
 
   const canvasOverlayRef = useRef(null)
+  const webGLOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
   const lastPoint = useRef<OpenSeadragon.Point | null>(null)
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
@@ -338,11 +339,14 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                {/* <canvasOverlay
+                <canvasOverlay
                   ref={canvasOverlayRef}
                   onRedraw={onCanvasOverlayRedraw}
-                /> */}
-                <webGLOverlay onRedraw={onWebGLOverlayRedraw} />
+                />
+                <webGLOverlay
+                  ref={webGLOverlayRef}
+                  onRedraw={onWebGLOverlayRedraw}
+                />
               </OSDViewer>
             </Route>
             <Route exact path="/test-custom">
