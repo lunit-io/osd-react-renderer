@@ -15,8 +15,15 @@ export function createShader(
   const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS)
   if (success) {
     return shader
+  } else {
+    console.groupCollapsed(
+      type === 35633 ? 'Vertex Shader Error' : 'Fragment Shader Error'
+    )
+    console.warn('Failed to compile')
+    console.warn(source)
+    console.groupEnd()
+    gl.deleteShader(shader)
   }
-  gl.deleteShader(shader)
 }
 
 export function createProgram(
@@ -57,9 +64,16 @@ export function initializeWebGL(
 ) {
   const program = setProgram(gl, source)
 
-  if (!program) return
+  if (!program) {
+    console.warn('failed to build program')
+    return
+  }
 
   const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
+  const resolutionUniformLocation = gl.getUniformLocation(
+    program,
+    'u_resolution'
+  )
   const positionBuffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexData), gl.STATIC_DRAW)
@@ -67,6 +81,7 @@ export function initializeWebGL(
   return {
     program,
     positionAttributeLocation,
+    resolutionUniformLocation,
     positionBuffer,
   }
 }

@@ -2,7 +2,23 @@ import { source, vertexAttributeConfig } from './const'
 import { initializeWebGL } from './func'
 import { GLConfig } from './types'
 
-const positions = [0, 0, 0, 0.5, 0.7, 0]
+// const positions = [
+//   20, 20,
+//   20, 100,
+//   150, 20,
+//   400, 800,
+//   90, 12,
+//   123, 4543,
+// ]
+
+function makeRandomCoords(amt: number, hClip: number, wClip: number) {
+  const out = []
+  for (let i = 0; i < amt; i++) {
+    out.push(Math.floor(Math.random() * wClip))
+    out.push(Math.floor(Math.random() * hClip))
+  }
+  return out
+}
 
 function useWebGL() {
   let glConfig: GLConfig | undefined
@@ -14,10 +30,14 @@ function useWebGL() {
       return
     }
 
+    const pos = makeRandomCoords(1000, gl.canvas.height, gl.canvas.width)
+
+    glConfig = initializeWebGL(gl, source, pos)
+
     if (!glConfig) {
-      glConfig = initializeWebGL(gl, source, positions)
+      console.warn('failed to initialize webGL')
+      return
     }
-    if (!glConfig) return
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
@@ -42,10 +62,16 @@ function useWebGL() {
       vertexAttributeConfig.offset
     )
 
+    gl.uniform2f(
+      glConfig.resolutionUniformLocation,
+      gl.canvas.width,
+      gl.canvas.height
+    )
+
     // draw
-    const primitiveType = gl.TRIANGLES
+    const primitiveType = gl.POINTS
     const offset = 0
-    const count = 3
+    const count = pos.length
     gl.drawArrays(primitiveType, offset, count)
   }
 
