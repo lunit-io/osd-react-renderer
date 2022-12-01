@@ -235,7 +235,13 @@ export interface TooltipOverlayProps extends NodeProps {
   redrawOnViewportChange?: boolean
 }
 
-export interface WebGLOverlayProps extends CanvasOverlayProps {}
+export interface WebGLOverlayProps extends NodeProps {
+  onRedraw?: (
+    glCanvasElement: HTMLCanvasElement,
+    normalCanvasEl: HTMLCanvasElement,
+    viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
+  ) => void
+}
 declare global {
   namespace JSX {
     interface IntrinsicElements {

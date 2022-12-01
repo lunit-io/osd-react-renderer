@@ -66,11 +66,7 @@ class WebGLOverlay extends Base {
     const canvas = this.overlay.canvas()
     const glCanvas = this.overlay.glCanvas()
     this.overlay.onRedraw = () => {
-      const ctx = canvas.getContext('2d')
-      const glCtx = glCanvas.getContext('webgl', { antialias: false })
-      onRedraw?.(glCanvas, viewer)
-      if (!ctx || !glCtx) return
-      ctx.drawImage(glCtx.canvas, 0, 0, glCanvas.width, glCanvas.height)
+      onRedraw?.(glCanvas, canvas, viewer)
     }
     this.overlay.forceRedraw()
   }

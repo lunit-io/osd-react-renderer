@@ -2,22 +2,21 @@ import { source, vertexAttributeConfig } from './const'
 import { initializeWebGL } from './func'
 import { GLConfig } from './types'
 
-// const positions = [
-//   20, 20,
-//   20, 100,
-//   150, 20,
-//   400, 800,
-//   90, 12,
-//   123, 4543,
-// ]
-
 function useWebGL(positions: number[]) {
   let glConfig: GLConfig | undefined
 
-  function onWebGLOverlayRedraw(canvas: HTMLCanvasElement) {
-    const gl = canvas.getContext('webgl', { antialias: false })
+  function onWebGLOverlayRedraw(
+    glCanvas: HTMLCanvasElement,
+    normalCanvas: HTMLCanvasElement
+  ) {
+    const gl = glCanvas.getContext('webgl', { antialias: false })
+    const ctx = normalCanvas.getContext('2d')
     if (!gl) {
       console.log('failed to load webgl context')
+      return
+    }
+    if (!ctx) {
+      console.log('failed to load 2d context')
       return
     }
 
@@ -62,6 +61,9 @@ function useWebGL(positions: number[]) {
     const offset = 0
     const count = positions.length
     gl.drawArrays(primitiveType, offset, count)
+
+    // move webGL rendered image to 2d canvas
+    ctx.drawImage(gl.canvas, 0, 0, glCanvas.width, glCanvas.height)
   }
 
   return {
