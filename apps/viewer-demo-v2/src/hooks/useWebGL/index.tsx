@@ -11,16 +11,7 @@ import { GLConfig } from './types'
 //   123, 4543,
 // ]
 
-function makeRandomCoords(amt: number, hClip: number, wClip: number) {
-  const out = []
-  for (let i = 0; i < amt; i++) {
-    out.push(Math.floor(Math.random() * wClip))
-    out.push(Math.floor(Math.random() * hClip))
-  }
-  return out
-}
-
-function useWebGL() {
+function useWebGL(positions: number[]) {
   let glConfig: GLConfig | undefined
 
   function onWebGLOverlayRedraw(canvas: HTMLCanvasElement) {
@@ -30,9 +21,7 @@ function useWebGL() {
       return
     }
 
-    const pos = makeRandomCoords(1000, gl.canvas.height, gl.canvas.width)
-
-    glConfig = initializeWebGL(gl, source, pos)
+    glConfig = initializeWebGL(gl, source, positions)
 
     if (!glConfig) {
       console.warn('failed to initialize webGL')
@@ -71,7 +60,7 @@ function useWebGL() {
     // draw
     const primitiveType = gl.POINTS
     const offset = 0
-    const count = pos.length
+    const count = positions.length
     gl.drawArrays(primitiveType, offset, count)
   }
 

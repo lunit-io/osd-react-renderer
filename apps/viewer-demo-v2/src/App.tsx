@@ -109,6 +109,15 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   }
 }
 
+function makeRandomCoords(amt: number, hClip: number, wClip: number) {
+  const out = []
+  for (let i = 0; i < amt; i++) {
+    out.push(Math.floor(Math.random() * wClip))
+    out.push(Math.floor(Math.random() * hClip))
+  }
+  return out
+}
+
 let timer: ReturnType<typeof setTimeout>
 
 function App() {
@@ -125,7 +134,7 @@ function App() {
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
 
-  const { onWebGLOverlayRedraw } = useWebGL()
+  const { onWebGLOverlayRedraw } = useWebGL(makeRandomCoords(2000, 2000, 2000))
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
