@@ -134,7 +134,7 @@ function App() {
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
 
-  const { onWebGLOverlayRedraw } = useWebGL(makeRandomCoords(2000, 2000, 2000))
+  const { onWebGLOverlayRedraw } = useWebGL(makeRandomCoords(10000, 800, 1200))
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null

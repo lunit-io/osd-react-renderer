@@ -12,14 +12,14 @@ const vertexShaderSource = `
     vec2 clipSpace = zeroToTwo - 1.0;
  
     gl_Position = vec4(clipSpace, 0, 1);
-    gl_PointSize = 6.0;
+    gl_PointSize = 3.0;
   }
   `
 
 const fragmentShaderSource = `
   precision mediump float;
   void main() {
-    gl_FragColor = vec4(1, 0, 0.5, 1);
+    gl_FragColor = vec4(0.2, 1, 0.5, 1);
   }
   `
 
@@ -53,3 +53,5 @@ export const vertexAttributeConfig = {
   stride: 0, // 0 = move forward size * sizeof(type) each iteration to get the next position
   offset: 0, // start at the beginning of the buffer
 }
+
+export const CHUNK_SIZE = 3000

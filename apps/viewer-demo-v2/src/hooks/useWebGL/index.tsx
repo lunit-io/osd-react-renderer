@@ -1,32 +1,27 @@
-import { source, vertexAttributeConfig } from './const'
+import { CHUNK_SIZE, source, vertexAttributeConfig } from './const'
 import { initializeWebGL } from './func'
-import { GLConfig } from './types'
 
 function useWebGL(positions: number[]) {
-  let glConfig: GLConfig | undefined
+  function* positionChunks(positions: number[], chunkSize: number) {
+    for (let i = 0; (i + 1) * chunkSize < positions.length; i++) {
+      yield positions.slice(i * chunkSize, (i + 1) * chunkSize)
+    }
+  }
 
-  function onWebGLOverlayRedraw(
-    glCanvas: HTMLCanvasElement,
-    normalCanvas: HTMLCanvasElement
+  function drawWithWebGL(
+    gl: WebGLRenderingContext,
+    ctx: CanvasRenderingContext2D,
+    positions: number[],
+    w: number,
+    h: number
   ) {
-    const gl = glCanvas.getContext('webgl', { antialias: false })
-    const ctx = normalCanvas.getContext('2d')
-    if (!gl) {
-      console.log('failed to load webgl context')
-      return
-    }
-    if (!ctx) {
-      console.log('failed to load 2d context')
-      return
-    }
-
-    glConfig = initializeWebGL(gl, source, positions)
+    const glConfig = initializeWebGL(gl, source, positions)
 
     if (!glConfig) {
       console.warn('failed to initialize webGL')
       return
     }
-
+    performance.mark('webgl-start')
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
@@ -61,9 +56,55 @@ function useWebGL(positions: number[]) {
     const offset = 0
     const count = positions.length
     gl.drawArrays(primitiveType, offset, count)
+    performance.mark('webgl-end')
 
+    performance.mark('ctx-start')
     // move webGL rendered image to 2d canvas
-    ctx.drawImage(gl.canvas, 0, 0, glCanvas.width, glCanvas.height)
+    ctx.drawImage(gl.canvas, 0, 0, w, h)
+    performance.mark('ctx-end')
+    performance.measure('webgl', 'webgl-start', 'webgl-end')
+    performance.getEntriesByName('webgl').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.measure('ctx', 'ctx-start', 'ctx-end')
+    performance.getEntriesByName('ctx').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.clearMeasures()
+  }
+
+  function onWebGLOverlayRedraw(
+    glCanvas: HTMLCanvasElement,
+    normalCanvas: HTMLCanvasElement
+  ) {
+    const gl = glCanvas.getContext('webgl', { antialias: false })
+    const ctx = normalCanvas.getContext('2d')
+    if (!gl) {
+      console.log('failed to load webgl context')
+      return
+    }
+    if (!ctx) {
+      console.log('failed to load 2d context')
+      return
+    }
+    // performance.mark("webgl-start")
+    ctx.clearRect(0, 0, normalCanvas.width, normalCanvas.height)
+    for (const pos of positionChunks(positions, CHUNK_SIZE)) {
+      drawWithWebGL(gl, ctx, pos, glCanvas.width, glCanvas.height)
+    }
+    // drawWithWebGL(gl, ctx, positions.slice(0, CHUNK_SIZE), glCanvas.width, glCanvas.height)
+    // performance.mark("webgl-end")
+    // performance.measure("webgl", 'webgl-start', 'webgl-end')
+    // performance.getEntriesByName("webgl").forEach((entry) => {
+    //   if (entry.duration) {
+    //     console.debug(entry.name, entry.duration);
+    //   }
+    // });
+    // performance.clearMeasures();
   }
 
   return {
