@@ -1,19 +1,29 @@
-import { CHUNK_SIZE, source, vertexAttributeConfig } from './const'
+import { source, vertexAttributeConfig } from './const'
 import { initializeWebGL } from './func'
 
-function useWebGL(positions: number[]) {
-  function* positionChunks(positions: number[], chunkSize: number) {
-    for (let i = 0; (i + 1) * chunkSize < positions.length; i++) {
-      yield positions.slice(i * chunkSize, (i + 1) * chunkSize)
-    }
-  }
+interface Tile {
+  h: number
+  w: number
+  y: number
+  x: number
+  data: number[]
+}
+
+function useWebGL(tiles: Tile[]) {
+  // function* positionChunks(positions: number[], chunkSize: number) {
+  //   for (let i = 0; (i + 1) * chunkSize < positions.length; i++) {
+  //     yield positions.slice(i * chunkSize, (i + 1) * chunkSize)
+  //   }
+  // }
 
   function drawWithWebGL(
     gl: WebGLRenderingContext,
     ctx: CanvasRenderingContext2D,
     positions: number[],
     w: number,
-    h: number
+    h: number,
+    x: number = 0,
+    y: number = 0
   ) {
     const glConfig = initializeWebGL(gl, source, positions)
 
@@ -45,35 +55,31 @@ function useWebGL(positions: number[]) {
       vertexAttributeConfig.offset
     )
 
-    gl.uniform2f(
-      glConfig.resolutionUniformLocation,
-      gl.canvas.width,
-      gl.canvas.height
-    )
+    gl.uniform2f(glConfig.resolutionUniformLocation, w, h)
 
     // draw
     const primitiveType = gl.POINTS
     const offset = 0
     const count = positions.length
     gl.drawArrays(primitiveType, offset, count)
-    performance.mark('webgl-end')
+    // performance.mark('webgl-end')
 
-    performance.mark('ctx-start')
+    // performance.mark('ctx-start')
     // move webGL rendered image to 2d canvas
-    ctx.drawImage(gl.canvas, 0, 0, w, h)
-    performance.mark('ctx-end')
-    performance.measure('webgl', 'webgl-start', 'webgl-end')
-    performance.getEntriesByName('webgl').forEach(entry => {
-      if (entry.duration) {
-        console.debug(entry.name, entry.duration)
-      }
-    })
-    performance.measure('ctx', 'ctx-start', 'ctx-end')
-    performance.getEntriesByName('ctx').forEach(entry => {
-      if (entry.duration) {
-        console.debug(entry.name, entry.duration)
-      }
-    })
+    ctx.drawImage(gl.canvas, x, y, w, h)
+    // performance.mark('ctx-end')
+    // performance.measure('webgl', 'webgl-start', 'webgl-end')
+    // performance.getEntriesByName('webgl').forEach(entry => {
+    //   if (entry.duration) {
+    //     console.debug(entry.name, entry.duration)
+    //   }
+    // })
+    // performance.measure('ctx', 'ctx-start', 'ctx-end')
+    // performance.getEntriesByName('ctx').forEach(entry => {
+    // if (entry.duration) {
+    //   console.debug(entry.name, entry.duration)
+    // }
+    // })
     performance.clearMeasures()
   }
 
@@ -91,20 +97,19 @@ function useWebGL(positions: number[]) {
       console.log('failed to load 2d context')
       return
     }
-    // performance.mark("webgl-start")
-    ctx.clearRect(0, 0, normalCanvas.width, normalCanvas.height)
-    for (const pos of positionChunks(positions, CHUNK_SIZE)) {
-      drawWithWebGL(gl, ctx, pos, glCanvas.width, glCanvas.height)
+    performance.mark('webgl-start')
+    // ctx.clearRect(0, 0, normalCanvas.width, normalCanvas.height)
+    for (const tile of tiles) {
+      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y)
     }
-    // drawWithWebGL(gl, ctx, positions.slice(0, CHUNK_SIZE), glCanvas.width, glCanvas.height)
-    // performance.mark("webgl-end")
-    // performance.measure("webgl", 'webgl-start', 'webgl-end')
-    // performance.getEntriesByName("webgl").forEach((entry) => {
-    //   if (entry.duration) {
-    //     console.debug(entry.name, entry.duration);
-    //   }
-    // });
-    // performance.clearMeasures();
+    performance.mark('webgl-end')
+    performance.measure('webgl', 'webgl-start', 'webgl-end')
+    performance.getEntriesByName('webgl').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.clearMeasures()
   }
 
   return {

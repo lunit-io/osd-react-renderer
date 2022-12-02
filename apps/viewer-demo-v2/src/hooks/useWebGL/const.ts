@@ -12,14 +12,14 @@ const vertexShaderSource = `
     vec2 clipSpace = zeroToTwo - 1.0;
  
     gl_Position = vec4(clipSpace, 0, 1);
-    gl_PointSize = 3.0;
+    gl_PointSize = 8.0;
   }
   `
 
 const fragmentShaderSource = `
   precision mediump float;
   void main() {
-    gl_FragColor = vec4(0.2, 1, 0.5, 1);
+    gl_FragColor = vec4(0.1, 0.1, 0.1, 1);
   }
   `
 
