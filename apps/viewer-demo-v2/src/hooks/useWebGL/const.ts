@@ -12,7 +12,7 @@ const vertexShaderSource = `
     vec2 clipSpace = zeroToTwo - 1.0;
  
     gl_Position = vec4(clipSpace, 0, 1);
-    gl_PointSize = 8.0;
+    gl_PointSize = 3.0;
   }
   `
 

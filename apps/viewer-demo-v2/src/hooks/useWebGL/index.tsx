@@ -1,5 +1,5 @@
 import { source, vertexAttributeConfig } from './const'
-import { initializeWebGL } from './func'
+import { setProgram } from './func'
 
 interface Tile {
   h: number
@@ -16,6 +16,8 @@ function useWebGL(tiles: Tile[]) {
   //   }
   // }
 
+  let program: WebGLProgram | undefined
+
   function drawWithWebGL(
     gl: WebGLRenderingContext,
     ctx: CanvasRenderingContext2D,
@@ -25,29 +27,42 @@ function useWebGL(tiles: Tile[]) {
     x: number = 0,
     y: number = 0
   ) {
-    const glConfig = initializeWebGL(gl, source, positions)
-
-    if (!glConfig) {
-      console.warn('failed to initialize webGL')
+    if (!program) program = setProgram(gl, source)
+    if (!program) {
+      console.warn('failed to set webGL program')
       return
     }
+
+    const positionAttributeLocation = gl.getAttribLocation(
+      program,
+      'a_position'
+    )
+    const resolutionUniformLocation = gl.getUniformLocation(
+      program,
+      'u_resolution'
+    )
+    const positionBuffer = gl.createBuffer()
+    const floatPos = new Float32Array(positions)
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.DYNAMIC_DRAW)
+
     performance.mark('webgl-start')
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
 
-    gl.useProgram(glConfig.program)
+    gl.useProgram(program)
 
     // Turn on the attribute
-    gl.enableVertexAttribArray(glConfig.positionAttributeLocation)
+    gl.enableVertexAttribArray(positionAttributeLocation)
 
     // Bind the position buffer.
-    gl.bindBuffer(gl.ARRAY_BUFFER, glConfig.positionBuffer)
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
 
     // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
     const type = gl.FLOAT // the data is 32bit floats
     gl.vertexAttribPointer(
-      glConfig.positionAttributeLocation,
+      positionAttributeLocation,
       vertexAttributeConfig.size,
       type,
       vertexAttributeConfig.normalize,
@@ -55,12 +70,12 @@ function useWebGL(tiles: Tile[]) {
       vertexAttributeConfig.offset
     )
 
-    gl.uniform2f(glConfig.resolutionUniformLocation, w, h)
+    gl.uniform2f(resolutionUniformLocation, w, h)
 
     // draw
     const primitiveType = gl.POINTS
     const offset = 0
-    const count = positions.length
+    const count = floatPos.length / 2
     gl.drawArrays(primitiveType, offset, count)
     // performance.mark('webgl-end')
 
