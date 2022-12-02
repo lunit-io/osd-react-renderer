@@ -80,14 +80,6 @@ const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
     ctx.fillRect(50, 50, 5000, 5000)
   }
 }
-// const onWebGLOverlayRedraw: NonNullable<WebGLOverlayProps['onRedraw']> = (
-//   canvas: HTMLCanvasElement
-// ) => {
-//   const ctx = canvas.getContext('webgl')
-//   if (!ctx) {
-//     console.log('webgl context not loaded')
-//   }
-// }
 
 const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   tooltipCoord,
@@ -165,7 +157,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL(
-    makeTiledCoords(1, 500000, 1000, 1400)
+    makeTiledCoords(1, 50000, 1000, 1400)
   )
 
   const cancelPanning = useCallback(() => {

@@ -1368,7 +1368,7 @@ declare module "openseadragonV2" {
       location: number;
     }) => void;
     canvasOverlay: (option?: { onRedraw: () => void }) => CanvasOverlay;
-    webGLOverlay: (option?: { onRedraw: () => void }) => WebGLOverlay;
+    webGLOverlay: (option?: { onRedraw: (x:number, y:number) => void }) => WebGLOverlay;
     tooltipOverlay: (option?: {
       onRedraw: () => void;
       redrawOnUpdateViewport?: boolean;

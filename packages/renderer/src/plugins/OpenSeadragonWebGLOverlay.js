@@ -98,11 +98,11 @@ import OpenSeadragon from 'openseadragon'
     },
     destroy: function () {
       this._canvasdiv.removeChild(this._canvas)
-      this._canvasdiv.removeChild(this._glCanvas)
       this._viewer.canvas.removeChild(this._canvasdiv)
       this.onRedraw = null
       this._canvasdiv = null
       this._canvas = null
+      this._glCanvas = null
       this._viewer = null
     },
     // ----------
@@ -147,11 +147,12 @@ import OpenSeadragon from 'openseadragon'
         ((this._viewportOrigin.y / this.imgHeight - this._viewportOrigin.y) /
           this._viewportHeight) *
         this._containerHeight
+      console.log('x, y', x, y)
       if (this.clearBeforeRedraw) this.clear()
       this._canvas.getContext('2d').translate(x, y)
       this._canvas.getContext('2d').scale(zoom, zoom)
       this._canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0)
-      this.onRedraw()
+      this.onRedraw(x, y)
     },
   }
 })()

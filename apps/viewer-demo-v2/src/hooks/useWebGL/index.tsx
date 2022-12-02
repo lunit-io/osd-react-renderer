@@ -100,7 +100,9 @@ function useWebGL(tiles: Tile[]) {
 
   function onWebGLOverlayRedraw(
     glCanvas: HTMLCanvasElement,
-    normalCanvas: HTMLCanvasElement
+    normalCanvas: HTMLCanvasElement,
+    _: OpenSeadragon.Viewer,
+    origin: { x: number; y: number }
   ) {
     const gl = glCanvas.getContext('webgl', { antialias: false })
     const ctx = normalCanvas.getContext('2d')
@@ -113,9 +115,16 @@ function useWebGL(tiles: Tile[]) {
       return
     }
     performance.mark('webgl-start')
-    // ctx.clearRect(0, 0, normalCanvas.width, normalCanvas.height)
     for (const tile of tiles) {
-      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y)
+      drawWithWebGL(
+        gl,
+        ctx,
+        tile.data,
+        tile.w,
+        tile.h,
+        tile.x + origin.x,
+        tile.y + origin.y
+      )
     }
     performance.mark('webgl-end')
     performance.measure('webgl', 'webgl-start', 'webgl-end')

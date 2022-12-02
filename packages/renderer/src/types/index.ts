@@ -239,7 +239,8 @@ export interface WebGLOverlayProps extends NodeProps {
   onRedraw?: (
     glCanvasElement: HTMLCanvasElement,
     normalCanvasEl: HTMLCanvasElement,
-    viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
+    viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer,
+    origin: { x: number; y: number }
   ) => void
 }
 declare global {
