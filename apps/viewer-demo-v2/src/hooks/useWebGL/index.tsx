@@ -55,10 +55,9 @@ function useWebGL(tiles: Tile[]) {
     const floatPos = new Float32Array(positions)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.DYNAMIC_DRAW)
-    performance.mark('webgl-start')
+
     gl.canvas.width = Math.floor(w * origin.zoom)
     gl.canvas.height = Math.floor(h * origin.zoom)
-    console.log('zoom', origin.zoom)
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
@@ -102,14 +101,6 @@ function useWebGL(tiles: Tile[]) {
       w * origin.zoom,
       h * origin.zoom
     )
-    performance.mark('webgl-end')
-    performance.measure('webgl', 'webgl-start', 'webgl-end')
-    performance.getEntriesByName('webgl').forEach(entry => {
-      if (entry.duration) {
-        console.debug(entry.name, entry.duration)
-      }
-    })
-    performance.clearMeasures()
   }
 
   function onWebGLOverlayRedraw(
@@ -128,9 +119,18 @@ function useWebGL(tiles: Tile[]) {
       console.log('failed to load 2d context')
       return
     }
+    performance.mark('webgl-start')
     for (const tile of tiles) {
       drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y, origin)
     }
+    performance.mark('webgl-end')
+    performance.measure('webgl', 'webgl-start', 'webgl-end')
+    performance.getEntriesByName('webgl').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.clearMeasures()
   }
 
   return {
