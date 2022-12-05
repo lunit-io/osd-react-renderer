@@ -138,7 +138,6 @@ import OpenSeadragon from 'openseadragon'
       var viewportZoom = this._viewer.viewport.getZoom(true)
       var image1 = this._viewer.world.getItemAt(0)
       var zoom = image1.viewportToImageZoom(viewportZoom)
-
       var x =
         ((this._viewportOrigin.x / this.imgWidth - this._viewportOrigin.x) /
           this._viewportWidth) *
@@ -147,12 +146,11 @@ import OpenSeadragon from 'openseadragon'
         ((this._viewportOrigin.y / this.imgHeight - this._viewportOrigin.y) /
           this._viewportHeight) *
         this._containerHeight
-      console.log('x, y', x, y)
       if (this.clearBeforeRedraw) this.clear()
       this._canvas.getContext('2d').translate(x, y)
       this._canvas.getContext('2d').scale(zoom, zoom)
       this._canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0)
-      this.onRedraw(x, y)
+      this.onRedraw(x, y, zoom)
     },
   }
 })()

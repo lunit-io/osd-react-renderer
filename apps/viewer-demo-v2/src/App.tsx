@@ -157,7 +157,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL(
-    makeTiledCoords(1, 50000, 1000, 1400)
+    makeTiledCoords(1, 20000, 100000, 100000)
   )
 
   const cancelPanning = useCallback(() => {
@@ -372,10 +372,10 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                <canvasOverlay
+                {/* <canvasOverlay
                   ref={canvasOverlayRef}
                   onRedraw={onCanvasOverlayRedraw}
-                />
+                /> */}
                 <webGLOverlay
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}

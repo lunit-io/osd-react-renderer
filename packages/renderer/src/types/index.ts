@@ -240,7 +240,7 @@ export interface WebGLOverlayProps extends NodeProps {
     glCanvasElement: HTMLCanvasElement,
     normalCanvasEl: HTMLCanvasElement,
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer,
-    origin: { x: number; y: number }
+    origin: { x: number; y: number; zoom: number }
   ) => void
 }
 declare global {

@@ -9,13 +9,12 @@ interface Tile {
   data: number[]
 }
 
+interface Origin {
+  x: number
+  y: number
+  zoom: number
+}
 function useWebGL(tiles: Tile[]) {
-  // function* positionChunks(positions: number[], chunkSize: number) {
-  //   for (let i = 0; (i + 1) * chunkSize < positions.length; i++) {
-  //     yield positions.slice(i * chunkSize, (i + 1) * chunkSize)
-  //   }
-  // }
-
   let program: WebGLProgram | undefined
 
   function drawWithWebGL(
@@ -24,8 +23,7 @@ function useWebGL(tiles: Tile[]) {
     positions: number[],
     w: number,
     h: number,
-    x: number = 0,
-    y: number = 0
+    origin: Origin = { x: 0, y: 0, zoom: 1 }
   ) {
     if (!program) program = setProgram(gl, source)
     if (!program) {
@@ -45,8 +43,9 @@ function useWebGL(tiles: Tile[]) {
     const floatPos = new Float32Array(positions)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.DYNAMIC_DRAW)
-
     performance.mark('webgl-start')
+    gl.canvas.width = w * origin.zoom
+    gl.canvas.height = h * origin.zoom
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
@@ -77,24 +76,23 @@ function useWebGL(tiles: Tile[]) {
     const offset = 0
     const count = floatPos.length / 2
     gl.drawArrays(primitiveType, offset, count)
-    // performance.mark('webgl-end')
 
-    // performance.mark('ctx-start')
     // move webGL rendered image to 2d canvas
-    ctx.drawImage(gl.canvas, x, y, w, h)
-    // performance.mark('ctx-end')
-    // performance.measure('webgl', 'webgl-start', 'webgl-end')
-    // performance.getEntriesByName('webgl').forEach(entry => {
-    //   if (entry.duration) {
-    //     console.debug(entry.name, entry.duration)
-    //   }
-    // })
-    // performance.measure('ctx', 'ctx-start', 'ctx-end')
-    // performance.getEntriesByName('ctx').forEach(entry => {
-    // if (entry.duration) {
-    //   console.debug(entry.name, entry.duration)
-    // }
-    // })
+    ctx.drawImage(
+      gl.canvas,
+      origin.x,
+      origin.y,
+      w * origin.zoom,
+      h * origin.zoom
+    )
+    performance.mark('webgl-end')
+    performance.measure('webgl', 'webgl-start', 'webgl-end')
+    performance.getEntriesByName('webgl').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.clearMeasures()
     performance.clearMeasures()
   }
 
@@ -102,7 +100,7 @@ function useWebGL(tiles: Tile[]) {
     glCanvas: HTMLCanvasElement,
     normalCanvas: HTMLCanvasElement,
     _: OpenSeadragon.Viewer,
-    origin: { x: number; y: number }
+    origin: { x: number; y: number; zoom: number }
   ) {
     const gl = glCanvas.getContext('webgl', { antialias: false })
     const ctx = normalCanvas.getContext('2d')
@@ -114,26 +112,9 @@ function useWebGL(tiles: Tile[]) {
       console.log('failed to load 2d context')
       return
     }
-    performance.mark('webgl-start')
     for (const tile of tiles) {
-      drawWithWebGL(
-        gl,
-        ctx,
-        tile.data,
-        tile.w,
-        tile.h,
-        tile.x + origin.x,
-        tile.y + origin.y
-      )
+      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, origin)
     }
-    performance.mark('webgl-end')
-    performance.measure('webgl', 'webgl-start', 'webgl-end')
-    performance.getEntriesByName('webgl').forEach(entry => {
-      if (entry.duration) {
-        console.debug(entry.name, entry.duration)
-      }
-    })
-    performance.clearMeasures()
   }
 
   return {
