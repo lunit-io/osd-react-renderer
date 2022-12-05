@@ -14,6 +14,12 @@ interface Origin {
   y: number
   zoom: number
 }
+function clamp(min: number, val: number, max: number) {
+  if (val < min) return min
+  if (val > max) return max
+  return val
+}
+
 function useWebGL(tiles: Tile[]) {
   let program: WebGLProgram | undefined
 
@@ -23,6 +29,8 @@ function useWebGL(tiles: Tile[]) {
     positions: number[],
     w: number,
     h: number,
+    x: number,
+    y: number,
     origin: Origin = { x: 0, y: 0, zoom: 1 }
   ) {
     if (!program) program = setProgram(gl, source)
@@ -39,6 +47,10 @@ function useWebGL(tiles: Tile[]) {
       program,
       'u_resolution'
     )
+    const pointSizeUniformLocation = gl.getUniformLocation(
+      program,
+      'u_pointSize'
+    )
     const positionBuffer = gl.createBuffer()
     const floatPos = new Float32Array(positions)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
@@ -46,6 +58,7 @@ function useWebGL(tiles: Tile[]) {
     performance.mark('webgl-start')
     gl.canvas.width = Math.floor(w * origin.zoom)
     gl.canvas.height = Math.floor(h * origin.zoom)
+    console.log('zoom', origin.zoom)
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
@@ -70,6 +83,10 @@ function useWebGL(tiles: Tile[]) {
     )
 
     gl.uniform2f(resolutionUniformLocation, w, h)
+    gl.uniform1f(
+      pointSizeUniformLocation,
+      clamp(2, 64 * (origin.zoom * 10), 64)
+    )
 
     // draw
     const primitiveType = gl.POINTS
@@ -80,8 +97,8 @@ function useWebGL(tiles: Tile[]) {
     // move webGL rendered image to 2d canvas
     ctx.drawImage(
       gl.canvas,
-      origin.x,
-      origin.y,
+      origin.x + x * origin.zoom,
+      origin.y + y * origin.zoom,
       w * origin.zoom,
       h * origin.zoom
     )
@@ -92,7 +109,6 @@ function useWebGL(tiles: Tile[]) {
         console.debug(entry.name, entry.duration)
       }
     })
-    performance.clearMeasures()
     performance.clearMeasures()
   }
 
@@ -113,7 +129,7 @@ function useWebGL(tiles: Tile[]) {
       return
     }
     for (const tile of tiles) {
-      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, origin)
+      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y, origin)
     }
   }
 
