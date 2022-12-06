@@ -39,7 +39,7 @@ function useWebGL(tiles: Tile[]) {
       return
     }
     // const origin =  { x: 0, y: 0, zoom: 1 }
-
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
     const positionAttributeLocation = gl.getAttribLocation(
       program,
       'a_position'
@@ -125,7 +125,10 @@ function useWebGL(tiles: Tile[]) {
     // origin: { x: number; y: number; zoom: number }
   ) {
     const origin = { x: 0, y: 0, zoom: 1 }
-    const gl = glCanvas.getContext('webgl2', { antialias: false })
+    const gl = glCanvas.getContext('webgl2', {
+      antialias: true,
+      premultipliedAlpha: false,
+    })
     const ctx = normalCanvas.getContext('2d')
     if (!gl) {
       console.log('failed to load webgl context')
@@ -136,6 +139,7 @@ function useWebGL(tiles: Tile[]) {
       return
     }
     performance.mark('webgl-start')
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
     for (const tile of tiles) {
       drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y, origin)
     }

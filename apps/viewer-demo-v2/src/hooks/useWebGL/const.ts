@@ -33,7 +33,7 @@ uniform vec2 u_resolution;
     // convert from 0->2 to -1->+1 (clip space)
     vec2 clipSpace = zeroToTwo - 1.0;
  
-    gl_PointSize = 12.0;
+    gl_PointSize = 7.0;
     gl_Position = vec4(clipSpace, 0, 1);
   }
   `
@@ -56,7 +56,7 @@ const circleFragmentShader = `#version 300 es
   r = dot(cxy, cxy);
   delta = fwidth(r);
   alpha = 1.0 - smoothstep(1.0 - delta, 1.0 + delta, r);
-     pixColor = vec4(0.1, 0.6, 0.6, alpha);
+     pixColor = vec4(0.1, 0.6, 0.6, alpha)*alpha;
 
  }`
 
