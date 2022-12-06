@@ -85,3 +85,30 @@ export function initializeWebGL(
     positionBuffer,
   }
 }
+
+export function coordsToPolygons(
+  x: number,
+  y: number,
+  polySize: number
+): number[] {
+  return [
+    x - polySize / 2,
+    y - polySize / 2,
+    x - polySize / 2,
+    y + polySize / 2,
+    x + polySize / 2,
+    y - polySize / 2,
+    x + polySize / 2,
+    y + polySize / 2,
+  ]
+}
+
+export function makePolygonArray(coords: number[], polySize: number): number[] {
+  const out: number[] = []
+  for (let i = 0; i < coords.length; i += 2) {
+    coordsToPolygons(coords[i], coords[i + 1], polySize).forEach(poly => {
+      out.push(poly)
+    })
+  }
+  return out
+}

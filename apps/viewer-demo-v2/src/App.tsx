@@ -157,7 +157,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL(
-    makeTiledCoords(1, 20000, 88000, 130000)
+    makeTiledCoords(1, 50000, 88000, 130000)
   )
 
   const cancelPanning = useCallback(() => {

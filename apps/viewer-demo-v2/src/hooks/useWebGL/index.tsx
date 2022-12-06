@@ -1,5 +1,5 @@
 import { source, vertexAttributeConfig } from './const'
-import { setProgram } from './func'
+import { makePolygonArray, setProgram } from './func'
 
 interface Tile {
   h: number
@@ -14,11 +14,11 @@ interface Origin {
   y: number
   zoom: number
 }
-function clamp(min: number, val: number, max: number) {
-  if (val < min) return min
-  if (val > max) return max
-  return val
-}
+// function clamp(min: number, val: number, max: number) {
+//   if (val < min) return min
+//   if (val > max) return max
+//   return val
+// }
 
 function useWebGL(tiles: Tile[]) {
   let program: WebGLProgram | undefined
@@ -47,12 +47,10 @@ function useWebGL(tiles: Tile[]) {
       program,
       'u_resolution'
     )
-    const pointSizeUniformLocation = gl.getUniformLocation(
-      program,
-      'u_pointSize'
-    )
+
+    const vertices = makePolygonArray(positions, 10 / origin.zoom)
     const positionBuffer = gl.createBuffer()
-    const floatPos = new Float32Array(positions)
+    const floatPos = new Float32Array(vertices)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.DYNAMIC_DRAW)
 
@@ -82,10 +80,6 @@ function useWebGL(tiles: Tile[]) {
     )
 
     gl.uniform2f(resolutionUniformLocation, w, h)
-    gl.uniform1f(
-      pointSizeUniformLocation,
-      clamp(2, 64 * (origin.zoom * 10), 64)
-    )
 
     // draw
     const primitiveType = gl.POINTS
