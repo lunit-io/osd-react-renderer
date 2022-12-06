@@ -79,7 +79,7 @@ import OpenSeadragon from 'openseadragon'
     },
 
     contextGL: function () {
-      return this._GLcanvas.getContext('webgl', { antialias: false })
+      return this._GLcanvas.getContext('webgl2', { antialias: false })
     },
     // ----------
     clear: function () {

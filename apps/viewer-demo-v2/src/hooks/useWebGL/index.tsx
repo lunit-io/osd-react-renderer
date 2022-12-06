@@ -1,5 +1,5 @@
-import { source, vertexAttributeConfig } from './const'
-import { makePolygonArray, setProgram } from './func'
+import { circleSource, vertexAttributeConfig } from './const'
+import { setProgram } from './func'
 
 interface Tile {
   h: number
@@ -24,7 +24,7 @@ function useWebGL(tiles: Tile[]) {
   let program: WebGLProgram | undefined
 
   function drawWithWebGL(
-    gl: WebGLRenderingContext,
+    gl: WebGL2RenderingContext,
     ctx: CanvasRenderingContext2D,
     positions: number[],
     w: number,
@@ -33,26 +33,41 @@ function useWebGL(tiles: Tile[]) {
     y: number,
     origin: Origin = { x: 0, y: 0, zoom: 1 }
   ) {
-    if (!program) program = setProgram(gl, source)
+    if (!program) program = setProgram(gl, circleSource)
     if (!program) {
       console.warn('failed to set webGL program')
       return
     }
+    // const origin =  { x: 0, y: 0, zoom: 1 }
 
     const positionAttributeLocation = gl.getAttribLocation(
       program,
       'a_position'
     )
+    // const texAttributeLocation = gl.getAttribLocation(
+    //   program,
+    //   'a_texcoord'
+    // )
     const resolutionUniformLocation = gl.getUniformLocation(
       program,
       'u_resolution'
     )
 
-    const vertices = makePolygonArray(positions, 10 / origin.zoom)
+    // place vertices into webgl memory
+    // const vertices = makePolygonArray(positions, 10 / origin.zoom)
     const positionBuffer = gl.createBuffer()
-    const floatPos = new Float32Array(vertices)
+    const floatPos = new Float32Array(positions)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.DYNAMIC_DRAW)
+    gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.STATIC_DRAW)
+
+    // place textures
+    // const texCoords = generateTexCoords(vertices.length)
+    // console.log(texCoords)
+    // console.log(vertices)
+    // const texBuffer = gl.createBuffer()
+    // const floatTex = new Float32Array(texCoords)
+    // gl.bindBuffer(gl.ARRAY_BUFFER, texBuffer)
+    // gl.bufferData(gl.ARRAY_BUFFER,  floatTex, gl.STATIC_DRAW)
 
     gl.canvas.width = Math.floor(w * origin.zoom)
     gl.canvas.height = Math.floor(h * origin.zoom)
@@ -64,9 +79,7 @@ function useWebGL(tiles: Tile[]) {
 
     // Turn on the attribute
     gl.enableVertexAttribArray(positionAttributeLocation)
-
-    // Bind the position buffer.
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+    // gl.enableVertexAttribArray(texAttributeLocation)
 
     // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
     const type = gl.FLOAT // the data is 32bit floats
@@ -78,6 +91,14 @@ function useWebGL(tiles: Tile[]) {
       vertexAttributeConfig.stride,
       vertexAttributeConfig.offset
     )
+    // gl.vertexAttribPointer(
+    //   texAttributeLocation,
+    //   2,
+    //   type,
+    //   true,
+    //   vertexAttributeConfig.stride,
+    //   vertexAttributeConfig.offset
+    // )
 
     gl.uniform2f(resolutionUniformLocation, w, h)
 
@@ -100,10 +121,11 @@ function useWebGL(tiles: Tile[]) {
   function onWebGLOverlayRedraw(
     glCanvas: HTMLCanvasElement,
     normalCanvas: HTMLCanvasElement,
-    _: OpenSeadragon.Viewer,
-    origin: { x: number; y: number; zoom: number }
+    _: OpenSeadragon.Viewer
+    // origin: { x: number; y: number; zoom: number }
   ) {
-    const gl = glCanvas.getContext('webgl', { antialias: false })
+    const origin = { x: 0, y: 0, zoom: 1 }
+    const gl = glCanvas.getContext('webgl2', { antialias: false })
     const ctx = normalCanvas.getContext('2d')
     if (!gl) {
       console.log('failed to load webgl context')

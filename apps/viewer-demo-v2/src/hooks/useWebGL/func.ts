@@ -1,7 +1,7 @@
 import { FragmentShader, VertexShader } from './types'
 
 export function createShader(
-  gl: WebGLRenderingContext,
+  gl: WebGL2RenderingContext,
   type: VertexShader | FragmentShader,
   source: string
 ) {
@@ -27,7 +27,7 @@ export function createShader(
 }
 
 export function createProgram(
-  gl: WebGLRenderingContext,
+  gl: WebGL2RenderingContext,
   vertexShader: WebGLShader,
   fragmentShader: WebGLShader
 ) {
@@ -48,7 +48,7 @@ export function createProgram(
 }
 
 export function setProgram(
-  gl: WebGLRenderingContext,
+  gl: WebGL2RenderingContext,
   source: { vertex: string; fragment: string }
 ) {
   const vertexShader = createShader(gl, gl.VERTEX_SHADER, source.vertex)
@@ -58,7 +58,7 @@ export function setProgram(
 }
 
 export function initializeWebGL(
-  gl: WebGLRenderingContext,
+  gl: WebGL2RenderingContext,
   source: { vertex: string; fragment: string },
   vertexData: number[]
 ) {
@@ -93,22 +93,50 @@ export function coordsToPolygons(
 ): number[] {
   return [
     x - polySize / 2,
-    y - polySize / 2,
+    y - polySize / 2, // (0,0)
     x - polySize / 2,
-    y + polySize / 2,
+    y + polySize / 2, // (0,1)
     x + polySize / 2,
-    y - polySize / 2,
+    y - polySize / 2, // (1,0)
+
+    x - polySize / 2,
+    y + polySize / 2, // (0,1)
     x + polySize / 2,
-    y + polySize / 2,
+    y - polySize / 2, // (1,0)
+    x + polySize / 2,
+    y + polySize / 2, // (1,1)
   ]
 }
 
 export function makePolygonArray(coords: number[], polySize: number): number[] {
-  const out: number[] = []
+  const vertices: number[] = []
+  // const elements: number[] = []
   for (let i = 0; i < coords.length; i += 2) {
     coordsToPolygons(coords[i], coords[i + 1], polySize).forEach(poly => {
-      out.push(poly)
+      vertices.push(poly)
     })
+  }
+  return vertices
+}
+
+export function generateTexCoords(length: number) {
+  const out: number[] = []
+  for (let i = 0; i < length / 12; i++) {
+    out.push(
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+    )
   }
   return out
 }
