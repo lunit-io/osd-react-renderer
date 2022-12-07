@@ -22,6 +22,9 @@ const vertexShaderSource = `
 const circleVertexShader = `#version 300 es
   in vec2 a_position;
 uniform vec2 u_resolution;
+uniform vec4 u_color;
+
+out vec4 v_color;
 
   void main() {
     // convert the position from pixels to 0.0 to 1.0
@@ -35,6 +38,7 @@ uniform vec2 u_resolution;
  
     gl_PointSize = 7.0;
     gl_Position = vec4(clipSpace, 0, 1);
+    v_color = u_color;
   }
   `
 
@@ -46,17 +50,18 @@ const fragmentShaderSource = `
   `
 const circleFragmentShader = `#version 300 es
  precision mediump float;
+ in vec4 v_color;
  out vec4 pixColor;
   
  void main()
  {
 
-  float r = 0.0, delta = 0.0, alpha = 1.0;
+  float r = 0.0, delta = 0.0;
   vec2 cxy = 2.0 * gl_PointCoord - 1.0;
   r = dot(cxy, cxy);
   delta = fwidth(r);
-  alpha = 1.0 - smoothstep(1.0 - delta, 1.0 + delta, r);
-     pixColor = vec4(0.1, 0.6, 0.6, alpha)*alpha;
+  float alpha = 1.0 - smoothstep(1.0 - delta, 1.0 + delta, r);
+  pixColor = vec4(v_color.r, v_color.g, v_color.b, alpha)*alpha;
 
  }`
 

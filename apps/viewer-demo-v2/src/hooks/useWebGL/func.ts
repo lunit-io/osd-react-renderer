@@ -140,3 +140,12 @@ export function generateTexCoords(length: number) {
   }
   return out
 }
+
+export function hexToRgbVector(hexColor: string) {
+  let hex = hexColor.startsWith('#') ? hexColor.slice(1) : hexColor
+  const bigint = parseInt(hex, 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return { r: r / 255, g: g / 255, b: b / 255, a: 1.0 }
+}

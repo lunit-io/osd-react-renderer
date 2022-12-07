@@ -1,5 +1,5 @@
 import { circleSource, vertexAttributeConfig } from './const'
-import { setProgram } from './func'
+import { hexToRgbVector, setProgram } from './func'
 
 interface Tile {
   h: number
@@ -7,6 +7,7 @@ interface Tile {
   y: number
   x: number
   data: number[]
+  color: string
 }
 
 interface Origin {
@@ -14,11 +15,13 @@ interface Origin {
   y: number
   zoom: number
 }
-// function clamp(min: number, val: number, max: number) {
-//   if (val < min) return min
-//   if (val > max) return max
-//   return val
-// }
+
+interface RGBAColorVector {
+  r: number
+  g: number
+  b: number
+  a: number
+}
 
 function useWebGL(tiles: Tile[]) {
   let program: WebGLProgram | undefined
@@ -31,6 +34,7 @@ function useWebGL(tiles: Tile[]) {
     h: number,
     x: number,
     y: number,
+    color: RGBAColorVector,
     origin: Origin = { x: 0, y: 0, zoom: 1 }
   ) {
     if (!program) program = setProgram(gl, circleSource)
@@ -38,20 +42,17 @@ function useWebGL(tiles: Tile[]) {
       console.warn('failed to set webGL program')
       return
     }
-    // const origin =  { x: 0, y: 0, zoom: 1 }
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
     const positionAttributeLocation = gl.getAttribLocation(
       program,
       'a_position'
     )
-    // const texAttributeLocation = gl.getAttribLocation(
-    //   program,
-    //   'a_texcoord'
-    // )
     const resolutionUniformLocation = gl.getUniformLocation(
       program,
       'u_resolution'
     )
+
+    const colorUniformLocation = gl.getUniformLocation(program, 'u_color')
 
     // place vertices into webgl memory
     // const vertices = makePolygonArray(positions, 10 / origin.zoom)
@@ -59,15 +60,6 @@ function useWebGL(tiles: Tile[]) {
     const floatPos = new Float32Array(positions)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.STATIC_DRAW)
-
-    // place textures
-    // const texCoords = generateTexCoords(vertices.length)
-    // console.log(texCoords)
-    // console.log(vertices)
-    // const texBuffer = gl.createBuffer()
-    // const floatTex = new Float32Array(texCoords)
-    // gl.bindBuffer(gl.ARRAY_BUFFER, texBuffer)
-    // gl.bufferData(gl.ARRAY_BUFFER,  floatTex, gl.STATIC_DRAW)
 
     gl.canvas.width = Math.floor(w * origin.zoom)
     gl.canvas.height = Math.floor(h * origin.zoom)
@@ -79,7 +71,6 @@ function useWebGL(tiles: Tile[]) {
 
     // Turn on the attribute
     gl.enableVertexAttribArray(positionAttributeLocation)
-    // gl.enableVertexAttribArray(texAttributeLocation)
 
     // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
     const type = gl.FLOAT // the data is 32bit floats
@@ -91,16 +82,9 @@ function useWebGL(tiles: Tile[]) {
       vertexAttributeConfig.stride,
       vertexAttributeConfig.offset
     )
-    // gl.vertexAttribPointer(
-    //   texAttributeLocation,
-    //   2,
-    //   type,
-    //   true,
-    //   vertexAttributeConfig.stride,
-    //   vertexAttributeConfig.offset
-    // )
 
     gl.uniform2f(resolutionUniformLocation, w, h)
+    gl.uniform4f(colorUniformLocation, color.r, color.g, color.b, color.a)
 
     // draw
     const primitiveType = gl.POINTS
@@ -141,7 +125,17 @@ function useWebGL(tiles: Tile[]) {
     performance.mark('webgl-start')
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
     for (const tile of tiles) {
-      drawWithWebGL(gl, ctx, tile.data, tile.w, tile.h, tile.x, tile.y, origin)
+      drawWithWebGL(
+        gl,
+        ctx,
+        tile.data,
+        tile.w,
+        tile.h,
+        tile.x,
+        tile.y,
+        hexToRgbVector(tile.color),
+        origin
+      )
     }
     performance.mark('webgl-end')
     performance.measure('webgl', 'webgl-start', 'webgl-end')

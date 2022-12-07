@@ -110,34 +110,55 @@ function makeRandomCoords(amt: number, hClip: number, wClip: number) {
   return out
 }
 
-function makeTiledCoords(
-  tiles: number,
-  coordCount: number,
-  hSize: number,
-  wSize: number
-) {
-  const squirt = Math.sqrt(tiles)
-  if (squirt % 1 !== 0) {
-    console.error('makeTiledCoords requires a square number')
-    return [{ h: 0, w: 0, y: 0, x: 0, data: [0] }]
-  }
-  const out = []
-  const h = hSize / squirt
-  const w = wSize / squirt
-  for (let i = 0; i < squirt; i++) {
-    const x = w * i
-    for (let j = 0; j < squirt; j++) {
-      const y = h * j
-      out.push({
-        h,
-        w,
-        y,
-        x,
-        data: makeRandomCoords(coordCount / tiles, h, w),
-      })
-    }
-  }
-  return out
+// function makeTiledCoords(
+//   tiles: number,
+//   coordCount: number,
+//   hSize: number,
+//   wSize: number
+// ) {
+//   const squirt = Math.sqrt(tiles)
+//   if (squirt % 1 !== 0) {
+//     console.error('makeTiledCoords requires a square number')
+//     return [{ h: 0, w: 0, y: 0, x: 0, data: [0] }]
+//   }
+//   const out = []
+//   const h = hSize / squirt
+//   const w = wSize / squirt
+//   for (let i = 0; i < squirt; i++) {
+//     const x = w * i
+//     for (let j = 0; j < squirt; j++) {
+//       const y = h * j
+//       out.push({
+//         h,
+//         w,
+//         y,
+//         x,
+//         data: makeRandomCoords(coordCount / tiles, h, w),
+//       })
+//     }
+//   }
+//   return out
+// }
+
+function makeColouredTiles(coordCount: number, hSize: number, wSize: number) {
+  return [
+    {
+      h: hSize,
+      w: wSize,
+      y: 0,
+      x: 0,
+      color: '#E08E45',
+      data: makeRandomCoords((coordCount / 10) * 3, hSize, wSize),
+    },
+    {
+      h: hSize,
+      w: wSize,
+      y: 0,
+      x: 0,
+      color: '#3943B7',
+      data: makeRandomCoords((coordCount / 10) * 7, hSize, wSize),
+    },
+  ]
 }
 
 let timer: ReturnType<typeof setTimeout>
@@ -157,7 +178,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL(
-    makeTiledCoords(1, 20000, 1000, 1400)
+    makeColouredTiles(2000000, 1000, 1400)
   )
 
   const cancelPanning = useCallback(() => {
