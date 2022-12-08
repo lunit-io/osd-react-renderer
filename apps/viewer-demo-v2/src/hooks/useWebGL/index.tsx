@@ -1,40 +1,17 @@
 import { circleSource, vertexAttributeConfig } from './const'
-import { hexToRgbVector, setProgram } from './func'
+import { hexToRgbVector, makeColouredTiles, setProgram } from './func'
+import { Origin, WebGLTileData } from './types'
 
-interface Tile {
-  h: number
-  w: number
-  y: number
-  x: number
-  data: number[]
-  color: string
-}
-
-interface Origin {
-  x: number
-  y: number
-  zoom: number
-}
-
-interface RGBAColorVector {
-  r: number
-  g: number
-  b: number
-  a: number
-}
-
-function useWebGL(tiles: Tile[]) {
+function useWebGL() {
   let program: WebGLProgram | undefined
+  let positionAttrLocation: number
+  let resolutionUniformLocation: WebGLUniformLocation | null
+  let colorUniformLocation: WebGLUniformLocation | null
 
   function drawWithWebGL(
     gl: WebGL2RenderingContext,
     ctx: CanvasRenderingContext2D,
-    positions: number[],
-    w: number,
-    h: number,
-    x: number,
-    y: number,
-    color: RGBAColorVector,
+    tile: WebGLTileData,
     origin: Origin = { x: 0, y: 0, zoom: 1 }
   ) {
     if (!program) program = setProgram(gl, circleSource)
@@ -42,63 +19,69 @@ function useWebGL(tiles: Tile[]) {
       console.warn('failed to set webGL program')
       return
     }
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
-    const positionAttributeLocation = gl.getAttribLocation(
-      program,
-      'a_position'
-    )
-    const resolutionUniformLocation = gl.getUniformLocation(
-      program,
-      'u_resolution'
-    )
 
-    const colorUniformLocation = gl.getUniformLocation(program, 'u_color')
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
+
+    // initialize memory locations
+    if (!positionAttrLocation)
+      positionAttrLocation = gl.getAttribLocation(program, 'a_position')
+    if (!resolutionUniformLocation)
+      resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution')
+    if (!colorUniformLocation)
+      colorUniformLocation = gl.getUniformLocation(program, 'u_color')
 
     // place vertices into webgl memory
-    // const vertices = makePolygonArray(positions, 10 / origin.zoom)
     const positionBuffer = gl.createBuffer()
-    const floatPos = new Float32Array(positions)
+    const floatPos = new Float32Array(tile.data)
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, floatPos, gl.STATIC_DRAW)
 
-    gl.canvas.width = Math.floor(w * origin.zoom)
-    gl.canvas.height = Math.floor(h * origin.zoom)
+    // set up canvas before drawing
+    gl.canvas.width = Math.floor(tile.w * origin.zoom)
+    gl.canvas.height = Math.floor(tile.h * origin.zoom)
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
 
+    // activate program
     gl.useProgram(program)
 
     // Turn on the attribute
-    gl.enableVertexAttribArray(positionAttributeLocation)
+    gl.enableVertexAttribArray(positionAttrLocation)
 
     // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-    const type = gl.FLOAT // the data is 32bit floats
     gl.vertexAttribPointer(
-      positionAttributeLocation,
+      positionAttrLocation,
       vertexAttributeConfig.size,
-      type,
+      gl.FLOAT,
       vertexAttributeConfig.normalize,
       vertexAttributeConfig.stride,
       vertexAttributeConfig.offset
     )
 
-    gl.uniform2f(resolutionUniformLocation, w, h)
-    gl.uniform4f(colorUniformLocation, color.r, color.g, color.b, color.a)
+    gl.uniform2f(resolutionUniformLocation, tile.w, tile.h)
+    gl.uniform4f(
+      colorUniformLocation,
+      tile.color.r,
+      tile.color.g,
+      tile.color.b,
+      tile.color.a
+    )
 
     // draw
-    const primitiveType = gl.POINTS
-    const offset = 0
-    const count = floatPos.length / 2
-    gl.drawArrays(primitiveType, offset, count)
+    gl.drawArrays(
+      gl.POINTS, // what shape
+      0, // starting from where in the buffer
+      floatPos.length / 2 // how many shapes
+    )
 
     // move webGL rendered image to 2d canvas
     ctx.drawImage(
       gl.canvas,
-      origin.x + x * origin.zoom,
-      origin.y + y * origin.zoom,
-      w * origin.zoom,
-      h * origin.zoom
+      origin.x + tile.x * origin.zoom,
+      origin.y + tile.y * origin.zoom,
+      tile.w * origin.zoom,
+      tile.h * origin.zoom
     )
   }
 
@@ -106,7 +89,6 @@ function useWebGL(tiles: Tile[]) {
     glCanvas: HTMLCanvasElement,
     normalCanvas: HTMLCanvasElement,
     _: OpenSeadragon.Viewer
-    // origin: { x: number; y: number; zoom: number }
   ) {
     const origin = { x: 0, y: 0, zoom: 1 }
     const gl = glCanvas.getContext('webgl2', {
@@ -124,16 +106,12 @@ function useWebGL(tiles: Tile[]) {
     }
     performance.mark('webgl-start')
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    const tiles = makeColouredTiles(1_000_000, 1000, 1400)
     for (const tile of tiles) {
       drawWithWebGL(
         gl,
         ctx,
-        tile.data,
-        tile.w,
-        tile.h,
-        tile.x,
-        tile.y,
-        hexToRgbVector(tile.color),
+        { ...tile, color: hexToRgbVector(tile.color) },
         origin
       )
     }

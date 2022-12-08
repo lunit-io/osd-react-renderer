@@ -57,35 +57,6 @@ export function setProgram(
   return createProgram(gl, vertexShader, fragmentShader)
 }
 
-export function initializeWebGL(
-  gl: WebGL2RenderingContext,
-  source: { vertex: string; fragment: string },
-  vertexData: number[]
-) {
-  const program = setProgram(gl, source)
-
-  if (!program) {
-    console.warn('failed to build program')
-    return
-  }
-
-  const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
-  const resolutionUniformLocation = gl.getUniformLocation(
-    program,
-    'u_resolution'
-  )
-  const positionBuffer = gl.createBuffer()
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexData), gl.DYNAMIC_DRAW)
-
-  return {
-    program,
-    positionAttributeLocation,
-    resolutionUniformLocation,
-    positionBuffer,
-  }
-}
-
 export function coordsToPolygons(
   x: number,
   y: number,
@@ -148,4 +119,38 @@ export function hexToRgbVector(hexColor: string) {
   const g = (bigint >> 8) & 255
   const b = bigint & 255
   return { r: r / 255, g: g / 255, b: b / 255, a: 1.0 }
+}
+
+export function makeRandomCoords(amt: number, hClip: number, wClip: number) {
+  const out = []
+  for (let i = 0; i < amt; i++) {
+    out.push(Math.floor(Math.random() * wClip))
+    out.push(Math.floor(Math.random() * hClip))
+  }
+  return out
+}
+
+export function makeColouredTiles(
+  coordCount: number,
+  hSize: number,
+  wSize: number
+) {
+  return [
+    {
+      h: hSize,
+      w: wSize,
+      y: 0,
+      x: 0,
+      color: '#00BD9D',
+      data: makeRandomCoords((coordCount / 10) * 7, hSize, wSize),
+    },
+    {
+      h: hSize,
+      w: wSize,
+      y: 0,
+      x: 0,
+      color: '#FF495C',
+      data: makeRandomCoords((coordCount / 10) * 3, hSize, wSize),
+    },
+  ]
 }

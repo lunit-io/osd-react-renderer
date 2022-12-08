@@ -101,15 +101,6 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   }
 }
 
-function makeRandomCoords(amt: number, hClip: number, wClip: number) {
-  const out = []
-  for (let i = 0; i < amt; i++) {
-    out.push(Math.floor(Math.random() * wClip))
-    out.push(Math.floor(Math.random() * hClip))
-  }
-  return out
-}
-
 // function makeTiledCoords(
 //   tiles: number,
 //   coordCount: number,
@@ -140,27 +131,6 @@ function makeRandomCoords(amt: number, hClip: number, wClip: number) {
 //   return out
 // }
 
-function makeColouredTiles(coordCount: number, hSize: number, wSize: number) {
-  return [
-    {
-      h: hSize,
-      w: wSize,
-      y: 0,
-      x: 0,
-      color: '#E08E45',
-      data: makeRandomCoords((coordCount / 10) * 3, hSize, wSize),
-    },
-    {
-      h: hSize,
-      w: wSize,
-      y: 0,
-      x: 0,
-      color: '#3943B7',
-      data: makeRandomCoords((coordCount / 10) * 7, hSize, wSize),
-    },
-  ]
-}
-
 let timer: ReturnType<typeof setTimeout>
 
 function App() {
@@ -177,9 +147,7 @@ function App() {
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
 
-  const { onWebGLOverlayRedraw } = useWebGL(
-    makeColouredTiles(2000000, 1000, 1400)
-  )
+  const { onWebGLOverlayRedraw } = useWebGL()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null

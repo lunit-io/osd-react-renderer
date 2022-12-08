@@ -1,7 +1,7 @@
 /* eslint-disable */
 import OpenSeadragon from 'openseadragon'
 
-// by Lunit's OpenSeadragon webgl Overlay plugin 0.0.1 based on canvas overlay plugin
+// Lunit's OpenSeadragon webgl Overlay plugin 0.0.1 based on canvas overlay plugin
 // By Toby
 ;(function () {
   // ----------

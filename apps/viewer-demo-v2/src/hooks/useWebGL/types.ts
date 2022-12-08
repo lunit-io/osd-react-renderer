@@ -7,3 +7,25 @@ export interface GLConfig {
   resolutionUniformLocation: WebGLUniformLocation | null
   positionBuffer: WebGLBuffer | null
 }
+
+export interface WebGLTileData {
+  h: number
+  w: number
+  y: number
+  x: number
+  data: number[]
+  color: RGBAColorVector
+}
+
+export interface Origin {
+  x: number
+  y: number
+  zoom: number
+}
+
+export interface RGBAColorVector {
+  r: number
+  g: number
+  b: number
+  a: number
+}
