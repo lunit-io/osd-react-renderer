@@ -87,8 +87,7 @@ function useWebGL() {
 
   function onWebGLOverlayRedraw(
     glCanvas: HTMLCanvasElement,
-    normalCanvas: HTMLCanvasElement,
-    _: OpenSeadragon.Viewer
+    normalCanvas: HTMLCanvasElement
   ) {
     const origin = { x: 0, y: 0, zoom: 1 }
     const gl = glCanvas.getContext('webgl2', {
@@ -106,7 +105,7 @@ function useWebGL() {
     }
     performance.mark('webgl-start')
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-    const tiles = makeColouredTiles(1_000_000, 1000, 1400)
+    const tiles = makeColouredTiles(300_000, 1000, 1400)
     for (const tile of tiles) {
       drawWithWebGL(
         gl,
