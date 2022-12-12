@@ -9,6 +9,7 @@ import TooltipOverlay from './TooltipOverlay'
 import MouseTracker from './MouseTracker'
 import OffscreenOverlay from './OffscreenOverlay'
 import WebGLOverlay from './WebGLOverlay'
+import SVGOverlay from './SVGOverlay'
 
 const ElementConstructors = {
   tiledImage: TiledImage,
@@ -17,6 +18,7 @@ const ElementConstructors = {
   scalebar: Scalebar,
   canvasOverlay: CanvasOverlay,
   webGLOverlay: WebGLOverlay,
+  svgOverlay: SVGOverlay,
   tooltipOverlay: TooltipOverlay,
   offscreenOverlay: OffscreenOverlay,
   root: Root,

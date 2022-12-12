@@ -101,36 +101,6 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   }
 }
 
-// function makeTiledCoords(
-//   tiles: number,
-//   coordCount: number,
-//   hSize: number,
-//   wSize: number
-// ) {
-//   const squirt = Math.sqrt(tiles)
-//   if (squirt % 1 !== 0) {
-//     console.error('makeTiledCoords requires a square number')
-//     return [{ h: 0, w: 0, y: 0, x: 0, data: [0] }]
-//   }
-//   const out = []
-//   const h = hSize / squirt
-//   const w = wSize / squirt
-//   for (let i = 0; i < squirt; i++) {
-//     const x = w * i
-//     for (let j = 0; j < squirt; j++) {
-//       const y = h * j
-//       out.push({
-//         h,
-//         w,
-//         y,
-//         x,
-//         data: makeRandomCoords(coordCount / tiles, h, w),
-//       })
-//     }
-//   }
-//   return out
-// }
-
 let timer: ReturnType<typeof setTimeout>
 
 function App() {
@@ -297,6 +267,7 @@ function App() {
           <NavLink to="/test">TEST</NavLink>
           <NavLink to="/destroy">TEST DESTROY</NavLink>
           <NavLink to="/webgl">TEST WEBGL</NavLink>
+          <NavLink to="/svg">SVG</NavLink>
         </Links>
         <Switch>
           <OSDContainer>
@@ -368,6 +339,40 @@ function App() {
                 <webGLOverlay
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
+                />
+              </OSDViewer>
+            </Route>
+            <Route exact path="/svg">
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                <tiledImage
+                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                />
+                <svgOverlay />
+                <scalebar
+                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  xOffset={10}
+                  yOffset={30}
+                  barThickness={3}
+                  color="#443aff"
+                  fontColor="#53646d"
+                  backgroundColor={'rgba(255,255,255,0.5)'}
+                  location={ScalebarLocation.BOTTOM_RIGHT}
                 />
               </OSDViewer>
             </Route>

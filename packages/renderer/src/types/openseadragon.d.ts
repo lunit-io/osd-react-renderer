@@ -795,6 +795,8 @@ declare module "openseadragonV2" {
 
   export class WebGLOverlay extends CanvasOverlay {}
 
+  export class SVGOverlay extends Overlay {}
+
   export class Point {
     x: number;
     y: number;
@@ -1369,6 +1371,7 @@ declare module "openseadragonV2" {
     }) => void;
     canvasOverlay: (option?: { onRedraw: () => void }) => CanvasOverlay;
     webGLOverlay: (option?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
+    svgOverlay:() => SVGOverlay;
     tooltipOverlay: (option?: {
       onRedraw: () => void;
       redrawOnUpdateViewport?: boolean;

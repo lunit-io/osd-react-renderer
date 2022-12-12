@@ -160,6 +160,7 @@ const ReactOSDDOM = {
     if (viewer?.tooltipOverlayExists()) viewer?.tooltipOverlay().destroy()
     if (viewer?.offscreenOverlayExists()) viewer?.offscreenOverlay().destroy()
     if (viewer?.webGLOverlayExists()) viewer?.webGLOverlay().destroy()
+    if (viewer?.svgOverlayExists()) viewer?.svgOverlay().destroy()
 
     viewer?.scalebarInstance?.destroy()
     viewer?.destroy()

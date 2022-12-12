@@ -243,17 +243,20 @@ export interface WebGLOverlayProps extends NodeProps {
     origin: { x: number; y: number; zoom: number }
   ) => void
 }
+
+export interface SVGOverlayProps extends NodeProps {}
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      tiledImage: TiledImageProps
-      mouseTracker: MouseTrackerProps
       viewport: ViewportProps
+      mouseTracker: MouseTrackerProps
       scalebar: ScalebarProps
+      tiledImage: TiledImageProps
       canvasOverlay: CanvasOverlayProps
-      webGLOverlay: WebGLOverlayProps
       offscreenOverlay: OffscreenOverlayProps
+      svgOverlay: SVGOverlayProps
       tooltipOverlay: TooltipOverlayProps
+      webGLOverlay: WebGLOverlayProps
     }
   }
 }
