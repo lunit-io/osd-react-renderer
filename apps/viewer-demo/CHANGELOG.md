@@ -3,6 +3,84 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-viewer-demo@1.0.0...@lunit/osd-viewer-demo@1.0.1) (2022-08-25)
+
+**Note:** Version bump only for package @lunit/osd-viewer-demo
+
+
+
+
+
+# [1.0.0](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-viewer-demo@1.0.0-alpha.17...@lunit/osd-viewer-demo@1.0.0) (2022-08-24)
+
+**Note:** Version bump only for package @lunit/osd-viewer-demo
+
+
+
+
+
+# 1.0.0-alpha.17 (2022-08-24)
+
+
+### Bug Fixes
+
+* **osd-viewer-demo:** add redraw draw image translate & scale, setTransform ([d627ad2](https://github.com/lunit-io/osd-react-renderer/commit/d627ad23033fca0737b15d1f277bf37742dba9d9))
+* **osd-viewer-demo:** add resize function for fix viewport change error ([5f19ed0](https://github.com/lunit-io/osd-react-renderer/commit/5f19ed019447232e3bd070c49f2627bcdd9de8f9))
+
+
+### Features
+
+* **osd-viewer-demo:** add offscreen overlay plugin ([ff6ff2a](https://github.com/lunit-io/osd-react-renderer/commit/ff6ff2a2d2b0bd4e92a2de642520bded37ac4af4))
+* **osd-viewer-demo:** migrated osd-viewer-demo ([76ce293](https://github.com/lunit-io/osd-react-renderer/commit/76ce29357c830e58adc58b6249fc4eadf99f55e8))
+
+
+
+
+
+# 1.0.0-alpha.16 (2022-05-17)
+
+
+### Features
+
+* **osd-viewer-demo:** migrated osd-viewer-demo ([76ce293](https://github.com/lunit-io/osd-react-renderer/commit/76ce29357c830e58adc58b6249fc4eadf99f55e8))
+
+
+
+
+
+# 1.0.0-alpha.15 (2022-04-28)
+
+
+### Features
+
+* **osd-viewer-demo:** migrated osd-viewer-demo ([76ce293](https://github.com/lunit-io/osd-react-renderer/commit/76ce29357c830e58adc58b6249fc4eadf99f55e8))
+
+
+
+
+
+# 1.0.0-alpha.14 (2022-04-21)
+
+
+### Features
+
+* **osd-viewer-demo:** migrated osd-viewer-demo ([76ce293](https://github.com/lunit-io/osd-react-renderer/commit/76ce29357c830e58adc58b6249fc4eadf99f55e8))
+
+
+
+
+
+# 1.0.0-alpha.13 (2022-01-24)
+
+
+### Features
+
+* **osd-viewer-demo:** migrated osd-viewer-demo ([76ce293](https://github.com/lunit-io/osd-react-renderer/commit/76ce29357c830e58adc58b6249fc4eadf99f55e8))
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/lunit-io/frontend-components/compare/@lunit/osd-viewer-demo@1.0.0-alpha.8...@lunit/osd-viewer-demo@1.0.0-alpha.12) (2021-12-28)
 
 
