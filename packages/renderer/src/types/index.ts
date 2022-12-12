@@ -244,7 +244,9 @@ export interface WebGLOverlayProps extends NodeProps {
   ) => void
 }
 
-export interface SVGOverlayProps extends NodeProps {}
+export interface SVGOverlayProps extends NodeProps {
+  svgComponent?: string
+}
 declare global {
   namespace JSX {
     interface IntrinsicElements {

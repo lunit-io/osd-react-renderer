@@ -27,6 +27,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
     this._containerHeight = 0
 
     this._svg = document.createElementNS(svgNS, 'svg')
+    this._svg.setAttributeNS(svgNS, 'viewBox', '0 0 20 20')
     this._svg.style.position = 'absolute'
     this._svg.style.left = 0
     this._svg.style.top = 0
@@ -36,6 +37,14 @@ const svgNS = 'http://www.w3.org/2000/svg'
 
     this._node = document.createElementNS(svgNS, 'g')
     this._svg.appendChild(this._node)
+
+    if (options.svgComponent) {
+      const svgContent = new DOMParser().parseFromString(
+        options.svgComponent,
+        'image/svg+xml'
+      )
+      this._node.appendChild(svgContent.documentElement.firstChild)
+    }
 
     this._viewer.addHandler('animation', function () {
       self.resize()
@@ -92,7 +101,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
       var rotation = this._viewer.viewport.getRotation()
       var flipped = this._viewer.viewport.getFlip()
       var containerSizeX = this._viewer.viewport._containerInnerSize.x
-      var scaleX = containerSizeX * zoom
+      var scaleX = (containerSizeX * zoom) / 10000
       var scaleY = scaleX
 
       if (flipped) {

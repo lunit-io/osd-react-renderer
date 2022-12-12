@@ -13,6 +13,8 @@ import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
 import useWebGL from './hooks/useWebGL'
 
+import { svg } from './svgFile'
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -332,10 +334,7 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                {/* <canvasOverlay
-                  ref={canvasOverlayRef}
-                  onRedraw={onCanvasOverlayRedraw}
-                /> */}
+                <svgOverlay svgComponent={svg} />
                 <webGLOverlay
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
@@ -363,7 +362,7 @@ function App() {
                   url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
                   tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
                 />
-                <svgOverlay />
+                <svgOverlay svgComponent={svg} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}

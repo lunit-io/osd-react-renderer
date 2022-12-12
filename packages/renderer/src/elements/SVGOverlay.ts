@@ -7,7 +7,7 @@ declare module 'openseadragon' {
   interface SVGOverlay extends OpenSeadragon.Overlay {}
 
   interface Viewer {
-    svgOverlay: () => SVGOverlay
+    svgOverlay: (options?: { svgComponent?: string }) => SVGOverlay
     svgOverlayExists: () => boolean
   }
 }
@@ -33,7 +33,9 @@ class SVGOverlay extends Base {
 
   constructor(viewer: OpenSeadragon.Viewer, props: SVGOverlayProps) {
     super(viewer)
-    this._overlay = this.viewer.svgOverlay()
+    this._overlay = this.viewer.svgOverlay({
+      svgComponent: props.svgComponent,
+    })
     this.props = { ...defaultOptions, ...props }
   }
 }
