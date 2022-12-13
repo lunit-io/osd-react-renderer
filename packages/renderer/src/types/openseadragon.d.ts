@@ -769,6 +769,11 @@ declare module "openseadragonV2" {
 
   export type SVGOptions = OverlayOptions & {
     svgComponent?:string
+    offsetConfig?:{
+      x:number,
+      y:number,
+      scale:number
+    }
   }
 
   export class Overlay {

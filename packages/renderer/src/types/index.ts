@@ -244,8 +244,15 @@ export interface WebGLOverlayProps extends NodeProps {
   ) => void
 }
 
+export type SVGOffset = {
+  x: number
+  y: number
+  scale: number
+}
+
 export interface SVGOverlayProps extends NodeProps {
   svgComponent?: string
+  offsetConfig?: SVGOffset
 }
 declare global {
   namespace JSX {

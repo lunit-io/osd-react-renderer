@@ -362,7 +362,10 @@ function App() {
                   url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
                   tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
                 />
-                <svgOverlay svgComponent={svg} />
+                <svgOverlay
+                  svgComponent={svg}
+                  offsetConfig={{ x: -350, y: -110, scale: 10000 }}
+                />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}

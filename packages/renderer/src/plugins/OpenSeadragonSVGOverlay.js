@@ -22,18 +22,24 @@ const svgNS = 'http://www.w3.org/2000/svg'
   var Overlay = function (viewer, options) {
     var self = this
     this._viewer = viewer
+    this._offset = { x: 0, y: 0, scale: 1 }
 
     this._containerWidth = 0
     this._containerHeight = 0
 
     this._svg = document.createElementNS(svgNS, 'svg')
-    this._svg.setAttributeNS(svgNS, 'viewBox', '0 0 20 20')
     this._svg.style.position = 'absolute'
     this._svg.style.left = 0
     this._svg.style.top = 0
     this._svg.style.width = '100%'
     this._svg.style.height = '100%'
     this._viewer.canvas.appendChild(this._svg)
+
+    if (options.offsetConfig) {
+      this._offset = options.offsetConfig
+    }
+
+    this.resize()
 
     this._node = document.createElementNS(svgNS, 'g')
     this._svg.appendChild(this._node)
@@ -43,7 +49,8 @@ const svgNS = 'http://www.w3.org/2000/svg'
         options.svgComponent,
         'image/svg+xml'
       )
-      this._node.appendChild(svgContent.documentElement.firstChild)
+      self.resize()
+      this._node.appendChild(svgContent.documentElement)
     }
 
     this._viewer.addHandler('animation', function () {
@@ -71,8 +78,6 @@ const svgNS = 'http://www.w3.org/2000/svg'
     this._viewer.addHandler('resize', function () {
       self.resize()
     })
-
-    this.resize()
   }
 
   // ----------
@@ -101,7 +106,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
       var rotation = this._viewer.viewport.getRotation()
       var flipped = this._viewer.viewport.getFlip()
       var containerSizeX = this._viewer.viewport._containerInnerSize.x
-      var scaleX = (containerSizeX * zoom) / 10000
+      var scaleX = containerSizeX * zoom
       var scaleY = scaleX
 
       if (flipped) {
@@ -114,13 +119,13 @@ const svgNS = 'http://www.w3.org/2000/svg'
       this._node.setAttribute(
         'transform',
         'translate(' +
-          p.x +
+          (p.x + this._offset.x * (scaleX / this._offset.scale)) +
           ',' +
-          p.y +
+          (p.y + this._offset.y * (scaleY / this._offset.scale)) +
           ') scale(' +
-          scaleX +
+          scaleX / this._offset.scale +
           ',' +
-          scaleY +
+          scaleY / this._offset.scale +
           ') rotate(' +
           rotation +
           ')'
