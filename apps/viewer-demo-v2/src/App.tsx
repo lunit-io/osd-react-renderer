@@ -364,7 +364,7 @@ function App() {
                 />
                 <svgOverlay
                   svgComponent={svg}
-                  offsetConfig={{ x: -350, y: -110, scale: 10000 }}
+                  offsetConfig={{ x: 1000, y: 1, scale: 0.2 }}
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
@@ -441,7 +441,7 @@ function App() {
                 <tiledImage
                   url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
                   tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                />{' '}
+                />
               </OSDViewer>
             </Route>
           </OSDContainer>
