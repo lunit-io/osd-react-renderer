@@ -296,8 +296,8 @@ function App() {
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
                 <tiledImage
-                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
@@ -318,8 +318,8 @@ function App() {
             <Route exact path="/test-custom">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
                 <tiledImage
-                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
               </OSDViewer>
             </Route>
@@ -341,8 +341,8 @@ function App() {
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
                 <tiledImage
-                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
@@ -392,8 +392,8 @@ function App() {
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
                 <tiledImage
-                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
@@ -411,8 +411,8 @@ function App() {
             <Route exact path="/no-overlay">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
                 <tiledImage
-                  url="https://wsi-cf.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://wsi-cf.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
               </OSDViewer>
             </Route>

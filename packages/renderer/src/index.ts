@@ -3,6 +3,7 @@ export { ScalebarLocation } from './types/index'
 export type {
   ViewportProps,
   CanvasOverlayProps,
+  WebGLOverlayProps,
   TooltipOverlayProps,
   MouseTrackerProps,
   OffscreenOverlayProps,

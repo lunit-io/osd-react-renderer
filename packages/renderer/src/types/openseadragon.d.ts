@@ -8,9 +8,9 @@
 declare module "openseadragonV2" {
   export interface Overlay {
     context2d: () => CanvasRenderingContext2D;
+    contextGL: () => WebGL2RenderingContext;
     onRedraw: () => void;
   }
-
   export class Browser {
     vendor: BROWSERS;
     version: number;
@@ -793,6 +793,8 @@ declare module "openseadragonV2" {
     reset(): void;
   }
 
+  export class WebGLOverlay extends CanvasOverlay {}
+
   export class Point {
     x: number;
     y: number;
@@ -1366,6 +1368,7 @@ declare module "openseadragonV2" {
       location: number;
     }) => void;
     canvasOverlay: (option?: { onRedraw: () => void }) => CanvasOverlay;
+    webGLOverlay: (option?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
     tooltipOverlay: (option?: {
       onRedraw: () => void;
       redrawOnUpdateViewport?: boolean;
