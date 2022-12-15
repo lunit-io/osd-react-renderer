@@ -55,19 +55,21 @@ const svgNS = 'http://www.w3.org/2000/svg'
 
     this._node = document.createElementNS(svgNS, 'g')
     this._svg.appendChild(this._node)
+    this._svgInner = null
 
     if (options.svgComponent) {
       const svgContent = new DOMParser().parseFromString(
         options.svgComponent,
         'image/svg+xml'
       )
+      this._svgInner = svgContent.documentElement
       self.resize()
-      this._node.appendChild(svgContent.documentElement)
+      this._node.appendChild(this._svgInner)
 
-      this._node.setAttribute(
-        'transform',
-        'translate(' + this._offset.x + ',' + this._offset.y + ')'
-      )
+      // this._node.setAttribute(
+      //   'transform',
+      //   'translate(' + this._offset.x + ',' + this._offset.y + ')'
+      // )
     }
 
     this._viewer.addHandler('animation', function () {
@@ -95,6 +97,9 @@ const svgNS = 'http://www.w3.org/2000/svg'
     // this._viewer.addHandler('resize', function () {
     //   self.resize()
     // })
+    this._viewer.addHandler('viewport-change', function () {
+      self.resize()
+    })
   }
 
   // ----------
@@ -114,11 +119,11 @@ const svgNS = 'http://www.w3.org/2000/svg'
         new OpenSeadragon.Point(1, 1),
         true
       )
-
+      const zoom = this._viewer.viewport.getZoom(true)
       this._svg.style.left = pmin.x
       this._svg.style.top = pmin.y
-      this._svg.style.width = pmax.x - pmin.x
-      this._svg.style.height = pmax.y - pmin.y
+      this._svg.style.width = (pmax.x - pmin.x) / zoom
+      this._svg.style.height = (pmax.y - pmin.y) / zoom
 
       const p = this._viewer.viewport.pixelFromPoint(
         new OpenSeadragon.Point(),
@@ -128,21 +133,27 @@ const svgNS = 'http://www.w3.org/2000/svg'
         new OpenSeadragon.Point(1, 1),
         true
       )
-      const zoom = this._viewer.viewport.getZoom(true)
-      console.log('p', pmax.x - pmin.x)
-      this._node.setAttribute(
-        'transform',
-        'translate(' +
-          this._offset.x * zoom +
-          ',' +
-          this._offset.y * zoom +
-          ')' +
-          'scale(' +
-          this._offset.scale +
-          ',' +
-          this._offset.scale +
-          ')'
-      )
+
+      // console.log('p', pmax.x - pmin.x)
+      if (this._svgInner) {
+        this._svgInner.setAttribute(
+          'viewBox',
+          `0 0 ${(pmax.x - pmin.x) / zoom} ${(pmax.y - pmin.y) / zoom}`
+        )
+      }
+      // this._node.setAttribute(
+      //   'transform',
+      //   'translate(' +
+      //     this._offset.x * zoom +
+      //     ',' +
+      //     this._offset.y * zoom +
+      //     ')' +
+      //     'scale(' +
+      //     this._offset.scale +
+      //     ',' +
+      //     this._offset.scale +
+      //     ')'
+      // )
     },
     destroy: function () {
       this._svg = null

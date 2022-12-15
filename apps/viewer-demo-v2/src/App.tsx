@@ -364,7 +364,7 @@ function App() {
                 />
                 <svgOverlay
                   svgComponent={svg}
-                  offsetConfig={{ x: 1000, y: 1, scale: 0.2 }}
+                  offsetConfig={{ x: 500, y: 1, scale: 0.2 }}
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
