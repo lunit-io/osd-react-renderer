@@ -14,6 +14,7 @@ import ZoomController, { ZoomControllerProps } from './ZoomController'
 import useWebGL from './hooks/useWebGL'
 
 import { svg } from './svgFile'
+import useSVG from './hooks/useSVG'
 
 const Container = styled.div`
   width: 100%;
@@ -120,6 +121,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL()
+  const { svgData } = useSVG()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -358,12 +360,17 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
+                {/* <tiledImage
                   url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
                   tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                /> */}
+                <tiledImage
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
                 <svgOverlay
                   svgComponent={svg}
+                  svgData={svgData}
                   offsetConfig={{ x: 500, y: 1, scale: 0.2 }}
                 />
                 <scalebar

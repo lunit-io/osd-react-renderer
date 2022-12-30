@@ -4,6 +4,7 @@
 //                  RobertYost <https://github.com/RobertYost>
 //                  Jasper Staab <https://github.com/jstaab>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
+
 // TypeScript Version: 3.5.2
 declare module "openseadragonV2" {
   export interface Overlay {
@@ -769,6 +770,7 @@ declare module "openseadragonV2" {
 
   export type SVGOptions = OverlayOptions & {
     svgComponent?:string
+    svgData?:SVGGridData[]
     offsetConfig?:{
       x:number,
       y:number,

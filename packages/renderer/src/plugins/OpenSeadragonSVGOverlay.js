@@ -22,54 +22,41 @@ const svgNS = 'http://www.w3.org/2000/svg'
   const Overlay = function (viewer, options) {
     const self = this
     this._viewer = viewer
-    this._offset = { x: 0, y: 0, scale: 1 }
-
-    const pmin = this._viewer.viewport.pixelFromPoint(
-      new OpenSeadragon.Point(),
-      true
-    )
-    const pmax = this._viewer.viewport.pixelFromPoint(
-      new OpenSeadragon.Point(1, 1),
-      true
-    )
+    this._offset = { x: 100, y: -9, scale: 1000 }
 
     this._containerWidth = 0
     this._containerHeight = 0
 
     this._svg = document.createElementNS(svgNS, 'svg')
     this._svg.style.position = 'absolute'
-    this._svg.style.left = pmin.x
-    this._svg.style.top = pmin.y
-    // this._svg.style.width = '100%'
-    this._svg.style.width = pmax.x - pmin.x
-    // this._svg.style.minHeight = window.screen.height
-    this._svg.style.height = pmax.y - pmin.y
+    this._svg.style.left = 0
+    this._svg.style.top = 0
+    this._svg.style.width = '100%'
+    this._svg.style.height = '100%'
 
     this._viewer.canvas.appendChild(this._svg)
 
-    if (options.offsetConfig) {
-      this._offset = options.offsetConfig
-    }
-
-    this.resize()
-
+    // parent node
     this._node = document.createElementNS(svgNS, 'g')
     this._svg.appendChild(this._node)
-    this._svgInner = null
 
-    if (options.svgComponent) {
-      const svgContent = new DOMParser().parseFromString(
-        options.svgComponent,
-        'image/svg+xml'
-      )
-      this._svgInner = svgContent.documentElement
-      self.resize()
-      this._node.appendChild(this._svgInner)
+    if (options.svgData) {
+      console.log('options.svgData', options.svgData)
+      options.svgData.map(gridGroup => {
+        const group = document.createElementNS(svgNS, 'g')
+        group.setAttribute('fill', gridGroup.color)
+        group.setAttribute('opacity', 0.5)
 
-      // this._node.setAttribute(
-      //   'transform',
-      //   'translate(' + this._offset.x + ',' + this._offset.y + ')'
-      // )
+        gridGroup.children.map(gridRect => {
+          const rect = document.createElementNS(svgNS, 'rect')
+          rect.setAttribute('x', gridRect.x / 100)
+          rect.setAttribute('y', gridRect.y / 100)
+          rect.setAttribute('width', '38')
+          rect.setAttribute('height', '38')
+          group.appendChild(rect)
+        })
+        this._node.appendChild(group)
+      })
     }
 
     this._viewer.addHandler('animation', function () {
@@ -109,51 +96,49 @@ const svgNS = 'http://www.w3.org/2000/svg'
     },
 
     resize: function () {
-      if (!this?._viewer?.world?.getItemAt(0)) return
-
-      const pmin = this._viewer.viewport.pixelFromPoint(
-        new OpenSeadragon.Point(),
-        true
-      )
-      const pmax = this._viewer.viewport.pixelFromPoint(
-        new OpenSeadragon.Point(1, 1),
-        true
-      )
-      const zoom = this._viewer.viewport.getZoom(true)
-      this._svg.style.left = pmin.x
-      this._svg.style.top = pmin.y
-      this._svg.style.width = (pmax.x - pmin.x) / zoom
-      this._svg.style.height = (pmax.y - pmin.y) / zoom
-
-      const p = this._viewer.viewport.pixelFromPoint(
-        new OpenSeadragon.Point(),
-        true
-      )
-      const pone = this._viewer.viewport.pixelFromPoint(
-        new OpenSeadragon.Point(1, 1),
-        true
-      )
-
-      // console.log('p', pmax.x - pmin.x)
-      if (this._svgInner) {
-        this._svgInner.setAttribute(
-          'viewBox',
-          `0 0 ${(pmax.x - pmin.x) / zoom} ${(pmax.y - pmin.y) / zoom}`
-        )
+      if (this._containerWidth !== this._viewer.container.clientWidth) {
+        this._containerWidth = this._viewer.container.clientWidth
+        this._svg.setAttribute('width', this._containerWidth)
       }
-      // this._node.setAttribute(
-      //   'transform',
-      //   'translate(' +
-      //     this._offset.x * zoom +
-      //     ',' +
-      //     this._offset.y * zoom +
-      //     ')' +
-      //     'scale(' +
-      //     this._offset.scale +
-      //     ',' +
-      //     this._offset.scale +
-      //     ')'
-      // )
+
+      if (this._containerHeight !== this._viewer.container.clientHeight) {
+        this._containerHeight = this._viewer.container.clientHeight
+        this._svg.setAttribute('height', this._containerHeight)
+      }
+
+      var p = this._viewer.viewport.pixelFromPoint(
+        new OpenSeadragon.Point(0, 0),
+        true
+      )
+      var zoom = this._viewer.viewport.getZoom(true)
+      var rotation = this._viewer.viewport.getRotation()
+      var flipped = this._viewer.viewport.getFlip()
+      // TODO: Expose an accessor for _containerInnerSize in the OSD API so we don't have to use the private variable.
+      var containerSizeX = this._viewer.viewport._containerInnerSize.x
+      var scaleX = (containerSizeX * zoom) / this._offset.scale
+      var scaleY = scaleX
+
+      if (flipped) {
+        // Makes the x component of the scale negative to flip the svg
+        scaleX = -scaleX
+        // Translates svg back into the correct coordinates when the x scale is made negative.
+        p.x = -p.x + containerSizeX
+      }
+
+      this._node.setAttribute(
+        'transform',
+        'translate(' +
+          p.x +
+          ',' +
+          p.y +
+          ') scale(' +
+          scaleX +
+          ',' +
+          scaleY +
+          ') rotate(' +
+          rotation +
+          ')'
+      )
     },
     destroy: function () {
       this._svg = null

@@ -250,8 +250,23 @@ export type SVGOffset = {
   scale: number
 }
 
+export type SVGGridData = {
+  id: string
+  color: string
+  size: {
+    x: number
+    y: number
+  }
+  children: {
+    x: number
+    y: number
+    w: number
+    h: number
+  }[]
+}
 export interface SVGOverlayProps extends NodeProps {
   svgComponent?: string
+  svgData?: SVGGridData[]
   offsetConfig?: SVGOffset
 }
 declare global {
