@@ -1,7 +1,7 @@
 /* eslint-disable */
 import OpenSeadragon from 'openseadragon'
 
-const svgNS = 'http://www.w3.org/2000/svg'
+const SVGNameSpace = 'http://www.w3.org/2000/svg'
 
 ;(function () {
   // ----------
@@ -22,12 +22,11 @@ const svgNS = 'http://www.w3.org/2000/svg'
   const Overlay = function (viewer, options) {
     const self = this
     this._viewer = viewer
-    this._offset = { x: 100, y: -9, scale: 1000 }
 
     this._containerWidth = 0
     this._containerHeight = 0
 
-    this._svg = document.createElementNS(svgNS, 'svg')
+    this._svg = document.createElementNS(SVGNameSpace, 'svg')
     this._svg.style.position = 'absolute'
     this._svg.style.left = 0
     this._svg.style.top = 0
@@ -37,15 +36,16 @@ const svgNS = 'http://www.w3.org/2000/svg'
     this._viewer.canvas.appendChild(this._svg)
 
     // parent node
-    this._node = document.createElementNS(svgNS, 'g')
+    this._node = document.createElementNS(SVGNameSpace, 'g')
     this._svg.appendChild(this._node)
 
     if (options.initializeSVGSubElements) {
-      console.log('svg fn exists')
       options
-        .initializeSVGSubElements(svgNS)
+        .initializeSVGSubElements(SVGNameSpace)
         .forEach(e => this._node.appendChild(e))
     }
+
+    self.resize()
 
     this._viewer.addHandler('animation', function () {
       self.resize()
@@ -69,9 +69,9 @@ const svgNS = 'http://www.w3.org/2000/svg'
       self.resize()
     })
 
-    // this._viewer.addHandler('resize', function () {
-    //   self.resize()
-    // })
+    this._viewer.addHandler('resize', function () {
+      self.resize()
+    })
     this._viewer.addHandler('viewport-change', function () {
       self.resize()
     })
@@ -103,7 +103,7 @@ const svgNS = 'http://www.w3.org/2000/svg'
       var flipped = this._viewer.viewport.getFlip()
       // TODO: Expose an accessor for _containerInnerSize in the OSD API so we don't have to use the private variable.
       var containerSizeX = this._viewer.viewport._containerInnerSize.x
-      var scaleX = (containerSizeX * zoom) / this._offset.scale
+      var scaleX = containerSizeX * zoom
       var scaleY = scaleX
 
       if (flipped) {

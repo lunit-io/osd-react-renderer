@@ -265,12 +265,9 @@ export type SVGGridData = {
   }[]
 }
 
-export type SVGNS = 'http://www.w3.org/2000/svg'
+export type SVGNameSpace = 'http://www.w3.org/2000/svg'
 export interface SVGOverlayProps extends NodeProps {
-  svgComponent?: string
-  svgData?: SVGGridData[]
-  initializeSVGSubElements?: (svgNameSpace: SVGNS) => SVGElement[]
-  offsetConfig?: SVGOffset
+  initializeSVGSubElements?: (svgNameSpace: SVGNameSpace) => SVGElement[]
 }
 declare global {
   namespace JSX {

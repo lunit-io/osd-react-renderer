@@ -1,6 +1,6 @@
 import OpenSeadragon from 'openseadragon'
 import '../plugins/OpenSeadragonSVGOverlay'
-import { SVGGridData, SVGNS, SVGOffset, SVGOverlayProps } from '../types'
+import { SVGNameSpace, SVGOverlayProps } from '../types'
 import Base from './Base'
 
 declare module 'openseadragon' {
@@ -8,10 +8,7 @@ declare module 'openseadragon' {
 
   interface Viewer {
     svgOverlay: (options?: {
-      svgComponent?: string
-      svgData?: SVGGridData[]
-      initializeSVGSubElements?: (svgNameSpace: SVGNS) => SVGElement[]
-      offsetConfig?: SVGOffset
+      initializeSVGSubElements?: (svgNameSpace: SVGNameSpace) => SVGElement[]
     }) => SVGOverlay
     svgOverlayExists: () => boolean
   }
@@ -39,10 +36,7 @@ class SVGOverlay extends Base {
   constructor(viewer: OpenSeadragon.Viewer, props: SVGOverlayProps) {
     super(viewer)
     this._overlay = this.viewer.svgOverlay({
-      svgComponent: props.svgComponent,
       initializeSVGSubElements: props.initializeSVGSubElements,
-      offsetConfig: props.offsetConfig,
-      svgData: props.svgData,
     })
     this.props = { ...defaultOptions, ...props }
   }

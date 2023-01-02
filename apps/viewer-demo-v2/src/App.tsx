@@ -13,7 +13,6 @@ import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
 import useWebGL from './hooks/useWebGL'
 
-import { svg } from './svgFile'
 import useSVG from './hooks/useSVG'
 
 const Container = styled.div`
@@ -121,7 +120,8 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL()
-  const { initializeSVGSubElements } = useSVG()
+  const { initializeSVGSubElements, setSVGSubVisibility, setSVGAllVisible } =
+    useSVG()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -273,6 +273,14 @@ function App() {
           <NavLink to="/webgl">TEST WEBGL</NavLink>
           <NavLink to="/svg">SVG</NavLink>
         </Links>
+        <Route exact path="/svg">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <button onClick={setSVGAllVisible}>svg visible</button>
+            <button onClick={() => setSVGSubVisibility(0)}>svg sub 1</button>
+            <button onClick={() => setSVGSubVisibility(1)}>svg sub 2</button>
+            <button onClick={() => setSVGSubVisibility(2)}>svg sub 3</button>
+          </div>
+        </Route>
         <Switch>
           <OSDContainer>
             <Route exact path="/test">
@@ -336,7 +344,6 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                <svgOverlay svgComponent={svg} />
                 <webGLOverlay
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
