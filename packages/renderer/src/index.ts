@@ -6,6 +6,7 @@ export type {
   WebGLOverlayProps,
   TooltipOverlayProps,
   SVGOverlayProps,
+  SVGNS,
   MouseTrackerProps,
   OffscreenOverlayProps,
   OSDViewerRef,

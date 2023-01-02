@@ -1,3 +1,4 @@
+import { SVGNS } from 'packages/renderer/dist/types'
 import data from '../../gridData'
 
 function useSVG() {
@@ -20,8 +21,27 @@ function useSVG() {
     }
   })
 
+  function initializeSVGSubElements(svgNameSpace: SVGNS): SVGElement[] {
+    return svgData.map(gridGroup => {
+      const group = document.createElementNS(svgNameSpace, 'g')
+      group.setAttribute('fill', gridGroup.color)
+      group.setAttribute('opacity', '0.5')
+
+      gridGroup.children.forEach(gridRect => {
+        const rect = document.createElementNS(svgNameSpace, 'rect')
+        rect.setAttribute('x', (gridRect.x / 100).toString())
+        rect.setAttribute('y', (gridRect.y / 100).toString())
+        rect.setAttribute('width', '38')
+        rect.setAttribute('height', '38')
+        group.appendChild(rect)
+      })
+      return group
+    })
+  }
+
   return {
     svgData,
+    initializeSVGSubElements,
   }
 }
 export default useSVG

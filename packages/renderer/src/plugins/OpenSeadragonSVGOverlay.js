@@ -40,23 +40,11 @@ const svgNS = 'http://www.w3.org/2000/svg'
     this._node = document.createElementNS(svgNS, 'g')
     this._svg.appendChild(this._node)
 
-    if (options.svgData) {
-      console.log('options.svgData', options.svgData)
-      options.svgData.map(gridGroup => {
-        const group = document.createElementNS(svgNS, 'g')
-        group.setAttribute('fill', gridGroup.color)
-        group.setAttribute('opacity', 0.5)
-
-        gridGroup.children.map(gridRect => {
-          const rect = document.createElementNS(svgNS, 'rect')
-          rect.setAttribute('x', gridRect.x / 100)
-          rect.setAttribute('y', gridRect.y / 100)
-          rect.setAttribute('width', '38')
-          rect.setAttribute('height', '38')
-          group.appendChild(rect)
-        })
-        this._node.appendChild(group)
-      })
+    if (options.initializeSVGSubElements) {
+      console.log('svg fn exists')
+      options
+        .initializeSVGSubElements(svgNS)
+        .forEach(e => this._node.appendChild(e))
     }
 
     this._viewer.addHandler('animation', function () {

@@ -121,7 +121,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL()
-  const { svgData } = useSVG()
+  const { initializeSVGSubElements } = useSVG()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -369,9 +369,7 @@ function App() {
                   tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
                 />
                 <svgOverlay
-                  svgComponent={svg}
-                  svgData={svgData}
-                  offsetConfig={{ x: 500, y: 1, scale: 0.2 }}
+                  initializeSVGSubElements={initializeSVGSubElements}
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
