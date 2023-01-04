@@ -1,5 +1,5 @@
-import { SVGNameSpace } from 'packages/renderer/dist/types'
 import { useEffect, useState } from 'react'
+import { SVGNameSpace } from 'packages/renderer/dist/types'
 import data from '../../gridData'
 
 const offset = {
@@ -13,18 +13,18 @@ function useSVG() {
   const [allVisible, setAllVisible] = useState(true)
 
   const svgData = data.map(group => {
-    console.log(group)
+    const size = {
+      x: Math.ceil(group.gridPixelSizeX),
+      y: Math.ceil(group.gridPixelSizeY),
+    }
     return {
       id: group.id,
       color: group.color,
-      size: {
-        x: parseFloat(group.gridPixelSizeX.toPrecision(4)),
-        y: parseFloat(group.gridPixelSizeY.toPrecision(4)),
-      },
+      size,
       children: group.gridResults.map(child => {
         return {
-          x: child.minX,
-          y: child.minY,
+          x: child.minX / size.x,
+          y: child.minY / size.y,
           w: child.width,
           h: child.height,
         }
@@ -39,24 +39,30 @@ function useSVG() {
       group.setAttribute('fill', gridGroup.color)
       group.setAttribute('opacity', '0.5')
 
-      gridGroup.children.forEach(gridRect => {
-        console.log(((gridGroup.size.x / offset.scale) * gridRect.w).toString())
+      gridGroup.children.forEach(childRect => {
         const rect = document.createElementNS(svgNameSpace, 'rect')
+
         rect.setAttribute(
           'x',
-          (gridRect.x / offset.scale + offset.x).toString()
+          (
+            (childRect.x * gridGroup.size.x) / offset.scale +
+            offset.x
+          ).toString()
         )
         rect.setAttribute(
           'y',
-          (gridRect.y / offset.scale + offset.y).toString()
+          (
+            (childRect.y * gridGroup.size.y) / offset.scale +
+            offset.y
+          ).toString()
         )
         rect.setAttribute(
           'width',
-          ((gridGroup.size.x / offset.scale) * gridRect.w).toString()
+          ((childRect.w * gridGroup.size.x) / offset.scale).toString()
         )
         rect.setAttribute(
           'height',
-          ((gridGroup.size.y / offset.scale) * gridRect.h).toString()
+          ((childRect.h * gridGroup.size.y) / offset.scale).toString()
         )
         group.appendChild(rect)
       })
@@ -79,9 +85,7 @@ function useSVG() {
     })
   }, [allVisible, visible, svgData])
 
-  function updateSVGSubElements() {
-    // shouldUpdateRef.current = true
-  }
+  function updateSVGSubElements() {}
   function setSVGSubVisibility(index: number) {
     console.log('fired', index)
     setVisible(

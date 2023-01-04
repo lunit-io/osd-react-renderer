@@ -11,3 +11,5 @@ export type {
   OffscreenOverlayProps,
   OSDViewerRef,
 } from './types/index'
+
+export { SVG_NAMESPACE } from './constants'

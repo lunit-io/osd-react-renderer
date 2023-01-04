@@ -1,8 +1,6 @@
 /* eslint-disable */
 import OpenSeadragon from 'openseadragon'
-
-const SVGNameSpace = 'http://www.w3.org/2000/svg'
-
+import { SVG_NAMESPACE } from '../constants'
 ;(function () {
   // ----------
   OpenSeadragon.Viewer.prototype.svgOverlay = function (options) {
@@ -26,7 +24,7 @@ const SVGNameSpace = 'http://www.w3.org/2000/svg'
     this._containerWidth = 0
     this._containerHeight = 0
 
-    this._svg = document.createElementNS(SVGNameSpace, 'svg')
+    this._svg = document.createElementNS(SVG_NAMESPACE, 'svg')
     this._svg.style.position = 'absolute'
     this._svg.style.left = 0
     this._svg.style.top = 0
@@ -34,14 +32,12 @@ const SVGNameSpace = 'http://www.w3.org/2000/svg'
     this._svg.style.height = '100%'
 
     this._viewer.canvas.appendChild(this._svg)
-
-    // parent node
-    this._node = document.createElementNS(SVGNameSpace, 'g')
+    this._node = document.createElementNS(SVG_NAMESPACE, 'g')
     this._svg.appendChild(this._node)
 
     if (options.initializeSVGSubElements) {
       options
-        .initializeSVGSubElements(SVGNameSpace)
+        .initializeSVGSubElements(SVG_NAMESPACE)
         .forEach(e => this._node.appendChild(e))
     }
 
@@ -101,7 +97,6 @@ const SVGNameSpace = 'http://www.w3.org/2000/svg'
       var zoom = this._viewer.viewport.getZoom(true)
       var rotation = this._viewer.viewport.getRotation()
       var flipped = this._viewer.viewport.getFlip()
-      // TODO: Expose an accessor for _containerInnerSize in the OSD API so we don't have to use the private variable.
       var containerSizeX = this._viewer.viewport._containerInnerSize.x
       var scaleX = containerSizeX * zoom
       var scaleY = scaleX
@@ -131,10 +126,9 @@ const SVGNameSpace = 'http://www.w3.org/2000/svg'
     destroy: function () {
       this._svg = null
       this._viewer = null
+      this._node = null
     },
     onClick: function (node, handler) {
-      // TODO: Fast click for mobile browsers
-
       new OpenSeadragon.MouseTracker({
         element: node,
         clickHandler: handler,
