@@ -103,6 +103,36 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
   }
 }
 
+// function makeTiledCoords(
+//   tiles: number,
+//   coordCount: number,
+//   hSize: number,
+//   wSize: number
+// ) {
+//   const squirt = Math.sqrt(tiles)
+//   if (squirt % 1 !== 0) {
+//     console.error('makeTiledCoords requires a square number')
+//     return [{ h: 0, w: 0, y: 0, x: 0, data: [0] }]
+//   }
+//   const out = []
+//   const h = hSize / squirt
+//   const w = wSize / squirt
+//   for (let i = 0; i < squirt; i++) {
+//     const x = w * i
+//     for (let j = 0; j < squirt; j++) {
+//       const y = h * j
+//       out.push({
+//         h,
+//         w,
+//         y,
+//         x,
+//         data: makeRandomCoords(coordCount / tiles, h, w),
+//       })
+//     }
+//   }
+//   return out
+// }
+
 let timer: ReturnType<typeof setTimeout>
 
 function App() {
