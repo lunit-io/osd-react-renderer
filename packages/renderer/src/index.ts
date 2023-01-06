@@ -5,7 +5,11 @@ export type {
   CanvasOverlayProps,
   WebGLOverlayProps,
   TooltipOverlayProps,
+  SVGOverlayProps,
+  SVGNameSpace,
   MouseTrackerProps,
   OffscreenOverlayProps,
   OSDViewerRef,
 } from './types/index'
+
+export { SVG_NAMESPACE } from './constants'

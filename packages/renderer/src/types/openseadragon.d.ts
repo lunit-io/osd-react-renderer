@@ -4,6 +4,7 @@
 //                  RobertYost <https://github.com/RobertYost>
 //                  Jasper Staab <https://github.com/jstaab>
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
+
 // TypeScript Version: 3.5.2
 declare module "openseadragonV2" {
   export interface Overlay {
@@ -767,6 +768,10 @@ declare module "openseadragonV2" {
     rotationMode?: boolean;
   };
 
+  export type SVGOptions = OverlayOptions & {
+    initializeSVGSubElements?: (svgNameSpace:SVGNameSpace) => SVGElement[]
+  }
+
   export class Overlay {
     constructor(options: OverlayOptions);
 
@@ -794,6 +799,10 @@ declare module "openseadragonV2" {
   }
 
   export class WebGLOverlay extends CanvasOverlay {}
+
+  export class SVGOverlay extends Overlay {
+    constructor(options:SVGOptions)
+  }
 
   export class Point {
     x: number;
@@ -1357,7 +1366,7 @@ declare module "openseadragonV2" {
       placement?: Placement
     ): Viewer;
 
-    scalebar: (option: {
+    scalebar: (options: {
       pixelsPerMeter: number;
       xOffset: number;
       yOffset: number;
@@ -1367,8 +1376,11 @@ declare module "openseadragonV2" {
       backgroundColor: string;
       location: number;
     }) => void;
-    canvasOverlay: (option?: { onRedraw: () => void }) => CanvasOverlay;
-    webGLOverlay: (option?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
+    canvasOverlay: (options?: { onRedraw: () => void }) => CanvasOverlay;
+    webGLOverlay: (options?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
+    svgOverlay:(options?:{
+      initializeSVGSubElements: (svgNameSpace:SVGNameSpace) => SVGElement[]
+    }) => SVGOverlay;
     tooltipOverlay: (option?: {
       onRedraw: () => void;
       redrawOnUpdateViewport?: boolean;

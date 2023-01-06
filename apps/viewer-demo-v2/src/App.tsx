@@ -13,6 +13,8 @@ import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
 import useWebGL from './hooks/useWebGL'
 
+import useSVG from './hooks/useSVG'
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -148,6 +150,8 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL()
+  const { initializeSVGSubElements, setSVGSubVisibility, setSVGAllVisible } =
+    useSVG()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -297,7 +301,16 @@ function App() {
           <NavLink to="/test">TEST</NavLink>
           <NavLink to="/destroy">TEST DESTROY</NavLink>
           <NavLink to="/webgl">TEST WEBGL</NavLink>
+          <NavLink to="/svg">SVG</NavLink>
         </Links>
+        <Route exact path="/svg">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <button onClick={setSVGAllVisible}>svg visible</button>
+            <button onClick={() => setSVGSubVisibility(0)}>svg sub 1</button>
+            <button onClick={() => setSVGSubVisibility(1)}>svg sub 2</button>
+            <button onClick={() => setSVGSubVisibility(2)}>svg sub 3</button>
+          </div>
+        </Route>
         <Switch>
           <OSDContainer>
             <Route exact path="/test">
@@ -361,13 +374,49 @@ function App() {
                   backgroundColor={'rgba(255,255,255,0.5)'}
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
-                {/* <canvasOverlay
-                  ref={canvasOverlayRef}
-                  onRedraw={onCanvasOverlayRedraw}
-                /> */}
                 <webGLOverlay
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
+                />
+              </OSDViewer>
+            </Route>
+            <Route exact path="/svg">
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                {/* <tiledImage
+                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
+                /> */}
+                <tiledImage
+                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+                />
+                <svgOverlay
+                  initializeSVGSubElements={initializeSVGSubElements}
+                />
+                <scalebar
+                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  xOffset={10}
+                  yOffset={30}
+                  barThickness={3}
+                  color="#443aff"
+                  fontColor="#53646d"
+                  backgroundColor={'rgba(255,255,255,0.5)'}
+                  location={ScalebarLocation.BOTTOM_RIGHT}
                 />
               </OSDViewer>
             </Route>
@@ -434,7 +483,7 @@ function App() {
                 <tiledImage
                   url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
                   tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                />{' '}
+                />
               </OSDViewer>
             </Route>
           </OSDContainer>
