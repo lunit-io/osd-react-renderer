@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0-alpha.3](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.1...@lunit/osd-react-renderer@1.2.0-alpha.3) (2023-01-17)
+
+
+### Bug Fixes
+
+* **osd-react-renderer:** correct package number ([60d2600](https://github.com/lunit-io/osd-react-renderer/commit/60d2600a3d68635b440255729f47910d65c41071))
+
+
+
+
+
 # [1.2.0-alpha.2](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.1...@lunit/osd-react-renderer@1.2.0-alpha.2) (2023-01-06)
 
 **Note:** Version bump only for package @lunit/osd-react-renderer
