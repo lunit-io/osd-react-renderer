@@ -87,7 +87,6 @@ function useSVG() {
 
   function updateSVGSubElements() {}
   function setSVGSubVisibility(index: number) {
-    console.log('fired', index)
     setVisible(
       visible.map((v, i) => {
         if (i === index) {

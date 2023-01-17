@@ -47,6 +47,10 @@ import OpenSeadragon from 'openseadragon'
       self.resize()
       self._updateCanvas()
     })
+    this._viewer.addHandler('resize', function () {
+      self.resize()
+      self._updateCanvas()
+    })
 
     this._viewer.addHandler('open', function () {
       self._open = true

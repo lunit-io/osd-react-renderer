@@ -85,6 +85,10 @@ import OpenSeadragon from 'openseadragon'
         )
       }
     })
+    this._viewer.addHandler('resize', function () {
+      self.resize()
+      self._updateCanvas()
+    })
   }
 
   // ----------

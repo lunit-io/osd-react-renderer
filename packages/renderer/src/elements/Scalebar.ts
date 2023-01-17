@@ -9,7 +9,7 @@ declare module 'openseadragon' {
     destroy: () => void
   }
   interface Viewer {
-    scalebar: (option: ScalebarProps) => void
+    scalebar: (options: ScalebarProps) => void
     scalebarInstance?: ScalebarInstance
   }
 }

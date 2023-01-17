@@ -14,6 +14,12 @@ import ZoomController, { ZoomControllerProps } from './ZoomController'
 import Webworker from './workers/WebWorker'
 import offscreenWorker from './workers/offscreen.worker'
 
+const tiledImageSource = {
+  url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
+  tileUrlBase:
+    'https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
+}
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -219,6 +225,7 @@ function App() {
   const handleMouseTrackerNonPrimaryPress = useCallback<
     NonNullable<MouseTrackerProps['onNonPrimaryPress']>
   >(event => {
+    console.log('event', event)
     if (event.button === WHEEL_BUTTON) {
       lastPoint.current = event.position?.clone() || null
       prevDelta.current = new OpenSeadragon.Point(0, 0)
@@ -295,10 +302,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -317,10 +321,7 @@ function App() {
             </Route>
             <Route exact path="/test-custom">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
               </OSDViewer>
             </Route>
             <Route exact path="/">
@@ -340,10 +341,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -391,10 +389,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -409,10 +404,28 @@ function App() {
               </OSDViewer>
             </Route>
             <Route exact path="/no-overlay">
-              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                <tiledImage {...tiledImageSource} />
+                <mouseTracker
+                  onLeave={handleMouseTrackerLeave}
+                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+                  onMove={handleMouseTrackerMove}
                 />
               </OSDViewer>
             </Route>

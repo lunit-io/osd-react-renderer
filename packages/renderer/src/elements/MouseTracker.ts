@@ -54,7 +54,10 @@ class MouseTracker extends Base {
     return Object.entries(props).reduce<MouseTrackerEventHandlers>(
       (handlers, [name, handler]) => {
         if (handler && hasOwnProperty(MouseTrackerEventHandlerNames, name)) {
-          Object.defineProperty(handlers, name, handler)
+          Object.defineProperty(handlers, MouseTrackerEventHandlerNames[name], {
+            value: handler,
+            enumerable: true,
+          })
         }
         return handlers
       },

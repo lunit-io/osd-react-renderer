@@ -15,6 +15,12 @@ import useWebGL from './hooks/useWebGL'
 
 import useSVG from './hooks/useSVG'
 
+const tiledImageSource = {
+  url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
+  tileUrlBase:
+    'https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
+}
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -326,7 +332,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage url="https://image-pdl1.api.opt.scope.lunit.io/slides/images/dzi/41f49f4c-8dcd-4e85-9e7d-c3715f391d6f/3/122145f9-7f68-4f85-82f7-5b30364c2323/D_202103_Lunit_NSCLC_011_IHC_22C3.svs" />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -360,10 +366,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
-                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -397,16 +400,15 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                {/* <tiledImage
-                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                /> */}
-                <tiledImage
-                  url="https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <svgOverlay
                   initializeSVGSubElements={initializeSVGSubElements}
+                />
+                <mouseTracker
+                  onLeave={handleMouseTrackerLeave}
+                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+                  onMove={handleMouseTrackerMove}
                 />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
@@ -445,10 +447,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage
-                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -480,10 +479,7 @@ function App() {
             </Route>
             <Route exact path="/no-overlay">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage
-                  url="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/dzi/metadata?file=io%2FBladder_cancer_01.svs"
-                  tileUrlBase="https://tiler-cf.int.dev.preview.api.scope.lunit.io/slides/images/dzi/io/Bladder_cancer_01.svs"
-                />
+                <tiledImage {...tiledImageSource} />
               </OSDViewer>
             </Route>
           </OSDContainer>

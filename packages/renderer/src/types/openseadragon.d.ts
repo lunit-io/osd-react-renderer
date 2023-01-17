@@ -630,6 +630,7 @@ declare module "openseadragonV2" {
     nonPrimaryPressHandler?: EventHandler;
     releaseHandler?: EventHandler;
     nonPrimaryReleaseHandler?: EventHandler;
+    leaveHandler?: EventHandler;
     moveHandler?: EventHandler;
     scrollHandler?: EventHandler;
     clickHandler?: EventHandler;
@@ -675,6 +676,7 @@ declare module "openseadragonV2" {
     keyDownHandler: (event: OSDEvent) => void;
     keyHandler: (event: OSDEvent) => void;
     keyUpHandler: (event: OSDEvent) => void;
+    leaveHandler:(event: OSDEvent) => void;
     moveHandler: (event: OSDEvent) => void;
     nonPrimaryPressHandler: (event: OSDEvent) => void;
     nonPrimaryReleaseHandler: (event: OSDEvent) => void;
