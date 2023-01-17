@@ -80,15 +80,20 @@ import { SVG_NAMESPACE } from '../constants'
     node: function () {
       return this._node
     },
+
+    _addSVGSubElements: function () {
+      const elems = this._initializeSVG(SVG_NAMESPACE)
+      if (elems.length) {
+        this._initializeSVG(SVG_NAMESPACE).forEach(e =>
+          this._node.appendChild(e)
+        )
+      }
+    },
+
     resize: function () {
       if (!this._elementIsLoaded) {
-        const elems = this._initializeSVG(SVG_NAMESPACE)
-        if (elems.length) {
-          this._initializeSVG(SVG_NAMESPACE).forEach(e =>
-            this._node.appendChild(e)
-          )
-          this._elementIsLoaded = true
-        }
+        this._addSVGSubElements()
+        this._elementIsLoaded = true
       }
 
       if (this._containerWidth !== this._viewer.container.clientWidth) {
