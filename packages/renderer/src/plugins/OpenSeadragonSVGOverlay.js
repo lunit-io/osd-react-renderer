@@ -24,7 +24,7 @@ import { SVG_NAMESPACE } from '../constants'
     this._containerWidth = 0
     this._containerHeight = 0
 
-    this._elementIsLoaded = false
+    this._subElementsWereAdded = false
 
     this._svg = document.createElementNS(SVG_NAMESPACE, 'svg')
     this._svg.style.position = 'absolute'
@@ -87,13 +87,14 @@ import { SVG_NAMESPACE } from '../constants'
         this._initializeSVG(SVG_NAMESPACE).forEach(e =>
           this._node.appendChild(e)
         )
+        return true
       }
+      return false
     },
 
     resize: function () {
-      if (!this._elementIsLoaded) {
-        this._addSVGSubElements()
-        this._elementIsLoaded = true
+      if (!this._subElementsWereAdded) {
+        this._subElementsWereAdded = this._addSVGSubElements()
       }
 
       if (this._containerWidth !== this._viewer.container.clientWidth) {
