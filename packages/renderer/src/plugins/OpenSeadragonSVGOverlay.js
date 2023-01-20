@@ -1,6 +1,6 @@
 /* eslint-disable */
 import OpenSeadragon from 'openseadragon'
-import { SVG_NAMESPACE } from '../constants'
+import { SVG_NAMESPACE, SVG_ROOT_ID } from '../constants'
 ;(function () {
   // ----------
   OpenSeadragon.Viewer.prototype.svgOverlay = function (options) {
@@ -35,6 +35,7 @@ import { SVG_NAMESPACE } from '../constants'
 
     this._viewer.canvas.appendChild(this._svg)
     this._node = document.createElementNS(SVG_NAMESPACE, 'g')
+    this._node.setAttribute('id', SVG_ROOT_ID)
     this._svg.appendChild(this._node)
 
     this._initializeSVG =
