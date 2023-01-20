@@ -800,9 +800,7 @@ declare module "openseadragonV2" {
 
   export class WebGLOverlay extends CanvasOverlay {}
 
-  export class SVGOverlay extends Overlay {
-    constructor(options:SVGOptions)
-  }
+  export class SVGOverlay extends Overlay {}
 
   export class Point {
     x: number;

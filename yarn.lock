@@ -3257,10 +3257,15 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
-"@lunit/osd-react-renderer@^1.0.1":
+"@lunit/osd-react-renderer@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@lunit/osd-react-renderer/-/osd-react-renderer-1.1.0.tgz#ace89fac023dccac9dbc9094d4aaea379feb5786"
   integrity sha512-/Wt1gONslgIDQiYJCsA4haZj/+pIRtXJP70ZAASk4Eg4D3QPm0r3CMw3SCbjmLBVmNO/6gR4V/oMdYf++7oWHQ==
+  dependencies:
+    react-reconciler "^0.26.2"
+
+"@lunit/osd-react-renderer@^1.2.0":
+  version "1.2.0-alpha.4"
   dependencies:
     react-reconciler "^0.26.2"
 
