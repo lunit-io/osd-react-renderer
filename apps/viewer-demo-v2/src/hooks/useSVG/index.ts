@@ -33,10 +33,6 @@ function useSVG() {
     }
   })
 
-  // function initializeSVGSubElements(svgNameSpace: SVGNameSpace): SVGElement[] {
-  //   return
-  // }
-
   useEffect(() => {
     if (!!svgData && !svgWasInitializedRef.current) {
       svgData.forEach(gridGroup => {
