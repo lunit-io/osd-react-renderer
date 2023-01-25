@@ -156,8 +156,7 @@ function App() {
   const prevTime = useRef<number>(-1)
 
   const { onWebGLOverlayRedraw } = useWebGL()
-  const { initializeSVGSubElements, setSVGSubVisibility, setSVGAllVisible } =
-    useSVG()
+  const { setSVGSubVisibility, setSVGAllVisible } = useSVG()
 
   const cancelPanning = useCallback(() => {
     lastPoint.current = null
@@ -401,9 +400,7 @@ function App() {
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
                 <tiledImage {...tiledImageSource} />
-                <svgOverlay
-                  initializeSVGSubElements={initializeSVGSubElements}
-                />
+                <svgOverlay />
                 <mouseTracker
                   onLeave={handleMouseTrackerLeave}
                   onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}

@@ -243,32 +243,8 @@ export interface WebGLOverlayProps extends NodeProps {
     origin: { x: number; y: number; zoom: number }
   ) => void
 }
-
-export type SVGOffset = {
-  x: number
-  y: number
-  scale: number
-}
-
-export type SVGGridData = {
-  id: string
-  color: string
-  size: {
-    x: number
-    y: number
-  }
-  children: {
-    x: number
-    y: number
-    w: number
-    h: number
-  }[]
-}
-
 export type SVGNameSpace = 'http://www.w3.org/2000/svg'
-export interface SVGOverlayProps extends NodeProps {
-  initializeSVGSubElements?: (svgNameSpace: SVGNameSpace) => SVGElement[]
-}
+export interface SVGOverlayProps extends NodeProps {}
 declare global {
   namespace JSX {
     interface IntrinsicElements {
