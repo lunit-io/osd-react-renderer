@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-viewer-demo-v2@1.0.1...@lunit/osd-viewer-demo-v2@1.2.0) (2023-01-25)
+
+
+### Features
+
+* **osd-react-renderer:** remove svg initialisation logic - not needed ([0efbca9](https://github.com/lunit-io/osd-react-renderer/commit/0efbca98fe1abaa48fd41f06af703b5959747010))
+
+
+
+
+
 ## [1.1.3](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-viewer-demo-v2@1.0.1...@lunit/osd-viewer-demo-v2@1.1.3) (2023-01-20)
 
 **Note:** Version bump only for package @lunit/osd-viewer-demo-v2

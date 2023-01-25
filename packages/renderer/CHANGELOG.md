@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0-alpha.5](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.1...@lunit/osd-react-renderer@1.2.0-alpha.5) (2023-01-25)
+
+
+### Bug Fixes
+
+* **osd-react-renderer:** correct package number ([59300fa](https://github.com/lunit-io/osd-react-renderer/commit/59300fa74f2c6d6c4867ba17e5e61946f38adeac))
+
+
+### Features
+
+* **osd-react-renderer:** remove svg initialisation logic - not needed ([0efbca9](https://github.com/lunit-io/osd-react-renderer/commit/0efbca98fe1abaa48fd41f06af703b5959747010))
+
+
+
+
+
 # [1.2.0-alpha.4](https://github.com/lunit-io/osd-react-renderer/compare/@lunit/osd-react-renderer@1.0.1...@lunit/osd-react-renderer@1.2.0-alpha.4) (2023-01-20)
 
 
