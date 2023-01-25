@@ -73,7 +73,7 @@ import { SVG_NAMESPACE, SVG_ROOT_ID } from '../constants'
     node: function () {
       return this._node
     },
-
+  
     resize: function () {
       if (this._containerWidth !== this._viewer.container.clientWidth) {
         this._containerWidth = this._viewer.container.clientWidth
