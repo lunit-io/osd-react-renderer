@@ -770,9 +770,7 @@ declare module "openseadragonV2" {
     rotationMode?: boolean;
   };
 
-  export type SVGOptions = OverlayOptions & {
-    initializeSVGSubElements?: (svgNameSpace:SVGNameSpace) => SVGElement[]
-  }
+  export type SVGOptions = OverlayOptions & {}
 
   export class Overlay {
     constructor(options: OverlayOptions);
@@ -1380,9 +1378,7 @@ declare module "openseadragonV2" {
     }) => void;
     canvasOverlay: (options?: { onRedraw: () => void }) => CanvasOverlay;
     webGLOverlay: (options?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
-    svgOverlay:(options?:{
-      initializeSVGSubElements: (svgNameSpace:SVGNameSpace) => SVGElement[]
-    }) => SVGOverlay;
+    svgOverlay:() => SVGOverlay;
     tooltipOverlay: (option?: {
       onRedraw: () => void;
       redrawOnUpdateViewport?: boolean;

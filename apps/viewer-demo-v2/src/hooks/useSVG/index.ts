@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { SVGNameSpace } from 'packages/renderer/dist/types'
+import { useEffect, useRef, useState } from 'react'
+import { SVG_NAMESPACE, SVG_ROOT_ID } from '@lunit/osd-react-renderer'
 import data from '../../gridData'
 
 const offset = {
@@ -11,6 +11,7 @@ const offset = {
 function useSVG() {
   const [visible, setVisible] = useState([true, true, true])
   const [allVisible, setAllVisible] = useState(true)
+  const svgWasInitializedRef = useRef(false)
 
   const svgData = data.map(group => {
     const size = {
@@ -32,43 +33,49 @@ function useSVG() {
     }
   })
 
-  function initializeSVGSubElements(svgNameSpace: SVGNameSpace): SVGElement[] {
-    return svgData.map(gridGroup => {
-      const group = document.createElementNS(svgNameSpace, 'g')
-      group.setAttribute('id', gridGroup.id)
-      group.setAttribute('fill', gridGroup.color)
-      group.setAttribute('opacity', '0.5')
+  useEffect(() => {
+    if (!!svgData && !svgWasInitializedRef.current) {
+      svgData.forEach(gridGroup => {
+        const group = document.createElementNS(SVG_NAMESPACE, 'g')
+        group.setAttribute('id', gridGroup.id)
+        group.setAttribute('fill', gridGroup.color)
+        group.setAttribute('opacity', '0.5')
 
-      gridGroup.children.forEach(childRect => {
-        const rect = document.createElementNS(svgNameSpace, 'rect')
+        gridGroup.children.forEach(childRect => {
+          const rect = document.createElementNS(SVG_NAMESPACE, 'rect')
 
-        rect.setAttribute(
-          'x',
-          (
-            (childRect.x * gridGroup.size.x) / offset.scale +
-            offset.x
-          ).toString()
-        )
-        rect.setAttribute(
-          'y',
-          (
-            (childRect.y * gridGroup.size.y) / offset.scale +
-            offset.y
-          ).toString()
-        )
-        rect.setAttribute(
-          'width',
-          ((childRect.w * gridGroup.size.x) / offset.scale).toString()
-        )
-        rect.setAttribute(
-          'height',
-          ((childRect.h * gridGroup.size.y) / offset.scale).toString()
-        )
-        group.appendChild(rect)
+          rect.setAttribute(
+            'x',
+            (
+              (childRect.x * gridGroup.size.x) / offset.scale +
+              offset.x
+            ).toString()
+          )
+          rect.setAttribute(
+            'y',
+            (
+              (childRect.y * gridGroup.size.y) / offset.scale +
+              offset.y
+            ).toString()
+          )
+          rect.setAttribute(
+            'width',
+            ((childRect.w * gridGroup.size.x) / offset.scale).toString()
+          )
+          rect.setAttribute(
+            'height',
+            ((childRect.h * gridGroup.size.y) / offset.scale).toString()
+          )
+          group.appendChild(rect)
+        })
+        const svgRoot = document.getElementById(SVG_ROOT_ID)
+        if (svgRoot) {
+          svgRoot.appendChild(group)
+        }
       })
-      return group
-    })
-  }
+      svgWasInitializedRef.current = true
+    }
+  }, [svgData])
 
   // Hide svg sub-elements handler
   useEffect(() => {
@@ -105,7 +112,6 @@ function useSVG() {
     svgData,
     setSVGAllVisible,
     setSVGSubVisibility,
-    initializeSVGSubElements,
     updateSVGSubElements,
   }
 }
