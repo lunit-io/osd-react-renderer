@@ -8,7 +8,6 @@ export type {
   SVGOverlayProps,
   SVGNameSpace,
   MouseTrackerProps,
-  OffscreenOverlayProps,
   OSDViewerRef,
 } from './types/index'
 

@@ -7,7 +7,6 @@ import Scalebar from './Scalebar'
 import CanvasOverlay from './CanvasOverlay'
 import TooltipOverlay from './TooltipOverlay'
 import MouseTracker from './MouseTracker'
-import OffscreenOverlay from './OffscreenOverlay'
 import WebGLOverlay from './WebGLOverlay'
 import SVGOverlay from './SVGOverlay'
 
@@ -20,7 +19,6 @@ const ElementConstructors = {
   webGLOverlay: WebGLOverlay,
   svgOverlay: SVGOverlay,
   tooltipOverlay: TooltipOverlay,
-  offscreenOverlay: OffscreenOverlay,
   root: Root,
 }
 
