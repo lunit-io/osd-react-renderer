@@ -41,21 +41,21 @@
     "react-reconciler": "^0.26.2"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "@types/offscreencanvas": "^2019.7.0",
-    "@types/openseadragon": "^3.0.3",
-    "@types/react-reconciler": "^0.26.3",
-    "jest": "^27.0.6",
+    "@types/jest": "^27.5.2",
+    "@types/offscreencanvas": "^2019.7.1",
+    "@types/openseadragon": "^3.0.7",
+    "@types/react-reconciler": "^0.26.7",
+    "jest": "^27.5.1",
     "microbundle": "^0.14.2",
     "openseadragon": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "ts-jest": "^27.0.5"
+    "ts-jest": "^27.1.5"
   },
   "peerDependencies": {
     "openseadragon": ">=2.4",
-    "react": "^16.8.0  || ^17.0.0",
-    "react-dom": "^16.8.0  || ^17.0.0"
+    "react": "^17.0.0  || ^18.2.0",
+    "react-dom": "^17.0.0  || ^18.2.0"
   },
   "bugs": {
     "url": "https://github.com/lunit-io/osd-react-renderer/issues"
