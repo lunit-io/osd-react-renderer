@@ -13,12 +13,19 @@ import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
 import Webworker from './workers/WebWorker'
 import offscreenWorker from './workers/offscreen.worker'
-
-const tiledImageSource = {
-  url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
-  tileUrlBase:
-    'https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
-}
+import useWebGL from './hooks/useWebGL'
+import useSVG from './hooks/useSVG'
+import {
+  DEFAULT_CONTROLLER_MAX_ZOOM,
+  DEFAULT_CONTROLLER_MIN_ZOOM,
+  DEMO_MPP,
+  MICRONS_PER_METER,
+  RADIUS_UM,
+  TILED_IMAGE_SOURCE,
+  VIEWER_OPTIONS,
+  WHEEL_BUTTON,
+} from './const'
+import MultiWebGL from './multiWebGL/MultiWebGL'
 
 const Container = styled.div`
   width: 100%;
@@ -49,34 +56,6 @@ const Links = styled.div`
     display: block;
   }
 `
-
-const DEFAULT_CONTROLLER_MIN_ZOOM: number = 0.3125
-const DEFAULT_CONTROLLER_MAX_ZOOM: number = 160
-const DEMO_MPP = 0.263175
-const MICRONS_PER_METER = 1e6
-const RADIUS_UM = 281.34
-const VIEWER_OPTIONS = {
-  imageLoaderLimit: 8,
-  smoothTileEdgesMinZoom: Infinity,
-  showNavigator: true,
-  showNavigationControl: false,
-  timeout: 60000,
-  navigatorAutoResize: false,
-  preserveImageSizeOnResize: true,
-  showRotationControl: true,
-  zoomPerScroll: 1.3,
-  animationTime: 0.3,
-  gestureSettingsMouse: {
-    clickToZoom: false,
-    dblClickToZoom: false,
-  },
-  gestureSettingsTouch: {
-    flickEnabled: false,
-    clickToZoom: false,
-    dblClickToZoom: false,
-  },
-}
-const WHEEL_BUTTON = 1
 
 const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
   canvas: HTMLCanvasElement
@@ -123,6 +102,11 @@ function App() {
   const lastPoint = useRef<OpenSeadragon.Point | null>(null)
   const prevDelta = useRef<OpenSeadragon.Point | null>(null)
   const prevTime = useRef<number>(-1)
+
+  const webGLOverlayRef = useRef(null)
+
+  const { onWebGLOverlayRedraw } = useWebGL()
+  const { setSVGSubVisibility, setSVGAllVisible } = useSVG()
 
   useEffect(() => {
     // @ts-ignore
@@ -282,6 +266,9 @@ function App() {
           <NavLink to="/offscreen">OFFSCREEN</NavLink>
           <NavLink to="/test">TEST</NavLink>
           <NavLink to="/destroy">TEST DESTROY</NavLink>
+          <NavLink to="/webgl">TEST WEBGL</NavLink>
+          <NavLink to="/multi-webgl">TEST MULTI WEBGL</NavLink>
+          <NavLink to="/svg">SVG</NavLink>
         </Links>
         <Switch>
           <OSDContainer>
@@ -302,7 +289,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage {...tiledImageSource} />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -321,7 +308,7 @@ function App() {
             </Route>
             <Route exact path="/test-custom">
               <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
-                <tiledImage {...tiledImageSource} />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
               </OSDViewer>
             </Route>
             <Route exact path="/">
@@ -341,7 +328,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage {...tiledImageSource} />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -389,7 +376,7 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage {...tiledImageSource} />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
                 <scalebar
                   pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
                   xOffset={10}
@@ -420,12 +407,96 @@ function App() {
                   maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
                   minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
                 />
-                <tiledImage {...tiledImageSource} />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
                 <mouseTracker
                   onLeave={handleMouseTrackerLeave}
                   onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
                   onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
                   onMove={handleMouseTrackerMove}
+                />
+              </OSDViewer>
+            </Route>
+            <Route exact path="/webgl">
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
+                <scalebar
+                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  xOffset={10}
+                  yOffset={30}
+                  barThickness={3}
+                  color="#443aff"
+                  fontColor="#53646d"
+                  backgroundColor={'rgba(255,255,255,0.5)'}
+                  location={ScalebarLocation.BOTTOM_RIGHT}
+                />
+                <webGLOverlay
+                  ref={webGLOverlayRef}
+                  onRedraw={onWebGLOverlayRedraw}
+                />
+              </OSDViewer>
+            </Route>
+            <MultiWebGL />
+            <Route exact path="/svg">
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <button onClick={setSVGAllVisible}>svg visible</button>
+                <button onClick={() => setSVGSubVisibility(0)}>
+                  svg sub 1
+                </button>
+                <button onClick={() => setSVGSubVisibility(1)}>
+                  svg sub 2
+                </button>
+                <button onClick={() => setSVGSubVisibility(2)}>
+                  svg sub 3
+                </button>
+              </div>
+              <OSDViewer
+                options={VIEWER_OPTIONS}
+                ref={osdViewerRef}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <viewport
+                  zoom={viewportZoom}
+                  refPoint={refPoint}
+                  rotation={rotation}
+                  onOpen={handleViewportOpen}
+                  onResize={handleViewportResize}
+                  onRotate={handleViewportRotate}
+                  onZoom={handleViewportZoom}
+                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
+                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                />
+                <tiledImage {...TILED_IMAGE_SOURCE.bladder_svs} />
+                <svgOverlay />
+                <mouseTracker
+                  onLeave={handleMouseTrackerLeave}
+                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+                  onMove={handleMouseTrackerMove}
+                />
+                <scalebar
+                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  xOffset={10}
+                  yOffset={30}
+                  barThickness={3}
+                  color="#443aff"
+                  fontColor="#53646d"
+                  backgroundColor={'rgba(255,255,255,0.5)'}
+                  location={ScalebarLocation.BOTTOM_RIGHT}
                 />
               </OSDViewer>
             </Route>
