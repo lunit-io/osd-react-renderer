@@ -6,6 +6,7 @@ import Base from './Base'
 // This WebGLOverlay is only a canvas overlay, with a webgl context. Everything else is the same.
 
 declare module 'openseadragon' {
+  // The type signature of the Class
   interface WebGLOverlay extends OpenSeadragon.Overlay {
     forceRedraw(): void
     reset(): void
@@ -14,17 +15,35 @@ declare module 'openseadragon' {
     contextGL(): WebGL2RenderingContext
     context2D(): CanvasRenderingContext2D
     onRedraw?: (x: number, y: number, zoom: number) => void
+    addHandlers(): void
   }
 
+  // The type Viewer has attached to it
+  type webGLOverlay = (options?: {
+    onRedraw?: (x: number, y: number, zoom: number) => void
+    canvasID?: string
+    glCanvasID?: string
+    overlayID: string
+  }) => WebGLOverlay
+
   interface Viewer {
-    webGLOverlay: (options?: {
+    newWebGLOverlay: (options?: {
       onRedraw?: (x: number, y: number, zoom: number) => void
+      canvasID?: string
+      glCanvasID?: string
+      overlayID: string
     }) => WebGLOverlay
+    webGLOverlays: Record<string, WebGLOverlay>
     webGLOverlayExists: () => boolean
   }
 }
 
-const defaultOptions: WebGLOverlayProps = { onRedraw: (_, __) => {} }
+const defaultOptions: WebGLOverlayProps = {
+  onRedraw: (_, __) => {},
+  canvasID: 'webgl-overlay-2d-canvas',
+  glCanvasID: 'webgl-overlay-gl-canvas',
+  overlayID: 'webgl-overlay',
+}
 
 class WebGLOverlay extends Base {
   props: WebGLOverlayProps
@@ -46,10 +65,21 @@ class WebGLOverlay extends Base {
 
   constructor(viewer: OpenSeadragon.Viewer, props: WebGLOverlayProps) {
     super(viewer)
-    this._overlay = this.viewer.webGLOverlay({
+
+    const newOverlay = this.viewer.newWebGLOverlay({
       onRedraw: (_, __) => {},
+      canvasID: props.canvasID,
+      glCanvasID: props.glCanvasID,
+      overlayID: props.overlayID,
     })
+    if (typeof this.viewer.webGLOverlays === 'undefined') {
+      this.viewer.webGLOverlays = {}
+    }
+
+    this.viewer.webGLOverlays[props.overlayID] = newOverlay
+    this._overlay = newOverlay
     this.props = { ...defaultOptions, ...props }
+    // this._overlay.addHandlers()
   }
 
   commitUpdate(props: WebGLOverlayProps): void {
@@ -58,6 +88,7 @@ class WebGLOverlay extends Base {
     if (oldRedraw !== props.onRedraw) {
       this._setOnRedraw()
     }
+    // this._overlay.addHandlers()
   }
 
   private _setOnRedraw(): void {
@@ -65,6 +96,7 @@ class WebGLOverlay extends Base {
       viewer,
       props: { onRedraw },
     } = this
+
     const canvas = this.overlay.canvas()
     const glCanvas = this.overlay.glCanvas()
     this.overlay.onRedraw = (x: number, y: number, zoom: number) => {

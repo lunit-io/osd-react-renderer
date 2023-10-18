@@ -2,7 +2,7 @@ import { circleSource, vertexAttributeConfig } from './const'
 import { hexToRgbVector, makeColouredTiles, setProgram } from './func'
 import { Origin, WebGLTileData } from './types'
 
-function useMultiWebGL() {
+function useTheOtherWebGL() {
   let program: WebGLProgram | undefined
   let positionAttrLocation: number
   let resolutionUniformLocation: WebGLUniformLocation | null
@@ -85,44 +85,7 @@ function useMultiWebGL() {
     )
   }
 
-  function onWebGLOverlayRedraw(
-    glCanvas: HTMLCanvasElement,
-    normalCanvas: HTMLCanvasElement
-  ) {
-    const origin = { x: 0, y: 0, zoom: 1 }
-    const gl = glCanvas.getContext('webgl2', {
-      antialias: true,
-      premultipliedAlpha: false,
-    })
-    const ctx = normalCanvas.getContext('2d')
-    if (!gl) {
-      console.log('failed to load webgl context')
-      return
-    }
-    if (!ctx) {
-      console.log('failed to load 2d context')
-      return
-    }
-    performance.mark('webgl-start')
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-    const greenTiles = makeColouredTiles(300_000, 1000, 1400)[0]
-
-    drawWithWebGL(
-      gl,
-      ctx,
-      { ...greenTiles, color: hexToRgbVector(greenTiles.color) },
-      origin
-    )
-    performance.mark('webgl-end')
-    performance.measure('webgl-one', 'webgl-start', 'webgl-end')
-    performance.getEntriesByName('webgl-one').forEach(entry => {
-      if (entry.duration) {
-        console.debug(entry.name, entry.duration)
-      }
-    })
-    performance.clearMeasures()
-  }
-  // function onWebGLOverlayOverlayRedraw(
+  // function onWebGLOverlayRedraw(
   //   glCanvas: HTMLCanvasElement,
   //   normalCanvas: HTMLCanvasElement
   // ) {
@@ -142,26 +105,63 @@ function useMultiWebGL() {
   //   }
   //   performance.mark('webgl-start')
   //   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-  //   const redTiles = makeColouredTiles(300_000, 1000, 1400)[1]
+  //   const greenTiles = makeColouredTiles(300_000, 1000, 1400)[0]
 
   //   drawWithWebGL(
   //     gl,
   //     ctx,
-  //     { ...redTiles, color: hexToRgbVector(redTiles.color) },
+  //     { ...greenTiles, color: hexToRgbVector(greenTiles.color) },
   //     origin
   //   )
   //   performance.mark('webgl-end')
-  //   performance.measure('webgl-two', 'webgl-start', 'webgl-end')
-  //   performance.getEntriesByName('webgl-two').forEach(entry => {
+  //   performance.measure('webgl-one', 'webgl-start', 'webgl-end')
+  //   performance.getEntriesByName('webgl-one').forEach(entry => {
   //     if (entry.duration) {
   //       console.debug(entry.name, entry.duration)
   //     }
   //   })
   //   performance.clearMeasures()
   // }
+  function onWebGLOverlayOverlayRedraw(
+    glCanvas: HTMLCanvasElement,
+    normalCanvas: HTMLCanvasElement
+  ) {
+    const origin = { x: 0, y: 0, zoom: 1 }
+    const gl = glCanvas.getContext('webgl2', {
+      antialias: true,
+      premultipliedAlpha: false,
+    })
+    const ctx = normalCanvas.getContext('2d')
+    if (!gl) {
+      console.log('failed to load webgl context')
+      return
+    }
+    if (!ctx) {
+      console.log('failed to load 2d context')
+      return
+    }
+    performance.mark('webgl-start')
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    const redTiles = makeColouredTiles(300_000, 1000, 1400)[1]
+
+    drawWithWebGL(
+      gl,
+      ctx,
+      { ...redTiles, color: hexToRgbVector(redTiles.color) },
+      origin
+    )
+    performance.mark('webgl-end')
+    performance.measure('webgl-two', 'webgl-start', 'webgl-end')
+    performance.getEntriesByName('webgl-two').forEach(entry => {
+      if (entry.duration) {
+        console.debug(entry.name, entry.duration)
+      }
+    })
+    performance.clearMeasures()
+  }
 
   return {
-    onWebGLOverlayRedraw,
+    onWebGLOverlayOverlayRedraw,
   }
 }
-export default useMultiWebGL
+export default useTheOtherWebGL

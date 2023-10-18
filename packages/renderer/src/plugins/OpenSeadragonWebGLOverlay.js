@@ -5,22 +5,30 @@ import OpenSeadragon from 'openseadragon'
 // By Toby
 ;(function () {
   // ----------
-  OpenSeadragon.Viewer.prototype.webGLOverlay = function (options) {
-    if (this._webGLOverlayInfo) {
-      return this._webGLOverlayInfo
-    }
+  console.log('this weird-ass function')
+  OpenSeadragon.Viewer.prototype.newWebGLOverlay = function (options) {
+    console.log('newWebGLOverlay, maybe')
 
-    this._webGLOverlayInfo = new Overlay(this, options)
-    return this._webGLOverlayInfo
+    // if (this._webGLOverlayInfo) {
+    //   return this._webGLOverlayInfo
+    // }
+
+    // this._webGLOverlayInfo = new Overlay(this, options)
+    // return this._webGLOverlayInfo
+
+    // TODO - return the existing overlay from webGLOverlays obj if it exists, else
+
+    return new Overlay(this, options)
   }
 
   OpenSeadragon.Viewer.prototype.webGLOverlayExists = function () {
     return !!this._webGLOverlayInfo
   }
 
-  // ----------
   var Overlay = function (viewer, options) {
+    console.log('Overlay', options.overlayID)
     var self = this
+
     this._viewer = viewer
 
     this._containerWidth = 0
@@ -34,8 +42,13 @@ import OpenSeadragon from 'openseadragon'
     this._canvasdiv.style.height = '100%'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
+    const canvasID = options.canvasID || 'webgl-overlay-2d-canvas-id'
+    const glID = options.glCanvasID || 'webgl-overlay-gl-canvas-id'
+
     this._canvas = document.createElement('canvas')
+    this._canvas.setAttribute('id', canvasID)
     this._glCanvas = document.createElement('canvas')
+    this._glCanvas.setAttribute('id', glID)
     this._canvasdiv.appendChild(this._canvas)
     this._open = false
 
@@ -66,6 +79,7 @@ import OpenSeadragon from 'openseadragon'
         self._open = false
       }
     })
+    console.log('end of Overlay function')
   }
 
   // ----------
@@ -157,5 +171,29 @@ import OpenSeadragon from 'openseadragon'
       this._canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0)
       this.onRedraw(x, y, zoom)
     },
+    // addHandlers: function () {
+    //   console.log('adding handlers...', this)
+    //   this._viewer.addHandler('viewport-change', function () {
+    //     this.resize()
+    //     this._updateCanvas()
+    //   })
+
+    //   this._viewer.addHandler('resize', function () {
+    //     this.resize()
+    //     this._updateCanvas()
+    //   })
+
+    //   this._viewer.addHandler('open', function () {
+    //     this._open = true
+    //     this.resize()
+    //     this._updateCanvas()
+    //   })
+
+    //   this._viewer.addHandler('close', function () {
+    //     if (this) {
+    //       this._open = false
+    //     }
+    //   })
+    // },
   }
 })()

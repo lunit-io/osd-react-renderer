@@ -6,7 +6,8 @@ import OSDViewer, {
   ScalebarLocation,
   ViewportProps,
   OSDViewerRef,
-} from '@lunit/osd-react-renderer'
+  CanvasOverlayProps,
+} from '../../../../packages/renderer/src'
 
 import Webworker from '../workers/WebWorker'
 import offscreenWorker from '../workers/offscreen.worker'
@@ -20,22 +21,25 @@ import {
   VIEWER_OPTIONS,
 } from '../const'
 import useMultiWebGL from './useMultiWebGL'
+import useTheOtherWebGL from './useTheOtherWebGL'
 
 const MultiWebGL = () => {
   const [viewportZoom, setViewportZoom] = useState<number>(1)
   const [refPoint, setRefPoint] = useState<OpenSeadragon.Point>()
   const [rotation, setRotation] = useState<number>(0)
   const [scaleFactor, setScaleFactor] = useState<number>(1)
-  // const [rectSize, setRectSize] = useState<[number, number]>([5000, 5000])
 
   const [worker, setWorker] = useState<Worker>()
 
   const osdViewerRef = useRef<OSDViewerRef>(null)
 
+  const canvasOverlayRef = useRef(null)
+
   const webGLOverlayRef = useRef(null)
   const webGLOverlayOverlayRef = useRef(null)
 
-  const { onWebGLOverlayRedraw, onWebGLOverlayOverlayRedraw } = useMultiWebGL()
+  const { onWebGLOverlayRedraw } = useMultiWebGL()
+  const { onWebGLOverlayOverlayRedraw } = useTheOtherWebGL()
 
   useEffect(() => {
     // @ts-ignore
@@ -44,6 +48,16 @@ const MultiWebGL = () => {
       worker?.terminate()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleUpdatedCanvasOverlayRedraw = useCallback<
+    NonNullable<CanvasOverlayProps['onRedraw']>
+  >((canvas: HTMLCanvasElement) => {
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.fillStyle = 'rgba(0,0,0,0.3)'
+      ctx.fillRect(50, 50, 5000, 5000)
+    }
   }, [])
 
   const refreshScaleFactor = useCallback(() => {
@@ -122,10 +136,23 @@ const MultiWebGL = () => {
           backgroundColor={'rgba(255,255,255,0.5)'}
           location={ScalebarLocation.BOTTOM_RIGHT}
         />
-        <webGLOverlay ref={webGLOverlayRef} onRedraw={onWebGLOverlayRedraw} />
+        <canvasOverlay
+          ref={canvasOverlayRef}
+          onRedraw={handleUpdatedCanvasOverlayRedraw}
+        />
         <webGLOverlay
+          overlayID="green-cells-overlay"
+          ref={webGLOverlayRef}
+          onRedraw={onWebGLOverlayRedraw}
+          canvasID="green-cells-overlay"
+          glCanvasID="green-cells-gl"
+        />
+        <webGLOverlay
+          overlayID="red-cells-overlay"
           ref={webGLOverlayOverlayRef}
           onRedraw={onWebGLOverlayOverlayRedraw}
+          canvasID="red-cells-overlay"
+          glCanvasID="red-cells-gl"
         />
       </OSDViewer>
     </Route>

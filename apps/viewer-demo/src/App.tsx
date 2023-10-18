@@ -5,7 +5,7 @@ import OSDViewer, {
   CanvasOverlayProps,
   MouseTrackerProps,
   OSDViewerRef,
-} from '@lunit/osd-react-renderer'
+} from '../../../packages/renderer/src'
 import OpenSeadragon from 'openseadragon'
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -445,6 +445,7 @@ function App() {
                   location={ScalebarLocation.BOTTOM_RIGHT}
                 />
                 <webGLOverlay
+                  overlayID="single-webgl-overlay"
                   ref={webGLOverlayRef}
                   onRedraw={onWebGLOverlayRedraw}
                 />
