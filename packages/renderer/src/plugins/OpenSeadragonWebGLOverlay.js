@@ -12,20 +12,33 @@ import OpenSeadragon from 'openseadragon'
       OpenSeadragon.Viewer.prototype.webGLOverlays &&
       OpenSeadragon.Viewer.prototype.webGLOverlays[options.overlayID]
     ) {
-      return existingOverlays[options.overlayID]
+      return OpenSeadragon.Viewer.prototype.webGLOverlays[options.overlayID]
     }
 
     const newOverlay = new Overlay(this, options)
+    this._overlayID = options.overlayID
 
     OpenSeadragon.Viewer.prototype.webGLOverlays = {
       ...OpenSeadragon.Viewer.prototype.webGLOverlays,
-      [options.overlayID]: newOverlay,
+      [this._overlayID]: newOverlay,
     }
     return newOverlay
   }
 
-  OpenSeadragon.Viewer.prototype.webGLOverlayExists = function () {
-    return !!this._webGLOverlayInfo
+  OpenSeadragon.Viewer.prototype.webGLOverlaysExist = function (overlayID) {
+    if (!OpenSeadragon.Viewer.prototype.webGLOverlays) return false
+    return Object.keys(OpenSeadragon.Viewer.prototype.webGLOverlays).length > 0
+  }
+
+  OpenSeadragon.Viewer.prototype.destroyWebGLOverlays = function () {
+    if (!OpenSeadragon.Viewer.prototype.webGLOverlays) return
+    Object.keys(OpenSeadragon.Viewer.prototype.webGLOverlays).forEach(
+      overlayID => {
+        OpenSeadragon.Viewer.prototype.webGLOverlays[overlayID].destroy()
+        delete OpenSeadragon.Viewer.prototype.webGLOverlays[overlayID]
+      }
+    )
+    OpenSeadragon.Viewer.prototype.webGLOverlays = null
   }
 
   var Overlay = function (viewer, options) {
@@ -127,6 +140,9 @@ import OpenSeadragon from 'openseadragon'
       this._canvasdiv = null
       this._canvas = null
       this._glCanvas = null
+
+      this._viewer.webGLOverlays[this._overlayID] = null
+      this._overlayID = null
       this._viewer = null
     },
     // ----------

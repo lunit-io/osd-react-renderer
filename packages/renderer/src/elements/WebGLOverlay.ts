@@ -18,19 +18,14 @@ declare module 'openseadragon' {
     addHandlers(): void
   }
 
-  // The type Viewer has attached to it
-  type webGLOverlay = (options?: {
-    onRedraw?: (x: number, y: number, zoom: number) => void
-    overlayID?: string
-  }) => WebGLOverlay
-
   interface Viewer {
     newWebGLOverlay: (options?: {
       onRedraw?: (x: number, y: number, zoom: number) => void
       overlayID?: string
     }) => WebGLOverlay
     webGLOverlays: Record<string, WebGLOverlay>
-    webGLOverlayExists: () => boolean
+    webGLOverlaysExist: () => boolean
+    destroyWebGLOverlays: () => void
   }
 }
 
