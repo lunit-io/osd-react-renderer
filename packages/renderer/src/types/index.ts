@@ -220,6 +220,7 @@ export interface CanvasOverlayProps extends NodeProps {
     overlayCanvasEl: HTMLCanvasElement,
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
   ) => void
+  overlayID?: string
 }
 export interface OffscreenOverlayProps extends NodeProps {
   worker: Worker | undefined

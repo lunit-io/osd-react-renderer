@@ -4,13 +4,22 @@ import OpenSeadragon from 'openseadragon'
 // OpenSeadragon canvas Overlay plugin 0.0.2 based on svg overlay plugin
 ;(function () {
   // ----------
-  OpenSeadragon.Viewer.prototype.canvasOverlay = function (options) {
-    if (this._canvasOverlayInfo) {
-      return this._canvasOverlayInfo
+  OpenSeadragon.Viewer.prototype.newCanvasOverlay = function (options) {
+    // Check for existence to prevent unwanted clones
+    if (
+      OpenSeadragon.Viewer.prototype.canvasOverlays &&
+      OpenSeadragon.Viewer.prototype.canvasOverlays[options.overlayID]
+    ) {
+      return OpenSeadragon.Viewer.prototype.canvasOverlays[options.overlayID]
     }
 
-    this._canvasOverlayInfo = new Overlay(this, options)
-    return this._canvasOverlayInfo
+    const newOverlay = new Overlay(this, options)
+
+    OpenSeadragon.Viewer.prototype.canvasOverlays = {
+      ...OpenSeadragon.Viewer.prototype.canvasOverlays,
+      [options.overlayID]: newOverlay,
+    }
+    return newOverlay
   }
 
   OpenSeadragon.Viewer.prototype.canvasOverlayExists = function () {
@@ -33,7 +42,12 @@ import OpenSeadragon from 'openseadragon'
     this._canvasdiv.style.height = '100%'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
+    const canvasID = options.overlayID
+      ? `${options.overlayID}-2d-canvas`
+      : 'canvas-overlay-2d-canvas'
+
     this._canvas = document.createElement('canvas')
+    this._canvas.setAttribute('id', canvasID)
     this._canvasdiv.appendChild(this._canvas)
     this._open = false
 

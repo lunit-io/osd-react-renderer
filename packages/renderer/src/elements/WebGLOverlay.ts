@@ -15,7 +15,6 @@ declare module 'openseadragon' {
     contextGL(): WebGL2RenderingContext
     context2D(): CanvasRenderingContext2D
     onRedraw?: (x: number, y: number, zoom: number) => void
-    addHandlers(): void
   }
 
   interface Viewer {

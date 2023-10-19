@@ -26,6 +26,7 @@ import {
   WHEEL_BUTTON,
 } from './const'
 import MultiWebGL from './multiWebGL/MultiWebGL'
+import MultiCanvas from './multiCanvas/MultiCanvas'
 
 const Container = styled.div`
   width: 100%;
@@ -268,6 +269,7 @@ function App() {
           <NavLink to="/destroy">TEST DESTROY</NavLink>
           <NavLink to="/webgl">TEST WEBGL</NavLink>
           <NavLink to="/multi-webgl">TEST MULTI WEBGL</NavLink>
+          <NavLink to="/multi-2d">TEST MULTI 2D-CANVAS</NavLink>
           <NavLink to="/svg">SVG</NavLink>
         </Links>
         <Switch>
@@ -452,6 +454,7 @@ function App() {
               </OSDViewer>
             </Route>
             <MultiWebGL />
+            <MultiCanvas />
             <Route exact path="/svg">
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <button onClick={setSVGAllVisible}>svg visible</button>
