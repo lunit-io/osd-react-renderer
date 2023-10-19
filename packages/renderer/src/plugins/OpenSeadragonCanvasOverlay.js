@@ -14,16 +14,29 @@ import OpenSeadragon from 'openseadragon'
     }
 
     const newOverlay = new Overlay(this, options)
+    this._overlayID = options.overlayID
 
     OpenSeadragon.Viewer.prototype.canvasOverlays = {
       ...OpenSeadragon.Viewer.prototype.canvasOverlays,
-      [options.overlayID]: newOverlay,
+      [this._overlayID]: newOverlay,
     }
     return newOverlay
   }
 
-  OpenSeadragon.Viewer.prototype.canvasOverlayExists = function () {
-    return !!this._canvasOverlayInfo
+  OpenSeadragon.Viewer.prototype.canvasOverlaysExist = function (overlayID) {
+    if (!OpenSeadragon.Viewer.prototype.canvasOverlays) return false
+    return Object.keys(OpenSeadragon.Viewer.prototype.canvasOverlays).length > 0
+  }
+
+  OpenSeadragon.Viewer.prototype.destroyCanvasOverlays = function () {
+    if (!OpenSeadragon.Viewer.prototype.canvasOverlays) return
+    Object.keys(OpenSeadragon.Viewer.prototype.canvasOverlays).forEach(
+      overlayID => {
+        OpenSeadragon.Viewer.prototype.canvasOverlays[overlayID].destroy()
+        delete OpenSeadragon.Viewer.prototype.canvasOverlays[overlayID]
+      }
+    )
+    OpenSeadragon.Viewer.prototype.canvasOverlays = null
   }
 
   // ----------
@@ -110,6 +123,8 @@ import OpenSeadragon from 'openseadragon'
       this.onRedraw = null
       this._canvasdiv = null
       this._canvas = null
+      this._viewer.canvasOverlays[this._overlayID] = null
+      this._overlayID = null
       this._viewer = null
     },
     // ----------

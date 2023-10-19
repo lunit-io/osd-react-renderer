@@ -156,11 +156,7 @@ const ReactOSDDOM = {
     tmpContainer?.containerInfo?.children?.forEach((child: any) => {
       child?.destroy()
     })
-    if (viewer?.canvasOverlayExists()) {
-      Object.keys(viewer?.canvasOverlays).forEach((id: string) => {
-        viewer?.canvasOverlays[id].destroy()
-      })
-    }
+    if (viewer?.canvasOverlaysExist()) viewer?.destroyCanvasOverlays()
     if (viewer?.tooltipOverlayExists()) viewer?.tooltipOverlay().destroy()
     if (viewer?.offscreenOverlayExists()) viewer?.offscreenOverlay().destroy()
     if (viewer?.webGLOverlaysExist()) viewer?.destroyWebGLOverlays()

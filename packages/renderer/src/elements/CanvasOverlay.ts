@@ -11,17 +11,14 @@ declare module 'openseadragon' {
     onRedraw?: () => void
   }
 
-  type canvasOverlayConstructor = (options?: {
-    onRedraw?: () => void
-    overlayID?: string
-  }) => CanvasOverlay
   interface Viewer {
     newCanvasOverlay: (options?: {
       onRedraw?: () => void
       overlayID?: string
     }) => CanvasOverlay
     canvasOverlays: Record<string, CanvasOverlay>
-    canvasOverlayExists: () => boolean
+    canvasOverlaysExist: () => boolean
+    destroyCanvasOverlays: () => void
   }
 }
 
