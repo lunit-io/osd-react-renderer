@@ -144,15 +144,11 @@ const MultiWebGL = () => {
           overlayID="green-cells-overlay"
           ref={webGLOverlayRef}
           onRedraw={onWebGLOverlayRedraw}
-          canvasID="green-cells-overlay"
-          glCanvasID="green-cells-gl"
         />
         <webGLOverlay
           overlayID="red-cells-overlay"
           ref={webGLOverlayOverlayRef}
           onRedraw={onWebGLOverlayOverlayRedraw}
-          canvasID="red-cells-overlay"
-          glCanvasID="red-cells-gl"
         />
       </OSDViewer>
     </Route>

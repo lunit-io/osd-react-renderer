@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { SVG_NAMESPACE, SVG_ROOT_ID } from '@lunit/osd-react-renderer'
+import {
+  SVG_NAMESPACE,
+  SVG_ROOT_ID,
+} from '../../../../../packages/renderer/src'
 import data from './gridData'
 
 const offset = {

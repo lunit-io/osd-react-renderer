@@ -242,9 +242,7 @@ export interface WebGLOverlayProps extends NodeProps {
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer,
     origin: { x: number; y: number; zoom: number }
   ) => void
-  overlayID: string
-  canvasID?: string
-  glCanvasID?: string
+  overlayID?: string
 }
 export type SVGNameSpace = 'http://www.w3.org/2000/svg'
 export interface SVGOverlayProps extends NodeProps {}

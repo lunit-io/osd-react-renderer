@@ -21,17 +21,13 @@ declare module 'openseadragon' {
   // The type Viewer has attached to it
   type webGLOverlay = (options?: {
     onRedraw?: (x: number, y: number, zoom: number) => void
-    canvasID?: string
-    glCanvasID?: string
-    overlayID: string
+    overlayID?: string
   }) => WebGLOverlay
 
   interface Viewer {
     newWebGLOverlay: (options?: {
       onRedraw?: (x: number, y: number, zoom: number) => void
-      canvasID?: string
-      glCanvasID?: string
-      overlayID: string
+      overlayID?: string
     }) => WebGLOverlay
     webGLOverlays: Record<string, WebGLOverlay>
     webGLOverlayExists: () => boolean
@@ -40,8 +36,6 @@ declare module 'openseadragon' {
 
 const defaultOptions: WebGLOverlayProps = {
   onRedraw: (_, __) => {},
-  canvasID: 'webgl-overlay-2d-canvas',
-  glCanvasID: 'webgl-overlay-gl-canvas',
   overlayID: 'webgl-overlay',
 }
 
@@ -66,20 +60,21 @@ class WebGLOverlay extends Base {
   constructor(viewer: OpenSeadragon.Viewer, props: WebGLOverlayProps) {
     super(viewer)
 
+    // Final 'webgl-overlay' exists to resolve ts string | undefined error
+    const overlayID =
+      props.overlayID || defaultOptions.overlayID || 'webgl-overlay'
+
     const newOverlay = this.viewer.newWebGLOverlay({
       onRedraw: (_, __) => {},
-      canvasID: props.canvasID,
-      glCanvasID: props.glCanvasID,
-      overlayID: props.overlayID,
+      overlayID,
     })
     if (typeof this.viewer.webGLOverlays === 'undefined') {
       this.viewer.webGLOverlays = {}
     }
 
-    this.viewer.webGLOverlays[props.overlayID] = newOverlay
+    this.viewer.webGLOverlays[overlayID] = newOverlay
     this._overlay = newOverlay
     this.props = { ...defaultOptions, ...props }
-    // this._overlay.addHandlers()
   }
 
   commitUpdate(props: WebGLOverlayProps): void {
@@ -88,7 +83,6 @@ class WebGLOverlay extends Base {
     if (oldRedraw !== props.onRedraw) {
       this._setOnRedraw()
     }
-    // this._overlay.addHandlers()
   }
 
   private _setOnRedraw(): void {

@@ -5,20 +5,23 @@ import OpenSeadragon from 'openseadragon'
 // By Toby
 ;(function () {
   // ----------
-  console.log('this weird-ass function')
+
   OpenSeadragon.Viewer.prototype.newWebGLOverlay = function (options) {
-    console.log('newWebGLOverlay, maybe')
+    // Check for existence to prevent unwanted clones
+    if (
+      OpenSeadragon.Viewer.prototype.webGLOverlays &&
+      OpenSeadragon.Viewer.prototype.webGLOverlays[options.overlayID]
+    ) {
+      return existingOverlays[options.overlayID]
+    }
 
-    // if (this._webGLOverlayInfo) {
-    //   return this._webGLOverlayInfo
-    // }
+    const newOverlay = new Overlay(this, options)
 
-    // this._webGLOverlayInfo = new Overlay(this, options)
-    // return this._webGLOverlayInfo
-
-    // TODO - return the existing overlay from webGLOverlays obj if it exists, else
-
-    return new Overlay(this, options)
+    OpenSeadragon.Viewer.prototype.webGLOverlays = {
+      ...OpenSeadragon.Viewer.prototype.webGLOverlays,
+      [options.overlayID]: newOverlay,
+    }
+    return newOverlay
   }
 
   OpenSeadragon.Viewer.prototype.webGLOverlayExists = function () {
@@ -26,7 +29,6 @@ import OpenSeadragon from 'openseadragon'
   }
 
   var Overlay = function (viewer, options) {
-    console.log('Overlay', options.overlayID)
     var self = this
 
     this._viewer = viewer
@@ -42,8 +44,12 @@ import OpenSeadragon from 'openseadragon'
     this._canvasdiv.style.height = '100%'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
-    const canvasID = options.canvasID || 'webgl-overlay-2d-canvas-id'
-    const glID = options.glCanvasID || 'webgl-overlay-gl-canvas-id'
+    const canvasID = options.overlayID
+      ? `${options.overlayID}-2d-canvas`
+      : 'webgl-overlay-2d-canvas'
+    const glID = options.overlayID
+      ? `${options.overlayID}-gl-canvas`
+      : 'webgl-overlay-gl-canvas'
 
     this._canvas = document.createElement('canvas')
     this._canvas.setAttribute('id', canvasID)
@@ -79,7 +85,6 @@ import OpenSeadragon from 'openseadragon'
         self._open = false
       }
     })
-    console.log('end of Overlay function')
   }
 
   // ----------
@@ -171,29 +176,5 @@ import OpenSeadragon from 'openseadragon'
       this._canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0)
       this.onRedraw(x, y, zoom)
     },
-    // addHandlers: function () {
-    //   console.log('adding handlers...', this)
-    //   this._viewer.addHandler('viewport-change', function () {
-    //     this.resize()
-    //     this._updateCanvas()
-    //   })
-
-    //   this._viewer.addHandler('resize', function () {
-    //     this.resize()
-    //     this._updateCanvas()
-    //   })
-
-    //   this._viewer.addHandler('open', function () {
-    //     this._open = true
-    //     this.resize()
-    //     this._updateCanvas()
-    //   })
-
-    //   this._viewer.addHandler('close', function () {
-    //     if (this) {
-    //       this._open = false
-    //     }
-    //   })
-    // },
   }
 })()
