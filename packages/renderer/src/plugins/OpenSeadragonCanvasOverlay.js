@@ -4,17 +4,39 @@ import OpenSeadragon from 'openseadragon'
 // OpenSeadragon canvas Overlay plugin 0.0.2 based on svg overlay plugin
 ;(function () {
   // ----------
-  OpenSeadragon.Viewer.prototype.canvasOverlay = function (options) {
-    if (this._canvasOverlayInfo) {
-      return this._canvasOverlayInfo
+  OpenSeadragon.Viewer.prototype.newCanvasOverlay = function (options) {
+    // Check for existence to prevent unwanted clones
+    if (
+      OpenSeadragon.Viewer.prototype.canvasOverlays &&
+      OpenSeadragon.Viewer.prototype.canvasOverlays[options.overlayID]
+    ) {
+      return OpenSeadragon.Viewer.prototype.canvasOverlays[options.overlayID]
     }
 
-    this._canvasOverlayInfo = new Overlay(this, options)
-    return this._canvasOverlayInfo
+    const newOverlay = new Overlay(this, options)
+    this._overlayID = options.overlayID
+
+    OpenSeadragon.Viewer.prototype.canvasOverlays = {
+      ...OpenSeadragon.Viewer.prototype.canvasOverlays,
+      [this._overlayID]: newOverlay,
+    }
+    return newOverlay
   }
 
-  OpenSeadragon.Viewer.prototype.canvasOverlayExists = function () {
-    return !!this._canvasOverlayInfo
+  OpenSeadragon.Viewer.prototype.canvasOverlaysExist = function (overlayID) {
+    if (!OpenSeadragon.Viewer.prototype.canvasOverlays) return false
+    return Object.keys(OpenSeadragon.Viewer.prototype.canvasOverlays).length > 0
+  }
+
+  OpenSeadragon.Viewer.prototype.destroyCanvasOverlays = function () {
+    if (!OpenSeadragon.Viewer.prototype.canvasOverlays) return
+    Object.keys(OpenSeadragon.Viewer.prototype.canvasOverlays).forEach(
+      overlayID => {
+        OpenSeadragon.Viewer.prototype.canvasOverlays[overlayID].destroy()
+        delete OpenSeadragon.Viewer.prototype.canvasOverlays[overlayID]
+      }
+    )
+    OpenSeadragon.Viewer.prototype.canvasOverlays = null
   }
 
   // ----------
@@ -33,7 +55,12 @@ import OpenSeadragon from 'openseadragon'
     this._canvasdiv.style.height = '100%'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
+    const canvasID = options.overlayID
+      ? `${options.overlayID}-2d-canvas`
+      : 'canvas-overlay-2d-canvas'
+
     this._canvas = document.createElement('canvas')
+    this._canvas.setAttribute('id', canvasID)
     this._canvasdiv.appendChild(this._canvas)
     this._open = false
 
@@ -96,6 +123,8 @@ import OpenSeadragon from 'openseadragon'
       this.onRedraw = null
       this._canvasdiv = null
       this._canvas = null
+      this._viewer.canvasOverlays[this._overlayID] = null
+      this._overlayID = null
       this._viewer = null
     },
     // ----------

@@ -220,6 +220,7 @@ export interface CanvasOverlayProps extends NodeProps {
     overlayCanvasEl: HTMLCanvasElement,
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer
   ) => void
+  overlayID?: string
 }
 export interface OffscreenOverlayProps extends NodeProps {
   worker: Worker | undefined
@@ -242,6 +243,7 @@ export interface WebGLOverlayProps extends NodeProps {
     viewer: OpenSeadragon.Viewer | OpenSeadragonV2.Viewer,
     origin: { x: number; y: number; zoom: number }
   ) => void
+  overlayID?: string
 }
 export type SVGNameSpace = 'http://www.w3.org/2000/svg'
 export interface SVGOverlayProps extends NodeProps {}
