@@ -5,22 +5,45 @@ import OpenSeadragon from 'openseadragon'
 // By Toby
 ;(function () {
   // ----------
-  OpenSeadragon.Viewer.prototype.webGLOverlay = function (options) {
-    if (this._webGLOverlayInfo) {
-      return this._webGLOverlayInfo
+
+  OpenSeadragon.Viewer.prototype.newWebGLOverlay = function (options) {
+    // Check for existence to prevent unwanted clones
+    if (
+      OpenSeadragon.Viewer.prototype.webGLOverlays &&
+      OpenSeadragon.Viewer.prototype.webGLOverlays[options.overlayID]
+    ) {
+      return OpenSeadragon.Viewer.prototype.webGLOverlays[options.overlayID]
     }
 
-    this._webGLOverlayInfo = new Overlay(this, options)
-    return this._webGLOverlayInfo
+    const newOverlay = new Overlay(this, options)
+    this._overlayID = options.overlayID
+
+    OpenSeadragon.Viewer.prototype.webGLOverlays = {
+      ...OpenSeadragon.Viewer.prototype.webGLOverlays,
+      [this._overlayID]: newOverlay,
+    }
+    return newOverlay
   }
 
-  OpenSeadragon.Viewer.prototype.webGLOverlayExists = function () {
-    return !!this._webGLOverlayInfo
+  OpenSeadragon.Viewer.prototype.webGLOverlaysExist = function (overlayID) {
+    if (!OpenSeadragon.Viewer.prototype.webGLOverlays) return false
+    return Object.keys(OpenSeadragon.Viewer.prototype.webGLOverlays).length > 0
   }
 
-  // ----------
+  OpenSeadragon.Viewer.prototype.destroyWebGLOverlays = function () {
+    if (!OpenSeadragon.Viewer.prototype.webGLOverlays) return
+    Object.keys(OpenSeadragon.Viewer.prototype.webGLOverlays).forEach(
+      overlayID => {
+        OpenSeadragon.Viewer.prototype.webGLOverlays[overlayID].destroy()
+        delete OpenSeadragon.Viewer.prototype.webGLOverlays[overlayID]
+      }
+    )
+    OpenSeadragon.Viewer.prototype.webGLOverlays = null
+  }
+
   var Overlay = function (viewer, options) {
     var self = this
+
     this._viewer = viewer
 
     this._containerWidth = 0
@@ -34,8 +57,17 @@ import OpenSeadragon from 'openseadragon'
     this._canvasdiv.style.height = '100%'
     this._viewer.canvas.appendChild(this._canvasdiv)
 
+    const canvasID = options.overlayID
+      ? `${options.overlayID}-2d-canvas`
+      : 'webgl-overlay-2d-canvas'
+    const glID = options.overlayID
+      ? `${options.overlayID}-gl-canvas`
+      : 'webgl-overlay-gl-canvas'
+
     this._canvas = document.createElement('canvas')
+    this._canvas.setAttribute('id', canvasID)
     this._glCanvas = document.createElement('canvas')
+    this._glCanvas.setAttribute('id', glID)
     this._canvasdiv.appendChild(this._canvas)
     this._open = false
 
@@ -108,6 +140,9 @@ import OpenSeadragon from 'openseadragon'
       this._canvasdiv = null
       this._canvas = null
       this._glCanvas = null
+
+      this._viewer.webGLOverlays[this._overlayID] = null
+      this._overlayID = null
       this._viewer = null
     },
     // ----------

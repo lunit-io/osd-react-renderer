@@ -19,6 +19,7 @@ class Base {
   constructor(viewer: OpenSeadragon.Viewer) {
     this.viewer = viewer
     this.children = []
+    // this.viewer.webGLOverlays = {}
   }
 
   appendChild(child: Base): void {
