@@ -4036,6 +4036,11 @@
   resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-2.4.8.tgz#dfaf0206030f7e860e3c4123f44817d76c9f1867"
   integrity sha512-vPmpmigVdMYgdPJLUbQJgpFIQCeRnoUQW4bT/l9u1yajJLSx2BUKFhURvdTDxJWYFA/+oqMeXfJl2/NLhPZq7A==
 
+"@types/openseadragon@^3.0.10":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-3.0.10.tgz#5b73aa32e3120f18428b134a34f078cec6a42475"
+  integrity sha512-nNVlu9PUNDVTudkSqVWhHtghCsyzQrJObEtN5zsVN2ghh5HYAC6U6xAcT9NQRfVfZVZkWXEYp2Hw7hQgwRxqgg==
+
 "@types/openseadragon@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-3.0.3.tgz#a8ae0b84da721652a240d17db4c06b0bc43ddfff"
@@ -12676,6 +12681,11 @@ openseadragon@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-3.1.0.tgz#152b1ed8b6b03296feeed4e0ddf084cea7d0c1f2"
   integrity sha512-0zCbRIWUbCto7xm1tv2ZLEiSl84cDU659W/sfs2zqqTqVRa4CRHzhy7i9nsv6dHA1DryFR8IzjStjmWOqRs9Rg==
+
+openseadragon@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-4.1.1.tgz#1aba37c9e36ed17264511fa1b86db2204ea93b81"
+  integrity sha512-owU9gsasAcobLN+LM8lN58Xc2VDSDotY9mkrwS/NB6g9KX/PcusV4RZvhHng2RF/Q0pMziwldf62glwXoGnuzg==
 
 opn@^5.5.0:
   version "5.5.0"
