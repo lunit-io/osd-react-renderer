@@ -55,7 +55,9 @@ const DEFAULT_CONTROLLER_MAX_ZOOM: number = 160
 const DEMO_MPP = 0.263175
 const MICRONS_PER_METER = 1e6
 const RADIUS_UM = 281.34
-const VIEWER_OPTIONS = {
+const VIEWER_OPTIONS: OpenSeadragon.Options = {
+  mouseNavEnabled: 0,
+  debugMode: true,
   imageLoaderLimit: 8,
   smoothTileEdgesMinZoom: Infinity,
   showNavigator: true,
@@ -225,12 +227,20 @@ function App() {
   const handleMouseTrackerNonPrimaryPress = useCallback<
     NonNullable<MouseTrackerProps['onNonPrimaryPress']>
   >(event => {
-    console.log('event', event)
     if (event.button === WHEEL_BUTTON) {
       lastPoint.current = event.position?.clone() || null
       prevDelta.current = new OpenSeadragon.Point(0, 0)
       prevTime.current = 0
     }
+  }, [])
+  const handleMouseTrackerPress = useCallback<
+    NonNullable<MouseTrackerProps['onNonPrimaryPress']>
+  >(event => {
+    // if (event.button === WHEEL_BUTTON) {
+    lastPoint.current = event.position?.clone() || null
+    prevDelta.current = new OpenSeadragon.Point(0, 0)
+    prevTime.current = 0
+    // }
   }, [])
 
   const handleMouseTrackerNonPrimaryRelease = useCallback<
@@ -243,6 +253,11 @@ function App() {
     },
     [cancelPanning]
   )
+  const handleMouseTrackerRelease = useCallback<
+    NonNullable<MouseTrackerProps['onNonPrimaryRelease']>
+  >(() => {
+    cancelPanning()
+  }, [cancelPanning])
 
   const handleMouseTrackerMove = useCallback<
     NonNullable<MouseTrackerProps['onMove']>
@@ -269,6 +284,22 @@ function App() {
           }
         }
       }
+    }
+  }, [])
+
+  console.log('skip:', !!onTooltipOverlayRedraw)
+
+  const handleMouseTrackerScroll = useCallback<
+    NonNullable<MouseTrackerProps['onScroll']>
+  >(event => {
+    const viewer = osdViewerRef.current?.viewer
+    const zoomRate = VIEWER_OPTIONS.zoomPerScroll ?? 1
+
+    if (viewer && viewer.viewport) {
+      viewer.viewport.zoomBy(
+        event.scroll > 0 ? zoomRate : 2 - zoomRate,
+        viewer.viewport.pointFromPixel(event.position, true)
+      )
     }
   }, [])
 
@@ -326,10 +357,21 @@ function App() {
             </Route>
             <Route exact path="/">
               <OSDViewer
+                id="osdr-viewer"
                 options={VIEWER_OPTIONS}
                 ref={osdViewerRef}
                 style={{ width: '100%', height: '100%' }}
               >
+                <mouseTracker
+                  element={'osdr-viewer'}
+                  onLeave={handleMouseTrackerLeave}
+                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+                  onMove={handleMouseTrackerMove}
+                  onScroll={event => handleMouseTrackerScroll(event)}
+                  onPress={handleMouseTrackerPress}
+                  onRelease={handleMouseTrackerRelease}
+                />
                 <viewport
                   zoom={viewportZoom}
                   refPoint={refPoint}
@@ -357,13 +399,7 @@ function App() {
                   onRedraw={onCanvasOverlayRedraw}
                 />
                 <offscreenOverlay worker={worker} />
-                <tooltipOverlay onRedraw={onTooltipOverlayRedraw} />
-                <mouseTracker
-                  onLeave={handleMouseTrackerLeave}
-                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
-                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
-                  onMove={handleMouseTrackerMove}
-                />
+                {/* <tooltipOverlay onRedraw={onTooltipOverlayRedraw} /> */}
               </OSDViewer>
               <ZoomController
                 zoom={viewportZoom / scaleFactor}
