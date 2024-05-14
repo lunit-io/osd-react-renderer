@@ -38,8 +38,7 @@
     "test-watch": "jest"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-reconciler": "^0.26.2"
+    "react-reconciler": "^0.29.2"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
