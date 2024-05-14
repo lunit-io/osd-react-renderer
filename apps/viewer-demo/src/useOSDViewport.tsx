@@ -2,7 +2,7 @@ import { OSDViewerRef, ViewportProps } from '@lunit/osd-react-renderer'
 import { useCallback, useRef, useState } from 'react'
 import { DEMO_MPP } from './utils'
 
-const useOSDViewport = () => {
+function useOSDViewport() {
   const [viewportZoom, setViewportZoom] = useState<number>(1)
   const [refPoint, setRefPoint] = useState<OpenSeadragon.Point>()
   const [rotation, setRotation] = useState<number>(0)
