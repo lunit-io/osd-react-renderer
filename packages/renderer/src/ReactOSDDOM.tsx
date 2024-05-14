@@ -170,8 +170,11 @@ const ReactOSDDOM = {
         null,
         false,
         null,
-        'aaaa',
-        () => {},
+        'REACT-OSD-DOM',
+        (e: Error) => {
+          // eslint-disable-next-line
+          console.error(`ReactOSDDom [ERROR]: + ${e.message}`, e)
+        },
         null
       )
     }
