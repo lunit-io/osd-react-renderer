@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react'
 import OpenSeadragon from 'openseadragon'
 import ReactReconciler from 'react-reconciler'
 import { HostConfig } from './types/HostConfig'
@@ -65,9 +66,28 @@ const reconciler = ReactReconciler<
     return false
   },
 
+  getCurrentEventPriority() {
+    return 1
+  },
+  getInstanceFromNode() {
+    return null
+  },
+  beforeActiveInstanceBlur() {
+    return null
+  },
+  afterActiveInstanceBlur() {
+    return null
+  },
+
   getRootHostContext() {
     return rootHostContext
   },
+
+  prepareScopeUpdate() {},
+  getInstanceFromScope() {
+    return null
+  },
+  detachDeletedInstance() {},
 
   getChildHostContext() {
     return childHostContext
@@ -85,10 +105,6 @@ const reconciler = ReactReconciler<
 
   preparePortalMount() {
     throw new Error('preparePortalMount method is called')
-  },
-
-  now() {
-    throw new Error('now method is called')
   },
 
   scheduleTimeout() {
@@ -128,7 +144,7 @@ let container: HostConfig.Container | null
 
 const ReactOSDDOM = {
   render(
-    reactElement: React.ReactNode,
+    reactElement: Exclude<React.ReactNode, {}>,
     domContainer: HTMLElement,
     options: OpenSeadragon.Options,
     callback?: () => void | null
@@ -148,7 +164,19 @@ const ReactOSDDOM = {
         element: domContainer,
       })
       const root = new Root(viewer)
-      container = reconciler.createContainer(root, 0, false, null)
+      container = reconciler.createContainer(
+        root,
+        0,
+        null,
+        false,
+        null,
+        'REACT-OSD-DOM',
+        (e: Error) => {
+          // eslint-disable-next-line
+          console.error(`ReactOSDDom [ERROR]: + ${e.message}`, e)
+        },
+        null
+      )
     }
   },
   destroy(): void {
