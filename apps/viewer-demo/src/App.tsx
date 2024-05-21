@@ -9,46 +9,16 @@ import OSDViewer, {
 import OpenSeadragon from 'openseadragon'
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import ZoomController, { ZoomControllerProps } from './ZoomController'
 import Webworker from './workers/WebWorker'
 import offscreenWorker from './workers/offscreen.worker'
+import { Container, Links, OSDContainer } from './components/ui-components'
 
 const tiledImageSource = {
   url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
   tileUrlBase:
     'https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
 }
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  .navigator {
-    width: 160px !important;
-    height: 160px !important;
-    border: solid 1px rgba(134, 148, 177, 0.16) !important;
-    background-color: #fff !important;
-    margin-top: 16px !important;
-    margin-right: 16px !important;
-    border-radius: 4px;
-  }
-  .displayregion {
-    border: 2px solid #5a79e3 !important;
-  }
-`
-
-const OSDContainer = styled.div`
-  flex: 1;
-  height: 100%;
-`
-
-const Links = styled.div`
-  width: 100px;
-  a {
-    display: block;
-  }
-`
 
 const DEFAULT_CONTROLLER_MIN_ZOOM: number = 0.3125
 const DEFAULT_CONTROLLER_MAX_ZOOM: number = 160
