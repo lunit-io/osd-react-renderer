@@ -144,7 +144,7 @@ let container: HostConfig.Container | null
 
 const ReactOSDDOM = {
   render(
-    reactElement: Exclude<React.ReactNode, {}>,
+    reactElement: React.ReactNode,
     domContainer: HTMLElement,
     options: OpenSeadragon.Options,
     callback?: () => void | null

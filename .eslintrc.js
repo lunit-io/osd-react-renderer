@@ -18,6 +18,15 @@ module.exports = {
     'plugin:react/recommended',
     'prettier',
   ],
+  ignorePatterns: [
+    '.eslintrc.js',
+    '**/public/**',
+    '**/spec/**',
+    '**/node_modules/**',
+    '*.config.js',
+    '**/.yarn',
+    '**/dist/**',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
