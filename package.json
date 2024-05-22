@@ -12,7 +12,8 @@
   "scripts": {
     "build:osd-react-renderer": "lerna run --scope @lunit/osd-react-renderer build",
     "test": "lerna run test",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "pkg": "yarn build:osd-react-renderer"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
