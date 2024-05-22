@@ -184,10 +184,10 @@ const ReactOSDDOM = {
     tmpContainer?.containerInfo?.children?.forEach((child: any) => {
       child?.destroy()
     })
-    if (viewer?.canvasOverlayExists()) viewer?.canvasOverlay().destroy()
+    if (viewer?.canvasOverlaysExist()) viewer?.destroyCanvasOverlays()
     if (viewer?.tooltipOverlayExists()) viewer?.tooltipOverlay().destroy()
     if (viewer?.offscreenOverlayExists()) viewer?.offscreenOverlay().destroy()
-    if (viewer?.webGLOverlayExists()) viewer?.webGLOverlay().destroy()
+    if (viewer?.webGLOverlaysExist()) viewer?.destroyWebGLOverlays()
     if (viewer?.svgOverlayExists()) viewer?.svgOverlay().destroy()
 
     viewer?.scalebarInstance?.destroy()

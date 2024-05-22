@@ -12,12 +12,20 @@ declare module 'openseadragon' {
   }
 
   interface Viewer {
-    canvasOverlay: (options?: { onRedraw?: () => void }) => CanvasOverlay
-    canvasOverlayExists: () => boolean
+    newCanvasOverlay: (options?: {
+      onRedraw?: () => void
+      overlayID?: string
+    }) => CanvasOverlay
+    canvasOverlays: Record<string, CanvasOverlay>
+    canvasOverlaysExist: () => boolean
+    destroyCanvasOverlays: () => void
   }
 }
 
-const defaultOptions: CanvasOverlayProps = { onRedraw: () => {} }
+const defaultOptions: CanvasOverlayProps = {
+  onRedraw: () => {},
+  overlayID: 'canvas-overlay',
+}
 
 class CanvasOverlay extends Base {
   props: CanvasOverlayProps
@@ -39,9 +47,21 @@ class CanvasOverlay extends Base {
 
   constructor(viewer: OpenSeadragon.Viewer, props: CanvasOverlayProps) {
     super(viewer)
-    this._overlay = this.viewer.canvasOverlay({
+
+    // Final 'canvas-overlay' exists to resolve ts string | undefined error
+    const overlayID =
+      props.overlayID || defaultOptions.overlayID || 'canvas-overlay'
+
+    const newOverlay = this.viewer.newCanvasOverlay({
       onRedraw: () => {},
+      overlayID,
     })
+    if (typeof this.viewer.canvasOverlays === 'undefined') {
+      this.viewer.canvasOverlays = {}
+    }
+
+    this.viewer.canvasOverlays[overlayID] = newOverlay
+    this._overlay = newOverlay
     this.props = { ...defaultOptions, ...props }
   }
 
