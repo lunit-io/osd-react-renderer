@@ -6,6 +6,7 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
+import { DescriptionBox } from '../../components/ui-components'
 
 const TooltipOverlayTest = () => {
   const {
@@ -46,6 +47,22 @@ const TooltipOverlayTest = () => {
         </>
       </OSDViewer>
     </>
+  )
+}
+
+export const TooltipDescription = () => {
+  return (
+    <DescriptionBox
+      title="Tooltip Overlay"
+      description={
+        <div>
+          <p>
+            Tooltip overlay is an implementation of canvasOverlay that has an
+            additional parameter for mouse position.
+          </p>
+        </div>
+      }
+    />
   )
 }
 export default TooltipOverlayTest

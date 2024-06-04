@@ -1,4 +1,5 @@
 import OSDViewer from '../../../../../packages/renderer'
+import { DescriptionBox } from '../../components/ui-components'
 
 import {
   tiledImageSource,
@@ -43,6 +44,25 @@ const SVGOverlayTest = () => {
         </>
       </OSDViewer>
     </>
+  )
+}
+
+export const SVGOverlayDescription = () => {
+  return (
+    <DescriptionBox
+      title="SVG Overlay"
+      description={
+        <div>
+          <p>
+            SVGOverlay provides an SVG element that the developer is able to
+            append SVG elements to. The developer must add elements using
+            'document.createElementNS' method.
+            <br />
+            SVGOverlay excels for grid-based image overlays.
+          </p>
+        </div>
+      }
+    />
   )
 }
 export default SVGOverlayTest

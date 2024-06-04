@@ -1,9 +1,11 @@
-import { styled } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
+import React from 'react'
 
 export const Container = styled('div')({
   width: '100%',
   height: '100%',
   display: 'flex',
+  padding: '8px',
   '& .navigator': {
     width: '160px !important',
     height: '160px !important',
@@ -21,8 +23,37 @@ export const OSDContainer = styled('div')({
   flex: 1,
   height: '100%',
 })
+export const SidePanel = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  gap: '8px',
+})
+
 export const Links = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
   '& a': {
     display: 'block',
   },
 })
+
+export const DescriptionBox = ({
+  title,
+  description,
+}: {
+  title: string
+  description: React.ReactNode
+}) => {
+  return (
+    <Box
+      sx={{
+        width: '320px',
+      }}
+    >
+      <Typography variant="h6">{title}</Typography>
+      <Typography variant="body1">{description}</Typography>
+    </Box>
+  )
+}

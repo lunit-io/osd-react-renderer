@@ -7,6 +7,7 @@ import {
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
 import ZoomController from '../../ZoomController'
+import { DescriptionBox } from '../../components/ui-components'
 
 const ScaleZoom = () => {
   const {
@@ -66,4 +67,23 @@ const ScaleZoom = () => {
     </>
   )
 }
+export const ScaleDescription = () => {
+  return (
+    <DescriptionBox
+      title="Scalebar / Zoom Controls Test"
+      description={
+        <div>
+          <p>
+            Demonstrating the usage of the scalebar and zoom control components.
+          </p>
+          <p>
+            Zoom Controls should update along with the zoom level of the
+            viewport.
+          </p>
+        </div>
+      }
+    />
+  )
+}
+
 export default ScaleZoom

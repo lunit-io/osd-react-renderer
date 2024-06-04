@@ -6,6 +6,7 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
+import { DescriptionBox } from '../../components/ui-components'
 
 const OffscreenCanvasTest = () => {
   const {
@@ -44,4 +45,21 @@ const OffscreenCanvasTest = () => {
     </>
   )
 }
+export const OffscreenCanvasDescription = () => {
+  return (
+    <DescriptionBox
+      title="OffscreenCanvas Overlay"
+      description={
+        <>
+          <p>
+            OffscreenCanvas is rendered in a separate thread using WebWorkers
+            and the Offscreen Canvas API. OffscreenCanvas has size limitations
+            that mean it is not suitable for rendering full screen images.
+          </p>
+        </>
+      }
+    />
+  )
+}
+
 export default OffscreenCanvasTest

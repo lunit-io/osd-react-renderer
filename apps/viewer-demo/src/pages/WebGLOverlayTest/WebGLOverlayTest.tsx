@@ -7,6 +7,7 @@ import {
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
 import useWebGL from './useWebGL'
+import { DescriptionBox } from '../../components/ui-components'
 
 const WebGLOverlayTest = () => {
   const {
@@ -53,4 +54,22 @@ const WebGLOverlayTest = () => {
     </>
   )
 }
+
+export const WebGLOverlayDescription = () => {
+  return (
+    <DescriptionBox
+      title="WebGL Overlay"
+      description={
+        <div>
+          <p>
+            WebGL overlay provides a WebGL2 context to render onto with GLSL
+            shaders. WebGL copies the final image to a canvas element each
+            frame.
+          </p>
+        </div>
+      }
+    />
+  )
+}
+
 export default WebGLOverlayTest

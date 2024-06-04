@@ -6,6 +6,7 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
+import { DescriptionBox } from '../../components/ui-components'
 
 const Home = () => {
   const {
@@ -46,6 +47,23 @@ const Home = () => {
         </>
       </OSDViewer>
     </>
+  )
+}
+
+export const HomeDescription = () => {
+  return (
+    <DescriptionBox
+      title="Home"
+      description={
+        <div>
+          <p>This is a demo of the OpenSeadragon React Renderer.</p>
+          <p>
+            This page showcases the use of the OpenSeadragon React Renderer with
+            tiledImage and canvasOverlay.
+          </p>
+        </div>
+      }
+    />
   )
 }
 export default Home

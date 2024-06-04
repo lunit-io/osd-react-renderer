@@ -6,6 +6,7 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
+import { DescriptionBox } from '../../components/ui-components'
 
 const mouseTrackerOptions = {
   ...viewerOptions,
@@ -63,4 +64,27 @@ const MouseTrackerTest = () => {
     </>
   )
 }
+
+export const MouseTrackerDescription = () => {
+  return (
+    <DescriptionBox
+      title="Mouse Tracker Test"
+      description={
+        <div>
+          <p>
+            MouseTracker requires setting 'mouseNavEnabled: false' in the
+            OSDViewer options.
+          </p>
+          <p>
+            This breaks all default interaction event handling. The developer
+            must write logic to handle left click pan, double click zoom, and
+            scroll wheel zoom, on top of the additional events you want to
+            handle with mouseTracker.
+          </p>
+        </div>
+      }
+    />
+  )
+}
+
 export default MouseTrackerTest
