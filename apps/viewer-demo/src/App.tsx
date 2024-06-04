@@ -2,7 +2,6 @@ import OSDViewer, {
   ScalebarLocation,
   ViewportProps,
   CanvasOverlayProps,
-  MouseTrackerProps,
   OSDViewerRef,
 } from '@lunit/osd-react-renderer'
 import OpenSeadragon from 'openseadragon'
@@ -16,6 +15,7 @@ import { tiledImageSource, commonConfig, viewerOptions } from './utils/defaults'
 import Home from './pages/Home/Home'
 import TooltipOverlayTest from './pages/TooltipOverlayTest/TooltipOverlayTest'
 import ScaleZoom from './pages/ScaleZoom/ScaleZoom'
+import MouseTrackerTest from './pages/MouseTrackerTest/MouseTrackerTest'
 
 let timer: ReturnType<typeof setTimeout>
 
@@ -29,9 +29,6 @@ function App() {
   const [worker, setWorker] = useState<Worker>()
   const canvasOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
-  const lastPoint = useRef<OpenSeadragon.Point | null>(null)
-  const prevDelta = useRef<OpenSeadragon.Point | null>(null)
-  const prevTime = useRef<number>(-1)
 
   useEffect(() => {
     // @ts-ignore
@@ -40,12 +37,6 @@ function App() {
       worker?.terminate()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const cancelPanning = useCallback(() => {
-    lastPoint.current = null
-    prevDelta.current = null
-    prevTime.current = -1
   }, [])
 
   const refreshScaleFactor = useCallback(() => {
@@ -116,63 +107,6 @@ function App() {
     [rectSize]
   )
 
-  const handleMouseTrackerLeave = useCallback<
-    NonNullable<MouseTrackerProps['onLeave']>
-  >(() => {
-    // temporary fix about malfunction(?) of mouseup and onNonPrimaryRelease event
-    cancelPanning?.()
-  }, [cancelPanning])
-
-  const handleMouseTrackerNonPrimaryPress = useCallback<
-    NonNullable<MouseTrackerProps['onNonPrimaryPress']>
-  >(event => {
-    console.log('event', event)
-    if (event.button === commonConfig.wheelButton) {
-      lastPoint.current = event.position?.clone() || null
-      prevDelta.current = new OpenSeadragon.Point(0, 0)
-      prevTime.current = 0
-    }
-  }, [])
-
-  const handleMouseTrackerNonPrimaryRelease = useCallback<
-    NonNullable<MouseTrackerProps['onNonPrimaryRelease']>
-  >(
-    event => {
-      if (event.button === commonConfig.wheelButton) {
-        cancelPanning()
-      }
-    },
-    [cancelPanning]
-  )
-
-  const handleMouseTrackerMove = useCallback<
-    NonNullable<MouseTrackerProps['onMove']>
-  >(event => {
-    const viewer = osdViewerRef.current?.viewer
-    const throttle = 150
-    if (viewer && viewer.viewport) {
-      if (lastPoint.current && event.position) {
-        const deltaPixels = lastPoint.current.minus(event.position)
-        const deltaPoints = viewer.viewport.deltaPointsFromPixels(deltaPixels)
-        lastPoint.current = event.position.clone()
-        if (!throttle || throttle < 0) {
-          viewer.viewport.panBy(deltaPoints)
-        } else if (prevDelta.current) {
-          const newTimeDelta = Date.now() - prevTime.current
-          const newDelta = prevDelta.current.plus(deltaPoints)
-          if (newTimeDelta > throttle) {
-            viewer.viewport.panBy(newDelta)
-            prevDelta.current = new OpenSeadragon.Point(0, 0)
-            prevTime.current = 0
-          } else {
-            prevDelta.current = newDelta
-            prevTime.current = newTimeDelta
-          }
-        }
-      }
-    }
-  }, [])
-
   return (
     <BrowserRouter>
       <Container>
@@ -180,6 +114,7 @@ function App() {
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/tooltip-overlay">TOOLTIP</NavLink>
           <NavLink to="/scale-zoom">SCALEBAR/ZOOM CTRLS</NavLink>
+          <NavLink to="/mouse-tracker">MOUSE TRACKER</NavLink>
           <NavLink to="/test-custom">CUSTOM IMG URL</NavLink>
           <NavLink to="/no-overlay">NO OVERLAY</NavLink>
           <NavLink to="/offscreen">OFFSCREEN</NavLink>
@@ -196,6 +131,9 @@ function App() {
             </Route>
             <Route exact path="/scale-zoom">
               <ScaleZoom />
+            </Route>
+            <Route exact path="/mouse-tracker">
+              <MouseTrackerTest />
             </Route>
             <Route exact path="/test">
               <OSDViewer
@@ -301,12 +239,6 @@ function App() {
                   }
                 />
                 <tiledImage {...tiledImageSource} />
-                <mouseTracker
-                  onLeave={handleMouseTrackerLeave}
-                  onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
-                  onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
-                  onMove={handleMouseTrackerMove}
-                />
               </OSDViewer>
             </Route>
           </OSDContainer>

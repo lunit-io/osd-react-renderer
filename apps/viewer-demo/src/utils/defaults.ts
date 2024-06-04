@@ -1,3 +1,5 @@
+import OpenSeadragon from 'openseadragon'
+
 export const tiledImageSource = {
   url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
   tileUrlBase:
@@ -16,7 +18,7 @@ export const commonConfig = {
   rotation: 0,
 }
 
-export const viewerOptions = {
+export const viewerOptions: OpenSeadragon.Options = {
   imageLoaderLimit: 8,
   smoothTileEdgesMinZoom: Infinity,
   showNavigator: true,
