@@ -1,4 +1,4 @@
-import OSDViewer, { ScalebarLocation } from '@lunit/osd-react-renderer'
+import OSDViewer from '@lunit/osd-react-renderer'
 
 import {
   tiledImageSource,
@@ -6,12 +6,13 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
-import ZoomController from '../../ZoomController'
+import useWebGL from './useWebGL'
 
-const ScaleZoom = () => {
+const WebGLOverlayTest = () => {
   const {
     osdViewerRef,
     canvasOverlayRef,
+    webGLOverlayRef,
     viewportZoom,
     refPoint,
     scaleFactor,
@@ -19,8 +20,9 @@ const ScaleZoom = () => {
     handleViewportResize,
     handleViewportZoom,
     onCanvasOverlayRedraw,
-    handleControllerZoom,
   } = useOSDHandlers()
+
+  const { onWebGLOverlayRedraw } = useWebGL()
 
   return (
     <>
@@ -45,25 +47,10 @@ const ScaleZoom = () => {
             ref={canvasOverlayRef}
             onRedraw={onCanvasOverlayRedraw}
           />
-          <scalebar
-            pixelsPerMeter={commonConfig.mpp / commonConfig.micronsPerMeter}
-            xOffset={10}
-            yOffset={30}
-            barThickness={3}
-            color="#443aff"
-            fontColor="#53646d"
-            backgroundColor={'rgba(255,255,255,0.5)'}
-            location={ScalebarLocation.BOTTOM_RIGHT}
-          />
+          <webGLOverlay ref={webGLOverlayRef} onRedraw={onWebGLOverlayRedraw} />
         </>
       </OSDViewer>
-      <ZoomController
-        zoom={viewportZoom}
-        minZoomLevel={commonConfig.zoom.controllerMinZoom}
-        maxZoomLevel={commonConfig.zoom.controllerMaxZoom}
-        onZoom={handleControllerZoom}
-      />
     </>
   )
 }
-export default ScaleZoom
+export default WebGLOverlayTest

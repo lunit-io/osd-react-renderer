@@ -36,31 +36,29 @@ const MouseTrackerTest = () => {
         ref={osdViewerRef}
         style={{ width: '100%', height: '100%' }}
       >
-        {osdViewerRef?.current && (
-          <>
-            <viewport
-              zoom={viewportZoom}
-              refPoint={refPoint}
-              rotation={commonConfig.rotation}
-              onOpen={handleViewportOpen}
-              onResize={handleViewportResize}
-              onZoom={handleViewportZoom}
-              maxZoomLevel={commonConfig.zoom.controllerMaxZoom * scaleFactor}
-              minZoomLevel={commonConfig.zoom.controllerMinZoom * scaleFactor}
-            />
-            <tiledImage {...tiledImageSource} />
-            <canvasOverlay
-              ref={canvasOverlayRef}
-              onRedraw={onCanvasOverlayRedraw}
-            />
-            <mouseTracker
-              onLeave={handleMouseTrackerLeave}
-              onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
-              onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
-              onMove={handleMouseTrackerMove}
-            />
-          </>
-        )}
+        <>
+          <viewport
+            zoom={viewportZoom}
+            refPoint={refPoint}
+            rotation={commonConfig.rotation}
+            onOpen={handleViewportOpen}
+            onResize={handleViewportResize}
+            onZoom={handleViewportZoom}
+            maxZoomLevel={commonConfig.zoom.controllerMaxZoom * scaleFactor}
+            minZoomLevel={commonConfig.zoom.controllerMinZoom * scaleFactor}
+          />
+          <tiledImage {...tiledImageSource} />
+          <canvasOverlay
+            ref={canvasOverlayRef}
+            onRedraw={onCanvasOverlayRedraw}
+          />
+          <mouseTracker
+            onLeave={handleMouseTrackerLeave}
+            onNonPrimaryPress={handleMouseTrackerNonPrimaryPress}
+            onNonPrimaryRelease={handleMouseTrackerNonPrimaryRelease}
+            onMove={handleMouseTrackerMove}
+          />
+        </>
       </OSDViewer>
     </>
   )

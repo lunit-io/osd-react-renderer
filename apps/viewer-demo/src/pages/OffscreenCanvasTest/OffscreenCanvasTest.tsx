@@ -26,22 +26,20 @@ const OffscreenCanvasTest = () => {
         ref={osdViewerRef}
         style={{ width: '100%', height: '100%' }}
       >
-        {osdViewerRef?.current && (
-          <>
-            <viewport
-              zoom={viewportZoom}
-              refPoint={refPoint}
-              rotation={commonConfig.rotation}
-              onOpen={handleViewportOpen}
-              onResize={handleViewportResize}
-              onZoom={handleViewportZoom}
-              maxZoomLevel={commonConfig.zoom.controllerMaxZoom * scaleFactor}
-              minZoomLevel={commonConfig.zoom.controllerMinZoom * scaleFactor}
-            />
-            <tiledImage {...tiledImageSource} />
-            <offscreenOverlay worker={worker} />
-          </>
-        )}
+        <>
+          <viewport
+            zoom={viewportZoom}
+            refPoint={refPoint}
+            rotation={commonConfig.rotation}
+            onOpen={handleViewportOpen}
+            onResize={handleViewportResize}
+            onZoom={handleViewportZoom}
+            maxZoomLevel={commonConfig.zoom.controllerMaxZoom * scaleFactor}
+            minZoomLevel={commonConfig.zoom.controllerMinZoom * scaleFactor}
+          />
+          <tiledImage {...tiledImageSource} />
+          <offscreenOverlay worker={worker} />
+        </>
       </OSDViewer>
     </>
   )
