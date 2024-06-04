@@ -14,26 +14,7 @@ import { Container, Links, OSDContainer } from './components/ui-components'
 
 import { tiledImageSource, commonConfig, viewerOptions } from './utils/defaults'
 import Home from './pages/Home/Home'
-
-// const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
-//   tooltipCoord,
-//   overlayCanvasEl,
-//   viewer,
-// }) => {
-//   const ctx = overlayCanvasEl.getContext('2d')
-//   if (ctx && tooltipCoord) {
-//     const radiusPx = commonConfig.radiusUM / commonConfig.mpp
-//     const sizeRect = new OpenSeadragon.Rect(0, 0, 2, 2)
-//     const lineWidth = viewer.viewport.viewportToImageRectangle(
-//       viewer.viewport.viewerElementToViewportRectangle(sizeRect)
-//     ).width
-//     ctx.lineWidth = lineWidth
-//     ctx.beginPath()
-//     ctx.arc(tooltipCoord.x, tooltipCoord.y, radiusPx, 0, 2 * Math.PI)
-//     ctx.closePath()
-//     ctx.stroke()
-//   }
-// }
+import TooltipOverlayTest from './pages/TooltipOverlayTest/TooltipOverlayTest'
 
 let timer: ReturnType<typeof setTimeout>
 
@@ -205,6 +186,7 @@ function App() {
       <Container>
         <Links>
           <NavLink to="/">HOME</NavLink>
+          <NavLink to="/tooltip-overlay">TOOLTIP</NavLink>
           <NavLink to="/test-custom">CUSTOM IMG URL</NavLink>
           <NavLink to="/no-overlay">NO OVERLAY</NavLink>
           <NavLink to="/offscreen">OFFSCREEN</NavLink>
@@ -213,6 +195,12 @@ function App() {
         </Links>
         <Switch>
           <OSDContainer>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/tooltip-overlay">
+              <TooltipOverlayTest />
+            </Route>
             <Route exact path="/test">
               <OSDViewer
                 options={viewerOptions}
@@ -257,9 +245,6 @@ function App() {
               <OSDViewer options={viewerOptions} ref={osdViewerRef}>
                 <tiledImage {...tiledImageSource} />
               </OSDViewer>
-            </Route>
-            <Route exact path="/">
-              <Home />
             </Route>
             <Route exact path="/offscreen">
               <OSDViewer
