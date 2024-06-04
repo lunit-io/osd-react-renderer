@@ -14,39 +14,7 @@ import Webworker from './workers/WebWorker'
 import offscreenWorker from './workers/offscreen.worker'
 import { Container, Links, OSDContainer } from './components/ui-components'
 
-const tiledImageSource = {
-  url: 'https://io.api.scope.lunit.io/slides/dzi/metadata/?file=01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
-  tileUrlBase:
-    'https://io.api.scope.lunit.io/slides/images/dzi/01d0f99c-b4fa-41c1-9059-4c2ee5d4cdf1%2F97e1f14b-d883-409a-83c6-afa97513c146%2FBladder_cancer_01.svs',
-}
-
-const DEFAULT_CONTROLLER_MIN_ZOOM: number = 0.3125
-const DEFAULT_CONTROLLER_MAX_ZOOM: number = 160
-const DEMO_MPP = 0.263175
-const MICRONS_PER_METER = 1e6
-const RADIUS_UM = 281.34
-const VIEWER_OPTIONS = {
-  imageLoaderLimit: 8,
-  smoothTileEdgesMinZoom: Infinity,
-  showNavigator: true,
-  showNavigationControl: false,
-  timeout: 60000,
-  navigatorAutoResize: false,
-  preserveImageSizeOnResize: true,
-  showRotationControl: true,
-  zoomPerScroll: 1.3,
-  animationTime: 0.3,
-  gestureSettingsMouse: {
-    clickToZoom: false,
-    dblClickToZoom: false,
-  },
-  gestureSettingsTouch: {
-    flickEnabled: false,
-    clickToZoom: false,
-    dblClickToZoom: false,
-  },
-}
-const WHEEL_BUTTON = 1
+import { tiledImageSource, commonConfig, viewerOptions } from './utils/defaults'
 
 const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
   canvas: HTMLCanvasElement
@@ -65,7 +33,7 @@ const onTooltipOverlayRedraw: NonNullable<TooltipOverlayProps['onRedraw']> = ({
 }) => {
   const ctx = overlayCanvasEl.getContext('2d')
   if (ctx && tooltipCoord) {
-    const radiusPx = RADIUS_UM / DEMO_MPP
+    const radiusPx = commonConfig.radiusUM / commonConfig.mpp
     const sizeRect = new OpenSeadragon.Rect(0, 0, 2, 2)
     const lineWidth = viewer.viewport.viewportToImageRectangle(
       viewer.viewport.viewerElementToViewportRectangle(sizeRect)
@@ -115,7 +83,8 @@ function App() {
       return
     }
     const imageWidth = viewer.world.getItemAt(0).getContentSize().x
-    const microscopeWidth1x = ((imageWidth * DEMO_MPP) / 25400) * 96 * 10
+    const microscopeWidth1x =
+      ((imageWidth * commonConfig.micronsPerMeter) / 25400) * 96 * 10
     const viewportWidth = viewer.viewport.getContainerSize().x
     setScaleFactor(microscopeWidth1x / viewportWidth)
   }, [])
@@ -196,7 +165,7 @@ function App() {
     NonNullable<MouseTrackerProps['onNonPrimaryPress']>
   >(event => {
     console.log('event', event)
-    if (event.button === WHEEL_BUTTON) {
+    if (event.button === commonConfig.wheelButton) {
       lastPoint.current = event.position?.clone() || null
       prevDelta.current = new OpenSeadragon.Point(0, 0)
       prevTime.current = 0
@@ -207,7 +176,7 @@ function App() {
     NonNullable<MouseTrackerProps['onNonPrimaryRelease']>
   >(
     event => {
-      if (event.button === WHEEL_BUTTON) {
+      if (event.button === commonConfig.wheelButton) {
         cancelPanning()
       }
     },
@@ -257,7 +226,7 @@ function App() {
           <OSDContainer>
             <Route exact path="/test">
               <OSDViewer
-                options={VIEWER_OPTIONS}
+                options={viewerOptions}
                 ref={osdViewerRef}
                 style={{ width: '100%', height: '100%' }}
               >
@@ -269,12 +238,18 @@ function App() {
                   onResize={handleViewportResize}
                   onRotate={handleViewportRotate}
                   onZoom={handleViewportZoom}
-                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
-                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                  maxZoomLevel={
+                    commonConfig.zoom.controllerMaxZoom * scaleFactor
+                  }
+                  minZoomLevel={
+                    commonConfig.zoom.controllerMinZoom * scaleFactor
+                  }
                 />
                 <tiledImage {...tiledImageSource} />
                 <scalebar
-                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  pixelsPerMeter={
+                    commonConfig.mpp / commonConfig.micronsPerMeter
+                  }
                   xOffset={10}
                   yOffset={30}
                   barThickness={3}
@@ -290,13 +265,13 @@ function App() {
               </OSDViewer>
             </Route>
             <Route exact path="/test-custom">
-              <OSDViewer options={VIEWER_OPTIONS} ref={osdViewerRef}>
+              <OSDViewer options={viewerOptions} ref={osdViewerRef}>
                 <tiledImage {...tiledImageSource} />
               </OSDViewer>
             </Route>
             <Route exact path="/">
               <OSDViewer
-                options={VIEWER_OPTIONS}
+                options={viewerOptions}
                 ref={osdViewerRef}
                 style={{ width: '100%', height: '100%' }}
               >
@@ -308,12 +283,18 @@ function App() {
                   onResize={handleViewportResize}
                   onRotate={handleViewportRotate}
                   onZoom={handleViewportZoom}
-                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
-                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                  maxZoomLevel={
+                    commonConfig.zoom.controllerMaxZoom * scaleFactor
+                  }
+                  minZoomLevel={
+                    commonConfig.zoom.controllerMinZoom * scaleFactor
+                  }
                 />
                 <tiledImage {...tiledImageSource} />
                 <scalebar
-                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  pixelsPerMeter={
+                    commonConfig.mpp / commonConfig.micronsPerMeter
+                  }
                   xOffset={10}
                   yOffset={30}
                   barThickness={3}
@@ -337,14 +318,14 @@ function App() {
               </OSDViewer>
               <ZoomController
                 zoom={viewportZoom / scaleFactor}
-                maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM}
-                minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM}
+                maxZoomLevel={commonConfig.zoom.controllerMaxZoom}
+                minZoomLevel={commonConfig.zoom.controllerMinZoom}
                 onZoom={handleControllerZoom}
               />
             </Route>
             <Route exact path="/offscreen">
               <OSDViewer
-                options={VIEWER_OPTIONS}
+                options={viewerOptions}
                 ref={osdViewerRef}
                 style={{ width: '100%', height: '100%' }}
               >
@@ -356,12 +337,18 @@ function App() {
                   onResize={handleViewportResize}
                   onRotate={handleViewportRotate}
                   onZoom={handleViewportZoom}
-                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
-                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                  maxZoomLevel={
+                    commonConfig.zoom.controllerMaxZoom * scaleFactor
+                  }
+                  minZoomLevel={
+                    commonConfig.zoom.controllerMinZoom * scaleFactor
+                  }
                 />
                 <tiledImage {...tiledImageSource} />
                 <scalebar
-                  pixelsPerMeter={MICRONS_PER_METER / DEMO_MPP}
+                  pixelsPerMeter={
+                    commonConfig.mpp / commonConfig.micronsPerMeter
+                  }
                   xOffset={10}
                   yOffset={30}
                   barThickness={3}
@@ -375,7 +362,7 @@ function App() {
             </Route>
             <Route exact path="/no-overlay">
               <OSDViewer
-                options={VIEWER_OPTIONS}
+                options={viewerOptions}
                 ref={osdViewerRef}
                 style={{ width: '100%', height: '100%' }}
               >
@@ -387,8 +374,12 @@ function App() {
                   onResize={handleViewportResize}
                   onRotate={handleViewportRotate}
                   onZoom={handleViewportZoom}
-                  maxZoomLevel={DEFAULT_CONTROLLER_MAX_ZOOM * scaleFactor}
-                  minZoomLevel={DEFAULT_CONTROLLER_MIN_ZOOM * scaleFactor}
+                  maxZoomLevel={
+                    commonConfig.zoom.controllerMaxZoom * scaleFactor
+                  }
+                  minZoomLevel={
+                    commonConfig.zoom.controllerMinZoom * scaleFactor
+                  }
                 />
                 <tiledImage {...tiledImageSource} />
                 <mouseTracker
