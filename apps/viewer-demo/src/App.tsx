@@ -8,6 +8,7 @@ import ScaleZoom from './pages/ScaleZoom/ScaleZoom'
 import MouseTrackerTest from './pages/MouseTrackerTest/MouseTrackerTest'
 import OffscreenCanvasTest from './pages/OffscreenCanvasTest/OffscreenCanvasTest'
 import WebGLOverlayTest from './pages/WebGLOverlayTest/WebGLOverlayTest'
+import SVGOverlayTest from './pages/SVGOverlayTest/SVGOverlayTest'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <NavLink to="/mouse-tracker">MOUSE TRACKER</NavLink>
           <NavLink to="/offscreen">OFFSCREEN</NavLink>
           <NavLink to="/webgl-overlay">WEBGL</NavLink>
+          <NavLink to="/svg-overlay">SVG</NavLink>
         </Links>
         <Switch>
           <OSDContainer>
@@ -40,6 +42,9 @@ function App() {
             </Route>
             <Route exact path="/webgl-overlay">
               <WebGLOverlayTest />
+            </Route>
+            <Route exact path="/svg-overlay">
+              <SVGOverlayTest />
             </Route>
           </OSDContainer>
         </Switch>
