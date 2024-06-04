@@ -13,6 +13,7 @@ export const commonConfig = {
   micronsPerMeter: 1e6,
   radiusUM: 281.34,
   wheelButton: 1,
+  rotation: 0,
 }
 
 export const viewerOptions = {
