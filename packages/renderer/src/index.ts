@@ -12,4 +12,4 @@ export type {
   OSDViewerRef,
 } from './types/index'
 
-export { SVG_NAMESPACE, SVG_ROOT_ID } from './constants'
+export { SVG_NAMESPACE, SVG_ROOT_ID, OSDR_DEFAULT_OPTIONS } from './constants'
