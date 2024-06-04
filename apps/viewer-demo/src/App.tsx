@@ -15,6 +15,7 @@ import { Container, Links, OSDContainer } from './components/ui-components'
 import { tiledImageSource, commonConfig, viewerOptions } from './utils/defaults'
 import Home from './pages/Home/Home'
 import TooltipOverlayTest from './pages/TooltipOverlayTest/TooltipOverlayTest'
+import ScaleZoom from './pages/ScaleZoom/ScaleZoom'
 
 let timer: ReturnType<typeof setTimeout>
 
@@ -94,15 +95,6 @@ function App() {
     },
     []
   )
-
-  // const handleControllerZoom = useCallback<
-  //   NonNullable<ZoomControllerProps['onZoom']>
-  // >(
-  //   zoom => {
-  //     setViewportZoom(zoom * scaleFactor)
-  //   },
-  //   [scaleFactor]
-  // )
 
   const handleUpdatedCanvasOverlayRedraw = useCallback<
     NonNullable<CanvasOverlayProps['onRedraw']>
@@ -187,6 +179,7 @@ function App() {
         <Links>
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/tooltip-overlay">TOOLTIP</NavLink>
+          <NavLink to="/scale-zoom">SCALEBAR/ZOOM CTRLS</NavLink>
           <NavLink to="/test-custom">CUSTOM IMG URL</NavLink>
           <NavLink to="/no-overlay">NO OVERLAY</NavLink>
           <NavLink to="/offscreen">OFFSCREEN</NavLink>
@@ -200,6 +193,9 @@ function App() {
             </Route>
             <Route exact path="/tooltip-overlay">
               <TooltipOverlayTest />
+            </Route>
+            <Route exact path="/scale-zoom">
+              <ScaleZoom />
             </Route>
             <Route exact path="/test">
               <OSDViewer
