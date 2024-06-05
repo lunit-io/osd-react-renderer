@@ -1,4 +1,4 @@
-import { BrowserRouter, NavLink, useRoutes } from 'react-router-dom'
+import { useRoutes, NavLink } from 'react-router-dom'
 
 import {
   Container,
@@ -14,24 +14,20 @@ function App() {
   const viewerRoutes = useRoutes(viewerDemos)
 
   return (
-    <BrowserRouter>
-      <Container>
-        <SidePanel>
-          <Typography variant="h6">
-            OpenSeadragon React Renderer Demo
-          </Typography>
-          <Links>
-            {navLinks.map(({ path, label }) => (
-              <NavLink key={path} to={path}>
-                {label}
-              </NavLink>
-            ))}
-          </Links>
-          <Box>{descriptionRoutes}</Box>
-        </SidePanel>
-        <OSDContainer>{viewerRoutes}</OSDContainer>
-      </Container>
-    </BrowserRouter>
+    <Container>
+      <SidePanel>
+        <Typography variant="h6">OpenSeadragon React Renderer Demo</Typography>
+        <Links>
+          {navLinks.map(({ path, label }) => (
+            <NavLink key={path} to={path}>
+              {label}
+            </NavLink>
+          ))}
+        </Links>
+        <Box>{descriptionRoutes}</Box>
+      </SidePanel>
+      <OSDContainer>{viewerRoutes}</OSDContainer>
+    </Container>
   )
 }
 
