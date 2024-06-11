@@ -71,16 +71,16 @@ export const MouseTrackerDescription = () => {
       title="Mouse Tracker Test"
       description={
         <div>
-          <p>
+          <div>
             MouseTracker requires setting 'mouseNavEnabled: false' in the
             OSDViewer options.
-          </p>
-          <p>
+          </div>
+          <div>
             This breaks all default interaction event handling. The developer
             must write logic to handle left click pan, double click zoom, and
             scroll wheel zoom, on top of the additional events you want to
             handle with mouseTracker.
-          </p>
+          </div>
         </div>
       }
     />

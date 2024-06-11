@@ -53,13 +53,13 @@ export const SVGOverlayDescription = () => {
       title="SVG Overlay"
       description={
         <div>
-          <p>
+          <div>
             SVGOverlay provides an SVG element that the developer is able to
             append SVG elements to. The developer must add elements using
             'document.createElementNS' method.
             <br />
             SVGOverlay excels for grid-based image overlays.
-          </p>
+          </div>
         </div>
       }
     />

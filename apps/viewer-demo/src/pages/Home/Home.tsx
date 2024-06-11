@@ -56,11 +56,11 @@ export const HomeDescription = () => {
       title="Home"
       description={
         <div>
-          <p>This is a demo of the OpenSeadragon React Renderer.</p>
-          <p>
+          <div>This is a demo of the OpenSeadragon React Renderer.</div>
+          <div>
             This page showcases the use of the OpenSeadragon React Renderer with
             tiledImage and canvasOverlay.
-          </p>
+          </div>
         </div>
       }
     />

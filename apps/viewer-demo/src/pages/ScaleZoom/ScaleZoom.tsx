@@ -73,13 +73,13 @@ export const ScaleDescription = () => {
       title="Scalebar / Zoom Controls Test"
       description={
         <div>
-          <p>
+          <div>
             Demonstrating the usage of the scalebar and zoom control components.
-          </p>
-          <p>
+          </div>
+          <div>
             Zoom Controls should update along with the zoom level of the
             viewport.
-          </p>
+          </div>
         </div>
       }
     />

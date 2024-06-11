@@ -56,10 +56,10 @@ export const TooltipDescription = () => {
       title="Tooltip Overlay"
       description={
         <div>
-          <p>
+          <div>
             Tooltip overlay is an implementation of canvasOverlay that has an
             additional parameter for mouse position.
-          </p>
+          </div>
         </div>
       }
     />

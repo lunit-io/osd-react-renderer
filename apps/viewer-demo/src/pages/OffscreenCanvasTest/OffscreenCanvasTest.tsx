@@ -51,11 +51,11 @@ export const OffscreenCanvasDescription = () => {
       title="OffscreenCanvas Overlay"
       description={
         <>
-          <p>
+          <div>
             OffscreenCanvas is rendered in a separate thread using WebWorkers
             and the Offscreen Canvas API. OffscreenCanvas has size limitations
             that mean it is not suitable for rendering full screen images.
-          </p>
+          </div>
         </>
       }
     />

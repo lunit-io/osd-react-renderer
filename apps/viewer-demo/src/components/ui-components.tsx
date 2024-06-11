@@ -53,7 +53,19 @@ export const DescriptionBox = ({
       }}
     >
       <Typography variant="h6">{title}</Typography>
-      <Typography variant="body1">{description}</Typography>
+      <Box
+        sx={{
+          margin: 0,
+          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          fontWeight: 400,
+          fontSize: '1rem',
+          lineHeight: 1.5,
+          letterSpacing: '0.00938em',
+          marginBottom: '0.35em',
+        }}
+      >
+        {description}
+      </Box>
     </Box>
   )
 }

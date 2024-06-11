@@ -61,11 +61,11 @@ export const WebGLOverlayDescription = () => {
       title="WebGL Overlay"
       description={
         <div>
-          <p>
+          <div>
             WebGL overlay provides a WebGL2 context to render onto with GLSL
             shaders. WebGL copies the final image to a canvas element each
             frame.
-          </p>
+          </div>
         </div>
       }
     />
