@@ -202,6 +202,14 @@ const ReactOSDDOM = {
       // @ts-ignore: Type 'null' is not assignable to type 'Drawer'
       viewer.drawer = null
     }
+
+    // Tobio: See OSD docs for reason why no argument is passed and TS
+    // https://openseadragon.github.io/docs/OpenSeadragon.World.html#removeAllHandlers
+    //
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: An argument for 'eventName' was not provided.
+    viewer?.world.removeAllHandlers()
+
     viewer = null
     container = null
   },
