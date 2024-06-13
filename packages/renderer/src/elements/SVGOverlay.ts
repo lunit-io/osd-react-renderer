@@ -36,5 +36,9 @@ class SVGOverlay extends Base {
     this._overlay = this.viewer.svgOverlay()
     this.props = { ...defaultOptions, ...props }
   }
+
+  commitUpdate(props: SVGOverlayProps): void {
+    this.props = { ...defaultOptions, ...props }
+  }
 }
 export default SVGOverlay

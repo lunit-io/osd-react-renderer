@@ -210,6 +210,10 @@ const ReactOSDDOM = {
     // @ts-ignore: An argument for 'eventName' was not provided.
     viewer?.world.removeAllHandlers()
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: An argument for 'eventName' was not provided.
+    viewer?.removeAllHandlers()
+
     viewer = null
     container = null
   },

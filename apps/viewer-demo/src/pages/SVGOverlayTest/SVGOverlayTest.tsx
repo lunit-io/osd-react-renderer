@@ -1,4 +1,5 @@
-import OSDViewer from '../../../../../packages/renderer'
+import OSDViewer from '@lunit/osd-react-renderer'
+
 import { DescriptionBox } from '../../components/ui-components'
 
 import {

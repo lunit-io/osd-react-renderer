@@ -73,7 +73,7 @@ import { SVG_NAMESPACE, SVG_ROOT_ID } from '../constants'
     node: function () {
       return this._node
     },
-  
+
     resize: function () {
       if (this._containerWidth !== this._viewer.container.clientWidth) {
         this._containerWidth = this._viewer.container.clientWidth
@@ -119,6 +119,15 @@ import { SVG_NAMESPACE, SVG_ROOT_ID } from '../constants'
       )
     },
     destroy: function () {
+      // Clear group children
+      while (this._node.firstChild) {
+        this._node.removeChild(this._node.firstChild)
+      }
+      // Clean group
+      this._svg.removeChild(this._node)
+      // Clear svg node
+      this._viewer.canvas.removeChild(this._svg)
+
       this._svg = null
       this._viewer = null
       this._node = null
