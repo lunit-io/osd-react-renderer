@@ -6,7 +6,7 @@ import {
   viewerOptions,
 } from '../../utils/defaults'
 import useOSDHandlers from './useOSDHandlers'
-import ZoomController from '../../ZoomController'
+import ZoomController from '../../components/ZoomController/ZoomController'
 import { DescriptionBox } from '../../components/ui-components'
 
 const ScaleZoom = () => {
