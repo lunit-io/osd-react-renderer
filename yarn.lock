@@ -3306,6 +3306,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@remix-run/router@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.6.2.tgz#bbe75f8c59e0b7077584920ce2cc76f8f354934d"
+  integrity sha512-LzqpSrMK/3JBAVBI9u3NWtOhWNw5AMQfrUFYB0+bDHTSw17z++WJLsPsxAuK+oSddsxk4d7F/JcdDPM1M5YAhA==
+
 "@rollup/plugin-alias@^3.1.1":
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.1.9.tgz#a5d267548fe48441f34be8323fb64d1d4a1b3fdf"
@@ -12313,6 +12318,11 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==
 
+prettier@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.0.tgz#d173ea0524a691d4c0b1181752f2b46724328cdf"
+  integrity sha512-J9odKxERhCQ10OC2yb93583f6UnYutOeiV5i0zEDS7UGTdUt0u+y8erxl3lBKvwo/JHyyoEdXjwp4dke9oyZ/g==
+
 pretty-bytes@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-3.0.1.tgz#27d0008d778063a0b4811bb35c79f1bd5d5fbccf"
@@ -12633,6 +12643,14 @@ react-refresh@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
 
+react-router-dom@6.11.2:
+  version "6.11.2"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.11.2.tgz#324d55750ffe2ecd54ca4ec6b7bc7ab01741f170"
+  integrity sha512-JNbKtAeh1VSJQnH6RvBDNhxNwemRj7KxCzc5jb7zvDSKRnPWIFj9pO+eXqjM69gQJ0r46hSz1x4l9y0651DKWw==
+  dependencies:
+    "@remix-run/router" "1.6.2"
+    react-router "6.11.2"
+
 react-router-dom@^5.3.0:
   version "5.3.4"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.3.4.tgz#2ed62ffd88cae6db134445f4a0c0ae8b91d2e5e6"
@@ -12660,6 +12678,13 @@ react-router@5.3.4:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-router@6.11.2:
+  version "6.11.2"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.11.2.tgz#006301c4da1a173d7ad76b7ecd2da01b9dd3837a"
+  integrity sha512-74z9xUSaSX07t3LM+pS6Un0T55ibUE/79CzfZpy5wsPDZaea1F8QkrsiyRnA2YQ7LwE/umaydzXZV80iDCPkMg==
+  dependencies:
+    "@remix-run/router" "1.6.2"
 
 react-scripts@^5.0.1:
   version "5.0.1"

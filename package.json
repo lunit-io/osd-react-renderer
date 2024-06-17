@@ -62,6 +62,7 @@
     "jest-validate": "^29.7.0",
     "jest-watcher": "^29.7.0",
     "jest-worker": "^29.7.0",
+    "prettier": "^3.3.0",
     "ts-jest": "^29.1.2",
     "v8-to-istanbul": "^9.2.0"
   }
