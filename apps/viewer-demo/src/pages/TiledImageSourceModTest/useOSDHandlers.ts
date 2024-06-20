@@ -1,29 +1,32 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   CanvasOverlayProps,
   OSDViewerRef,
   ViewportProps,
 } from '@lunit/osd-react-renderer'
-import { commonConfig } from '../../utils/defaults'
+// import { commonConfig } from '../../utils/defaults'
+import { useAtom } from 'jotai'
+import { viewportZoomAtom } from '../../state'
 
 const useOSDHandlers = () => {
-  const [viewportZoom, setViewportZoom] = useState<number>(1)
   const [refPoint, setRefPoint] = useState<OpenSeadragon.Point>()
-  const [scaleFactor, setScaleFactor] = useState<number>(1)
+  const [scaleFactor] = useState<number>(1)
+
+  const [viewportZoom, setViewportZoom] = useAtom(viewportZoomAtom)
 
   const canvasOverlayRef = useRef(null)
   const osdViewerRef = useRef<OSDViewerRef>(null)
 
   const refreshScaleFactor = useCallback(() => {
-    const viewer = osdViewerRef.current?.viewer
-    if (!viewer) {
-      return
-    }
-    const imageWidth = viewer.world.getItemAt(0).getContentSize().x
-    const microscopeWidth1x =
-      ((imageWidth * commonConfig.micronsPerMeter) / 25400) * 96 * 10
-    const viewportWidth = viewer.viewport.getContainerSize().x
-    setScaleFactor(microscopeWidth1x / viewportWidth)
+    // const viewer = osdViewerRef.current?.viewer
+    // if (!viewer) {
+    //   return
+    // }
+    // const imageWidth = viewer.world.getItemAt(0).getContentSize().x
+    // const microscopeWidth1x =
+    //   ((imageWidth * commonConfig.micronsPerMeter) / 25400) * 96 * 10
+    // const viewportWidth = viewer.viewport.getContainerSize().x
+    // setScaleFactor(microscopeWidth1x / viewportWidth)
   }, [])
 
   const handleViewportOpen = useCallback<
@@ -40,14 +43,20 @@ const useOSDHandlers = () => {
 
   const handleViewportZoom = useCallback<NonNullable<ViewportProps['onZoom']>>(
     ({ eventSource: viewer, zoom, refPoint }) => {
+      console.log('viewport zoom reset', zoom)
+
       if (viewer == null || zoom == null) {
         return
       }
       setViewportZoom(zoom)
       setRefPoint(refPoint || undefined)
     },
-    []
+    [setViewportZoom]
   )
+
+  useEffect(() => {
+    console.log('zoom reset:', viewportZoom)
+  }, [viewportZoom])
 
   const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
     canvas: HTMLCanvasElement

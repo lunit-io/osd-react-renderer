@@ -32,6 +32,8 @@ class TiledImage extends Base {
 
   _retryCount: number
 
+  tImg = OpenSeadragon.TiledImage
+
   set parent(p: Base | null) {
     this._parent = p
     this._openImage()
@@ -44,8 +46,24 @@ class TiledImage extends Base {
   }
 
   commitUpdate(props: TiledImageProps): void {
+    // const oldProps = this.props
     this.props = props
+
+    // if (props.url !== oldProps.url)  {
+    const old_zoom = this.viewer.viewport.getZoom()
     this._openImage()
+    this.viewer.viewport.zoomTo(old_zoom, undefined, true)
+    // }
+  }
+
+  private static _stateToQuery(
+    stateObj: Record<string, string> | undefined
+  ): string {
+    if (!stateObj) return ''
+
+    const entries = Object.entries(stateObj)
+    const queries = entries.map(([key, value]) => `${key}=${value}`).join('&')
+    return `?${queries}`
   }
 
   private _openImage(): void {
@@ -61,17 +79,36 @@ class TiledImage extends Base {
         this.props.tileUrlBase &&
         this.props.url
       ) {
+        const old_zoom = this.viewer.viewport.getZoom()
+
         // Real-time tiling with custom tile url
         loadDZIMeta(this.props.url)
           .then(dziMeta => {
             const { format, ...tileSource } = dziMeta
-            viewer.open({
+
+            const imgOpts = {
               ...tileSource,
-              getTileUrl: (level: number, x: number, y: number) =>
-                `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
+              getTileUrl: (level: number, x: number, y: number) => {
+                const queries = TiledImage._stateToQuery(
+                  this.props.tiledImageState
+                )
+                const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
                   format || 'jpeg'
-                }`,
-            })
+                }`
+                if (queries) {
+                  return `${url}${queries}`
+                }
+                return url
+              },
+            }
+
+            viewer.open(imgOpts)
+          })
+          .then(() => {
+            setTimeout(() => {
+              this.viewer.viewport.zoomTo(old_zoom, undefined, true)
+            }, 10)
+            // this.viewer.viewport.zoomTo(old_zoom, undefined, true)
           })
           .catch(error => {
             this.handleError(error)
