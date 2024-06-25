@@ -1,5 +1,6 @@
 import OpenSeadragon from 'openseadragon'
-import { TiledImageProps } from '../types'
+import { isEqual } from 'lodash'
+import { TiledImageOverlayProps } from '../types'
 import Base from './Base'
 
 async function loadDZIMeta(url: string) {
@@ -27,38 +28,45 @@ async function loadDZIMeta(url: string) {
   }
 }
 
-class TiledImage extends Base {
-  props: TiledImageProps
+class TiledImageOverlay extends Base {
+  props: TiledImageOverlayProps
 
   _retryCount: number
 
-  panPoint: OpenSeadragon.Point
+  _isVisible: boolean
 
   set parent(p: Base | null) {
     this._parent = p
     this._openImage()
   }
 
-  constructor(viewer: OpenSeadragon.Viewer, props: TiledImageProps) {
+  constructor(viewer: OpenSeadragon.Viewer, props: TiledImageOverlayProps) {
     super(viewer)
     this.props = props
     this._retryCount = 0
-    this.panPoint = new OpenSeadragon.Point(0, 0)
+    this._isVisible = true
   }
 
-  commitUpdate(props: TiledImageProps): void {
-    this.props = props
-    this._openImage()
+  commitUpdate(props: TiledImageOverlayProps): void {
+    // discard isVisible from comparison
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isVisible: _oldIsVisible, ...oldProps } = this.props
+    const { isVisible: newIsVisible, ...newProps } = props
+
+    if (!isEqual(oldProps, newProps)) {
+      this.props = props
+      this._isVisible = props.isVisible
+      this._openImage()
+    } else {
+      this._isVisible = newIsVisible
+      this.updateOpacity()
+    }
   }
 
-  private static _stateToQuery(
-    stateObj: Record<string, string> | undefined
-  ): string {
-    if (!stateObj) return ''
-
-    const entries = Object.entries(stateObj)
-    const queries = entries.map(([key, value]) => `${key}=${value}`).join('&')
-    return `?${queries}`
+  private updateOpacity() {
+    const world = this._parent?.viewer?.world
+    const layer = world?.getItemAt(this.props.overlayIndex)
+    layer?.setOpacity(this._isVisible ? 1 : 0)
   }
 
   private _openImage(): void {
@@ -74,43 +82,27 @@ class TiledImage extends Base {
         this.props.tileUrlBase &&
         this.props.url
       ) {
-        const old_zoom = this.viewer.viewport.getZoom()
-
         // Real-time tiling with custom tile url
         loadDZIMeta(this.props.url)
           .then(dziMeta => {
             const { format, ...tileSource } = dziMeta
-
             const imgOpts = {
               ...tileSource,
+              index: this.props.overlayIndex,
               getTileUrl: (level: number, x: number, y: number) => {
-                const queries = TiledImage._stateToQuery(
-                  this.props.tiledImageState
-                )
                 const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
                   format || 'jpeg'
                 }`
-                if (queries) {
-                  return `${url}${queries}`
-                }
                 return url
               },
             }
 
-            viewer.addTiledImage({ tileSource: imgOpts, index: 0 })
+            viewer.addTiledImage({
+              tileSource: imgOpts,
+              opacity: this._isVisible ? 1 : 0,
+            })
+          })
 
-            const bounds = this.viewer.viewport.getBounds()
-            this.panPoint = new OpenSeadragon.Point(
-              bounds.x + bounds.width / 2,
-              bounds.y + bounds.height / 2
-            )
-          })
-          .then(() => {
-            setTimeout(() => {
-              this.viewer.viewport.panTo(this.panPoint, true)
-              this.viewer.viewport.zoomTo(old_zoom, undefined, true)
-            }, 10)
-          })
           .catch(error => {
             this.handleError(error)
           })
@@ -156,4 +148,4 @@ class TiledImage extends Base {
   }
 }
 
-export default TiledImage
+export default TiledImageOverlay

@@ -10,9 +10,11 @@ import MouseTracker from './MouseTracker'
 import OffscreenOverlay from './OffscreenOverlay'
 import WebGLOverlay from './WebGLOverlay'
 import SVGOverlay from './SVGOverlay'
+import TiledImageOverlay from './TiledImageOverlay'
 
 const ElementConstructors = {
   tiledImage: TiledImage,
+  tiledImageOverlay: TiledImageOverlay,
   mouseTracker: MouseTracker,
   viewport: Viewport,
   scalebar: Scalebar,

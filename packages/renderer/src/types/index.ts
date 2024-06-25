@@ -170,6 +170,15 @@ export interface TiledImageProps extends NodeProps {
   tiledImageStateFetch?: () => string
   tiledImageState?: Record<string, string>
 }
+export interface TiledImageOverlayProps extends NodeProps {
+  url?: string
+  tileUrlBase?: string
+  tileSource?: OpenSeadragon.TileSource
+  maxRetry?: number
+  retryInterval?: number
+  isVisible: boolean
+  overlayIndex: number
+}
 
 export interface MouseTrackerProps extends MouseTrackerEventHandlers {
   element?:
@@ -259,6 +268,7 @@ declare global {
       svgOverlay: SVGOverlayProps
       tooltipOverlay: TooltipOverlayProps
       webGLOverlay: WebGLOverlayProps
+      tiledImageOverlay: TiledImageOverlayProps
     }
   }
 }
