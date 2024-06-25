@@ -32,7 +32,9 @@ class TiledImage extends Base {
 
   _retryCount: number
 
-  tImg = OpenSeadragon.TiledImage
+  tImg: OpenSeadragon.TiledImage
+
+  panPoint: OpenSeadragon.Point
 
   set parent(p: Base | null) {
     this._parent = p
@@ -103,12 +105,18 @@ class TiledImage extends Base {
             }
 
             viewer.open(imgOpts)
+            const bounds = this.viewer.viewport.getBounds()
+
+            this.panPoint = new OpenSeadragon.Point(
+              bounds.x + bounds.width / 2,
+              bounds.y + bounds.height / 2
+            )
           })
           .then(() => {
             setTimeout(() => {
+              this.viewer.viewport.panTo(this.panPoint, true)
               this.viewer.viewport.zoomTo(old_zoom, undefined, true)
             }, 10)
-            // this.viewer.viewport.zoomTo(old_zoom, undefined, true)
           })
           .catch(error => {
             this.handleError(error)
