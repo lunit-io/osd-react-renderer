@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-var */
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable vars-on-top */
+/* eslint-disable max-classes-per-file */
 // Type definitions for OpenSeadragon 2.4.1
 // Project: https://openseadragon.github.io/
 // Definitions by:  Álvaro Martínez <https://github.com/alvaromartmart>
@@ -6,1693 +12,1633 @@
 // Definitions: https://github.com/alvaromartmart/types-openseadragon
 
 // TypeScript Version: 3.5.2
-declare module "openseadragonV2" {
-  export interface Overlay {
-    context2d: () => CanvasRenderingContext2D;
-    contextGL: () => WebGL2RenderingContext;
-    onRedraw: () => void;
-  }
-  export class Browser {
-    vendor: BROWSERS;
-    version: number;
-    alpha: boolean;
-  }
+declare module 'openseadragonV2' {
+    export interface Overlay {
+        context2d: () => CanvasRenderingContext2D;
+        contextGL: () => WebGL2RenderingContext;
+        onRedraw: () => void;
+    }
+    export class Browser {
+        vendor: BROWSERS;
 
-  export enum BROWSERS {
-    UNKNOWN = 0,
-    IE = 1,
-    FIREFOX = 2,
-    SAFARI = 3,
-    CHROME = 4,
-    OPERA = 5,
-  }
+        version: number;
 
-  export enum ButtonState {
-    REST,
-    GROUP,
-    HOVER,
-    DOWN,
-  }
+        alpha: boolean;
+    }
 
-  export enum ControlAnchor {
-    NONE,
-    TOP_LEFT,
-    TOP_RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT,
-    ABSOLUTE,
-  }
+    export enum BROWSERS {
+        UNKNOWN = 0,
+        IE = 1,
+        FIREFOX = 2,
+        SAFARI = 3,
+        CHROME = 4,
+        OPERA = 5,
+    }
 
-  export const DEFAULT_SETTINGS: Options;
+    export enum ButtonState {
+        REST,
+        GROUP,
+        HOVER,
+        DOWN,
+    }
 
-  export const fullScreenApi: {
-    supportsFullScreen: boolean;
-    isFullScreen: () => boolean;
-    getFullScreenElement: () => HTMLElement;
-    requestFullScreen: () => void;
-    exitFullScreen: () => void;
-    cancelFullScreen: () => void;
-    fullScreenEventName: string;
-    fullScreenErrorEventName: string;
-  };
+    export enum ControlAnchor {
+        NONE,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT,
+        ABSOLUTE,
+    }
 
-  export enum OverlayPlacement {
-    CENTER,
-    TOP_LEFT,
-    TOP,
-    TOP_RIGHT,
-    RIGHT,
-    BOTTOM_RIGHT,
-    BOTTOM,
-    BOTTOM_LEFT,
-    LEFT,
-  }
+    export const DEFAULT_SETTINGS: Options;
 
-  export enum OverlayRotationMode {
-    NO_ROTATION,
-    EXACT,
-    BOUNDING_BOX,
-  }
+    export const fullScreenApi: {
+        supportsFullScreen: boolean;
+        isFullScreen: () => boolean;
+        getFullScreenElement: () => HTMLElement;
+        requestFullScreen: () => void;
+        exitFullScreen: () => void;
+        cancelFullScreen: () => void;
+        fullScreenEventName: string;
+        fullScreenErrorEventName: string;
+    };
 
-  export var pixelDensityRatio: number;
+    export enum OverlayPlacement {
+        CENTER,
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        RIGHT,
+        BOTTOM_RIGHT,
+        BOTTOM,
+        BOTTOM_LEFT,
+        LEFT,
+    }
 
-  export enum Placement {
-    CENTER,
-    TOP_LEFT,
-    TOP,
-    TOP_RIGHT,
-    RIGHT,
-    BOTTOM_RIGHT,
-    BOTTOM,
-    BOTTOM_LEFT,
-    LEFT,
-  }
+    export enum OverlayRotationMode {
+        NO_ROTATION,
+        EXACT,
+        BOUNDING_BOX,
+    }
 
-  export var supportsCanvas: boolean;
+    export var pixelDensityRatio: number;
 
-  export var version: {
-    versionStr: string;
-    major: number;
-    minor: number;
-    revision: number;
-  };
+    export enum Placement {
+        CENTER,
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        RIGHT,
+        BOTTOM_RIGHT,
+        BOTTOM,
+        BOTTOM_LEFT,
+        LEFT,
+    }
 
-  export function addClass(element: Element | string, className: string): void;
+    export var supportsCanvas: boolean;
 
-  export function addEvent(
-    element: Element | string,
-    eventName: string,
-    handler: (event) => void,
-    useCapture?: boolean
-  ): void;
+    export var version: {
+        versionStr: string;
+        major: number;
+        minor: number;
+        revision: number;
+    };
 
-  export function cancelEvent(event?: OSDEvent): void;
+    export function addClass(element: Element | string, className: string): void;
 
-  export function capitalizeFirstLetter(value: string): string;
-
-  export function createCallback(
-    object: object,
-    method: (...args) => void,
-    ...args
-  ): (...args) => void;
-
-  export function delegate(
-    object: object,
-    method: (...args) => void
-  ): (object, ...args) => void; // REVIEW: unsure of return type
-
-  export function extend(): any;
-
-  export function getCssPropertyWithVendorPrefix(property: string): string;
-
-  export function getElement(element: string | Element): Element;
-
-  export function getElementOffset(element: Element | string): Point;
-
-  export function getElementPosition(element: Element | string): Point;
-
-  export function getElementSize(element: Element | string): Point;
-
-  export function getElementStyle(element: Element | string): any; // CSSStyle?
-
-  export function getMousePosition(event?: OSDEvent): Point;
-
-  export function getPageScroll(): Point;
-
-  export function getString(property: string): string;
-
-  export function getUrlParameter(key: string): string;
-
-  export function getWindowSize(): Point;
-
-  export function imageFormatSupported(extension?: string): boolean;
-
-  export function indexOf(
-    array: any[],
-    searchElement: object,
-    fromIndex?: number
-  ): number;
-
-  // (missing jquery functions)
-
-  export function makeAjaxRequest(options: {
-    url: string;
-    success: (obj: object) => void;
-    error: (obj: object) => void;
-    headers: object;
-    responseType: string;
-    withCredentials?: boolean;
-  }): XMLHttpRequest;
-
-  export function makeCenteredNode(element: Element | string): Element;
-
-  export function makeNeutralElement(tagName: string): Element;
-
-  export function makeTransparentImage(src: string): Element;
-
-  export function now(): number;
-
-  export function parseJSON(string: string): object;
-
-  export function parseXml(string: string): Document;
-
-  export function pointInElement(
-    element: Element | string,
-    point: Point
-  ): boolean;
-
-  export function positiveModulo(number: number, modulo: number): number;
-
-  export function removeClass(
-    element: Element | string,
-    className: string
-  ): void;
-
-  export function removeEvent(
-    element: Element | string,
-    eventName: string,
-    handler: EventHandler,
-    useCapture?: boolean
-  ): void;
-
-  export function setElementOpacity(
-    element: Element | string,
-    opacity: number,
-    usesAlpha?: boolean
-  ): void;
-
-  export function setElementTouchActionNone(element: Element | string);
-
-  export function setPageScroll(point: Point);
-
-  export function setString(property: string, value: any);
-
-  export function stopEvent(event?: OSDEvent);
-
-  export interface GestureSettings {
-    scrollToZoom?: boolean;
-    clickToZoom?: boolean;
-    dblClickToZoom?: boolean;
-    pinchToZoom?: boolean;
-    flickEnabled?: boolean;
-    flickMinSpeed?: number;
-    flickMomentum?: number;
-  }
-
-  interface NavImagesValues {
-    REST: string;
-    GROUP: string;
-    HOVER: string;
-    DOWN: string;
-  }
-
-  export interface NavImages {
-    zoomIn: NavImagesValues;
-    zoomOut: NavImagesValues;
-    home: NavImagesValues;
-    fullpage: NavImagesValues;
-    rotateleft: NavImagesValues;
-    rotateright: NavImagesValues;
-    flip: NavImagesValues;
-    previous: NavImagesValues;
-    next: NavImagesValues;
-  }
-
-  export interface Options {
-    id?: string;
-    element?: HTMLElement;
-    tileSources?:
-      | string
-      | string[]
-      | TileSource[]
-      | {
-          Image: {
-            xmlns?: string;
-            Url: string;
-            Format: string;
-            Overlap: string;
-            TileSize: string;
-            Size: {
-              Width: string;
-              Height: string;
-            };
-          };
-        };
-    tabIndex?: number;
-    overlays?: any[];
-    prefixUrl?: string;
-    navImages?: NavImages;
-    debugMode?: boolean;
-    debugGridColor?: string[];
-    blendTime?: number;
-    alwaysBlend?: boolean;
-    autoHideControls?: boolean;
-    immediateRender?: boolean;
-    defaultZoomLevel?: number;
-    opacity?: number;
-    preload?: boolean;
-    compositeOperation?:
-      | "source-over"
-      | "source-atop"
-      | "source-in"
-      | "source-out"
-      | "destination-over"
-      | "destination-atop"
-      | "destination-in"
-      | "destination-out"
-      | "lighter"
-      | "copy"
-      | "xor";
-    placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
-    degrees?: number;
-    flipped?: boolean;
-    minZoomLevel?: number;
-    maxZoomLevel?: number;
-    homeFillsViewer?: boolean;
-    panHorizontal?: boolean;
-    panVertical?: boolean;
-    constrainDuringPan?: boolean;
-    wrapHorizontal?: boolean;
-    wrapVertical?: boolean;
-    minZoomImageRatio?: number;
-    maxZoomPixelRatio?: number;
-    smoothTileEdgesMinZoom?: number;
-    iOSDevice?: boolean;
-    autoResize?: boolean;
-    preserveImageSizeOnResize?: boolean;
-    minScrollDeltaTime?: number;
-    pixelsPerWheelLine?: number;
-    pixelsPerArrowPress?: number;
-    visibilityRatio?: number;
-    viewportMargins?: object;
-    imageLoaderLimit?: number;
-    clickTimeThreshold?: number;
-    clickDistThreshold?: number;
-    dblClickTimeThreshold?: number;
-    dblClickDistThreshold?: number;
-    springStiffness?: number;
-    animationTime?: number;
-    gestureSettingsMouse?: GestureSettings;
-    gestureSettingsTouch?: GestureSettings;
-    gestureSettingsPen?: GestureSettings;
-    gestureSettingsUnknown?: GestureSettings;
-    zoomPerClick?: number;
-    zoomPerScroll?: number;
-    zoomPerSecond?: number;
-    showNavigator?: boolean;
-    navigatorId?: string;
-    navigatorPosition?:
-      | "TOP_LEFT"
-      | "TOP_RIGHT"
-      | "BOTTOM_LEFT"
-      | "BOTTOM_RIGHT"
-      | "ABSOLUTE";
-    navigatorSizeRatio?: number;
-    navigatorMaintainSizeRatio?: boolean;
-    navigatorTop?: number | string;
-    navigatorLeft?: number | string;
-    navigatorHeight?: number | string;
-    navigatorWidth?: number | string;
-    navigatorAutoResize?: boolean;
-    navigatorAutoFade?: boolean;
-    navigatorRotate?: boolean;
-    navigatorBackground?: string;
-    navigatorOpacity?: number;
-    navigatorBorderColor?: string;
-    navigatorDisplayRegionColor?: string;
-    controlsFadeDelay?: number;
-    controlsFadeLength?: number;
-    maxImageCacheCount?: number;
-    timeout?: number;
-    useCanvas?: boolean;
-    minPixelRatio?: number;
-    mouseNavEnabled?: number;
-    showNavigationControl?: boolean;
-    navigationControlAnchor?: ControlAnchor;
-    showZoomControl?: boolean;
-    showHomeControl?: boolean;
-    showFullPageControl?: boolean;
-    showRotationControl?: boolean;
-    showFlipControl?: boolean;
-    showSequenceControl?: boolean;
-    sequenceControlAnchor?: ControlAnchor;
-    navPrevNextWrap?: boolean;
-    zoomInButton?: string;
-    zoomOutButton?: string;
-    homeButton?: string;
-    fullPageButton?: string;
-    rotateLeftButton?: string;
-    rotateRightButton?: string;
-    previousButton?: string;
-    nextButton?: string;
-    sequenceMode?: boolean;
-    initialPage?: boolean;
-    preserveViewport?: boolean;
-    preserveOverlays?: boolean;
-    showReferenceStrip?: boolean;
-    referenceStripScroll?: string;
-    referenceStripElement?: HTMLElement;
-    referenceStripHeight?: number;
-    referenceStripWidth?: number;
-    referenceStripPosition?: string;
-    referenceStripSizeRatio?: number;
-    collectionMode?: boolean;
-    collectionRows?: number;
-    collectionColumns?: number;
-    collectionLayout?: "horizontal" | "vertical";
-    collectionTileSize?: number;
-    collectionTileMargin?: number;
-    crossOriginPolicy?: "Anonymous" | "use-credentials" | false;
-    ajaxWithCredentials?: boolean;
-    loadTilesWithAjax?: boolean;
-    axajHeaders?: object;
-    imageSmoothingEnabled?: boolean;
-  }
-
-  export type TileSourceOptions = {
-    url?: string;
-    referenceStripThumbnailUrl?: string;
-    success?: (event) => void;
-    ajaxWithCredentials?: boolean;
-    ajaxHeaders?: object;
-    width?: number;
-    height?: number;
-    tileSize?: number;
-    tileWidth?: number;
-    tileHeight?: number;
-    tileOverlap?: number;
-    minLevel?: number;
-    maxLevel?: number;
-    getTileUrl?: (l: number, x: number, y: number) => string;
-  };
-
-  export class Button extends EventSource {
-    currentState: ButtonState;
-    element: Element;
-    fadeDelay: number;
-    fadeLength: number;
-    tracker: MouseTracker;
-
-    constructor(options: {
-      element?: Element;
-      tooltip?: string;
-      srcRest?: string;
-      srcGroup?: string;
-      srcHover?: string;
-      srcDown?: string;
-      fadeDelay?: number;
-      fadeLength?: number;
-      onPress?: EventHandler;
-      onRelease?: EventHandler;
-      onClick?: EventHandler;
-      onEnter?: EventHandler;
-      onExit?: EventHandler;
-      onFocus?: EventHandler;
-      onBlur?: EventHandler;
-    });
-
-    addHandler(
-      eventName: ButtonEventName,
-      handler: EventHandler,
-      userData?: object
+    export function addEvent(
+        element: Element | string,
+        eventName: string,
+        handler: (event) => void,
+        useCapture?: boolean,
     ): void;
 
-    addOnceHandler(
-      eventName: ButtonEventName,
-      handler: EventHandler,
-      userData?: object,
-      times?: number
-    ): void;
+    export function cancelEvent(event?: OSDEvent): void;
 
-    disable(): void;
+    export function capitalizeFirstLetter(value: string): string;
 
-    enable(): void;
+    export function createCallback(object: object, method: (...args) => void, ...args): (...args) => void;
 
-    getHandler(
-      eventName: ButtonEventName
-    ): (source: ButtonEventName, ...args) => void;
+    export function delegate(object: object, method: (...args) => void): (object, ...args) => void; // REVIEW: unsure of return type
 
-    raiseEvent(eventName: ButtonEventName, eventArgs: object): void;
+    export function extend(): any;
 
-    removeAllHandlers(eventName: ButtonEventName): void;
+    export function getCssPropertyWithVendorPrefix(property: string): string;
 
-    removeHandler(eventName: ButtonEventName, handler: EventHandler): void;
-  }
+    export function getElement(element: string | Element): Element;
 
-  export class ButtonGroup {
-    buttons: Button[];
-    element: Element;
-    tracker: MouseTracker;
+    export function getElementOffset(element: Element | string): Point;
 
-    constructor(options: { buttons: Button[]; element?: Element });
-  }
+    export function getElementPosition(element: Element | string): Point;
 
-  export type TControlOptions = {
-    anchor?: ControlAnchor;
-    attachToViewer?: boolean;
-    autoFade?: boolean;
-  };
+    export function getElementSize(element: Element | string): Point;
 
-  export class Control {
-    anchor: ControlAnchor;
-    autoFade: boolean;
-    container: Element;
-    element: Element;
-    wrapper: Element;
+    export function getElementStyle(element: Element | string): any; // CSSStyle?
 
-    constructor(element: Element, options: TControlOptions, container: Element);
+    export function getMousePosition(event?: OSDEvent): Point;
 
-    destroy(): void;
+    export function getPageScroll(): Point;
 
-    isVisible(): boolean;
+    export function getString(property: string): string;
 
-    setOpacity(opacity: number): void;
+    export function getUrlParameter(key: string): string;
 
-    setVisible(visible: boolean): void;
-  }
+    export function getWindowSize(): Point;
 
-  export class ControlDock {
-    constructor(options: object);
+    export function imageFormatSupported(extension?: string): boolean;
 
-    addControl(element: Control, controlOptions: TControlOptions): void;
+    export function indexOf(array: any[], searchElement: object, fromIndex?: number): number;
 
-    areControlsEnabled(): boolean;
+    // (missing jquery functions)
 
-    clearControls(): ControlDock;
-
-    removeControl(element: Control): ControlDock;
-
-    setControlsEnabled(enabled: boolean): ControlDock;
-  }
-
-  export class DisplayRect extends Rect {
-    maxLevel: number;
-    minLevel: number;
-
-    constructor(
-      x: number,
-      y: number,
-      width: number,
-      height: number,
-      minLevel: number,
-      maxLevel: number
-    );
-  }
-
-  export class Drawer {
-    canvas: HTMLCanvasElement | HTMLElement;
-    container: Element;
-    context: CanvasRenderingContext2D | null;
-
-    // element : Element; // Deprecated
-
-    constructor(options: {
-      viewer: Viewer;
-      viewport: Viewport;
-      element: Element;
-      debugGridColor?: string;
-    });
-
-    blendSketch(options: {
-      opacity: number;
-      scale?: number;
-      translate?: Point;
-      compositeOperation?: string;
-      bounds?: Rect;
-    }): void;
-
-    canRotate(): boolean;
-
-    clear(): void;
-
-    destroy(): void;
-
-    drawTile(
-      tile: Tile,
-      drawingHandler: (context, tile, rendered) => void, //TODO: determine handler parameter types
-      useSketch: boolean,
-      scale?: number,
-      translate?: Point
-    ): void;
-
-    getCanvasSize(sketch: boolean): Point;
-
-    getOpacity(): number;
-
-    setOpacity(opacity: number): Drawer;
-
-    viewportToDrawerRectangle(rectangle: Rect): Rect;
-  }
-
-  export class DziTileSource extends TileSource {
-    constructor(
-      width: number,
-      height: number,
-      tileSize: number,
-      tileOverlap: number,
-      tilesUrl: number,
-      fileFormat: number,
-      displayRects: number,
-      minLevel: number,
-      maxLevel: number
-    );
-  }
-
-  export class IIIFTileSource extends TileSource {}
-
-  export class ImageLoader {
-    constructor(options: { jobLimit?: number; timeout?: number });
-
-    addJob(options: {
-      src?: string;
-      loadWithAjax?: string;
-      ajaxHeaders?: string;
-      crossOriginPolicy?: string | boolean;
-      ajaxWithCredentials?: boolean;
-      callback?: () => void;
-      abort?: () => void;
-    }): void;
-
-    clear(): void;
-  }
-
-  export class ImageTileSource extends TileSource {
-    constructor(options: {
-      url: string;
-      buildPyramid?: boolean;
-      crossOriginPolicy?: string | boolean;
-      ajaxWidthCredentials?: string | boolean;
-      useCanvas?: boolean;
-    });
-  }
-
-  export class LegacyTileSource extends TileSource {
-    constructor(
-      levels: {
+    export function makeAjaxRequest(options: {
         url: string;
+        success: (obj: object) => void;
+        error: (obj: object) => void;
+        headers: object;
+        responseType: string;
+        withCredentials?: boolean;
+    }): XMLHttpRequest;
+
+    export function makeCenteredNode(element: Element | string): Element;
+
+    export function makeNeutralElement(tagName: string): Element;
+
+    export function makeTransparentImage(src: string): Element;
+
+    export function now(): number;
+
+    export function parseJSON(string: string): object;
+
+    export function parseXml(string: string): Document;
+
+    export function pointInElement(element: Element | string, point: Point): boolean;
+
+    export function positiveModulo(number: number, modulo: number): number;
+
+    export function removeClass(element: Element | string, className: string): void;
+
+    export function removeEvent(
+        element: Element | string,
+        eventName: string,
+        handler: EventHandler,
+        useCapture?: boolean,
+    ): void;
+
+    export function setElementOpacity(element: Element | string, opacity: number, usesAlpha?: boolean): void;
+
+    export function setElementTouchActionNone(element: Element | string);
+
+    export function setPageScroll(point: Point);
+
+    export function setString(property: string, value: any);
+
+    export function stopEvent(event?: OSDEvent);
+
+    export interface GestureSettings {
+        scrollToZoom?: boolean;
+        clickToZoom?: boolean;
+        dblClickToZoom?: boolean;
+        pinchToZoom?: boolean;
+        flickEnabled?: boolean;
+        flickMinSpeed?: number;
+        flickMomentum?: number;
+    }
+
+    interface NavImagesValues {
+        REST: string;
+        GROUP: string;
+        HOVER: string;
+        DOWN: string;
+    }
+
+    export interface NavImages {
+        zoomIn: NavImagesValues;
+        zoomOut: NavImagesValues;
+        home: NavImagesValues;
+        fullpage: NavImagesValues;
+        rotateleft: NavImagesValues;
+        rotateright: NavImagesValues;
+        flip: NavImagesValues;
+        previous: NavImagesValues;
+        next: NavImagesValues;
+    }
+
+    export interface Options {
+        id?: string;
+        element?: HTMLElement;
+        tileSources?:
+            | string
+            | string[]
+            | TileSource[]
+            | {
+                  Image: {
+                      xmlns?: string;
+                      Url: string;
+                      Format: string;
+                      Overlap: string;
+                      TileSize: string;
+                      Size: {
+                          Width: string;
+                          Height: string;
+                      };
+                  };
+              };
+        tabIndex?: number;
+        overlays?: any[];
+        prefixUrl?: string;
+        navImages?: NavImages;
+        debugMode?: boolean;
+        debugGridColor?: string[];
+        blendTime?: number;
+        alwaysBlend?: boolean;
+        autoHideControls?: boolean;
+        immediateRender?: boolean;
+        defaultZoomLevel?: number;
+        opacity?: number;
+        preload?: boolean;
+        compositeOperation?:
+            | 'source-over'
+            | 'source-atop'
+            | 'source-in'
+            | 'source-out'
+            | 'destination-over'
+            | 'destination-atop'
+            | 'destination-in'
+            | 'destination-out'
+            | 'lighter'
+            | 'copy'
+            | 'xor';
+        placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
+        degrees?: number;
+        flipped?: boolean;
+        minZoomLevel?: number;
+        maxZoomLevel?: number;
+        homeFillsViewer?: boolean;
+        panHorizontal?: boolean;
+        panVertical?: boolean;
+        constrainDuringPan?: boolean;
+        wrapHorizontal?: boolean;
+        wrapVertical?: boolean;
+        minZoomImageRatio?: number;
+        maxZoomPixelRatio?: number;
+        smoothTileEdgesMinZoom?: number;
+        iOSDevice?: boolean;
+        autoResize?: boolean;
+        preserveImageSizeOnResize?: boolean;
+        minScrollDeltaTime?: number;
+        pixelsPerWheelLine?: number;
+        pixelsPerArrowPress?: number;
+        visibilityRatio?: number;
+        viewportMargins?: object;
+        imageLoaderLimit?: number;
+        clickTimeThreshold?: number;
+        clickDistThreshold?: number;
+        dblClickTimeThreshold?: number;
+        dblClickDistThreshold?: number;
+        springStiffness?: number;
+        animationTime?: number;
+        gestureSettingsMouse?: GestureSettings;
+        gestureSettingsTouch?: GestureSettings;
+        gestureSettingsPen?: GestureSettings;
+        gestureSettingsUnknown?: GestureSettings;
+        zoomPerClick?: number;
+        zoomPerScroll?: number;
+        zoomPerSecond?: number;
+        showNavigator?: boolean;
+        navigatorId?: string;
+        navigatorPosition?: 'TOP_LEFT' | 'TOP_RIGHT' | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT' | 'ABSOLUTE';
+        navigatorSizeRatio?: number;
+        navigatorMaintainSizeRatio?: boolean;
+        navigatorTop?: number | string;
+        navigatorLeft?: number | string;
+        navigatorHeight?: number | string;
+        navigatorWidth?: number | string;
+        navigatorAutoResize?: boolean;
+        navigatorAutoFade?: boolean;
+        navigatorRotate?: boolean;
+        navigatorBackground?: string;
+        navigatorOpacity?: number;
+        navigatorBorderColor?: string;
+        navigatorDisplayRegionColor?: string;
+        controlsFadeDelay?: number;
+        controlsFadeLength?: number;
+        maxImageCacheCount?: number;
+        timeout?: number;
+        useCanvas?: boolean;
+        minPixelRatio?: number;
+        mouseNavEnabled?: number;
+        showNavigationControl?: boolean;
+        navigationControlAnchor?: ControlAnchor;
+        showZoomControl?: boolean;
+        showHomeControl?: boolean;
+        showFullPageControl?: boolean;
+        showRotationControl?: boolean;
+        showFlipControl?: boolean;
+        showSequenceControl?: boolean;
+        sequenceControlAnchor?: ControlAnchor;
+        navPrevNextWrap?: boolean;
+        zoomInButton?: string;
+        zoomOutButton?: string;
+        homeButton?: string;
+        fullPageButton?: string;
+        rotateLeftButton?: string;
+        rotateRightButton?: string;
+        previousButton?: string;
+        nextButton?: string;
+        sequenceMode?: boolean;
+        initialPage?: boolean;
+        preserveViewport?: boolean;
+        preserveOverlays?: boolean;
+        showReferenceStrip?: boolean;
+        referenceStripScroll?: string;
+        referenceStripElement?: HTMLElement;
+        referenceStripHeight?: number;
+        referenceStripWidth?: number;
+        referenceStripPosition?: string;
+        referenceStripSizeRatio?: number;
+        collectionMode?: boolean;
+        collectionRows?: number;
+        collectionColumns?: number;
+        collectionLayout?: 'horizontal' | 'vertical';
+        collectionTileSize?: number;
+        collectionTileMargin?: number;
+        crossOriginPolicy?: 'Anonymous' | 'use-credentials' | false;
+        ajaxWithCredentials?: boolean;
+        loadTilesWithAjax?: boolean;
+        axajHeaders?: object;
+        imageSmoothingEnabled?: boolean;
+    }
+
+    export type TileSourceOptions = {
+        url?: string;
+        referenceStripThumbnailUrl?: string;
+        success?: (event) => void;
+        ajaxWithCredentials?: boolean;
+        ajaxHeaders?: object;
+        width?: number;
+        height?: number;
+        tileSize?: number;
+        tileWidth?: number;
+        tileHeight?: number;
+        tileOverlap?: number;
+        minLevel?: number;
+        maxLevel?: number;
+        getTileUrl?: (l: number, x: number, y: number) => string;
+    };
+
+    export class Button extends EventSource {
+        currentState: ButtonState;
+
+        element: Element;
+
+        fadeDelay: number;
+
+        fadeLength: number;
+
+        tracker: MouseTracker;
+
+        constructor(options: {
+            element?: Element;
+            tooltip?: string;
+            srcRest?: string;
+            srcGroup?: string;
+            srcHover?: string;
+            srcDown?: string;
+            fadeDelay?: number;
+            fadeLength?: number;
+            onPress?: EventHandler;
+            onRelease?: EventHandler;
+            onClick?: EventHandler;
+            onEnter?: EventHandler;
+            onExit?: EventHandler;
+            onFocus?: EventHandler;
+            onBlur?: EventHandler;
+        });
+
+        addHandler(eventName: ButtonEventName, handler: EventHandler, userData?: object): void;
+
+        addOnceHandler(eventName: ButtonEventName, handler: EventHandler, userData?: object, times?: number): void;
+
+        disable(): void;
+
+        enable(): void;
+
+        getHandler(eventName: ButtonEventName): (source: ButtonEventName, ...args) => void;
+
+        raiseEvent(eventName: ButtonEventName, eventArgs: object): void;
+
+        removeAllHandlers(eventName: ButtonEventName): void;
+
+        removeHandler(eventName: ButtonEventName, handler: EventHandler): void;
+    }
+
+    export class ButtonGroup {
+        buttons: Button[];
+
+        element: Element;
+
+        tracker: MouseTracker;
+
+        constructor(options: { buttons: Button[]; element?: Element });
+    }
+
+    export type TControlOptions = {
+        anchor?: ControlAnchor;
+        attachToViewer?: boolean;
+        autoFade?: boolean;
+    };
+
+    export class Control {
+        anchor: ControlAnchor;
+
+        autoFade: boolean;
+
+        container: Element;
+
+        element: Element;
+
+        wrapper: Element;
+
+        constructor(element: Element, options: TControlOptions, container: Element);
+
+        destroy(): void;
+
+        isVisible(): boolean;
+
+        setOpacity(opacity: number): void;
+
+        setVisible(visible: boolean): void;
+    }
+
+    export class ControlDock {
+        constructor(options: object);
+
+        addControl(element: Control, controlOptions: TControlOptions): void;
+
+        areControlsEnabled(): boolean;
+
+        clearControls(): ControlDock;
+
+        removeControl(element: Control): ControlDock;
+
+        setControlsEnabled(enabled: boolean): ControlDock;
+    }
+
+    export class DisplayRect extends Rect {
+        maxLevel: number;
+
+        minLevel: number;
+
+        constructor(x: number, y: number, width: number, height: number, minLevel: number, maxLevel: number);
+    }
+
+    export class Drawer {
+        canvas: HTMLCanvasElement | HTMLElement;
+
+        container: Element;
+
+        context: CanvasRenderingContext2D | null;
+
+        // element : Element; // Deprecated
+
+        constructor(options: { viewer: Viewer; viewport: Viewport; element: Element; debugGridColor?: string });
+
+        blendSketch(options: {
+            opacity: number;
+            scale?: number;
+            translate?: Point;
+            compositeOperation?: string;
+            bounds?: Rect;
+        }): void;
+
+        canRotate(): boolean;
+
+        clear(): void;
+
+        destroy(): void;
+
+        drawTile(
+            tile: Tile,
+            drawingHandler: (context, tile, rendered) => void, // TODO: determine handler parameter types
+            useSketch: boolean,
+            scale?: number,
+            translate?: Point,
+        ): void;
+
+        getCanvasSize(sketch: boolean): Point;
+
+        getOpacity(): number;
+
+        setOpacity(opacity: number): Drawer;
+
+        viewportToDrawerRectangle(rectangle: Rect): Rect;
+    }
+
+    export class DziTileSource extends TileSource {
+        constructor(
+            width: number,
+            height: number,
+            tileSize: number,
+            tileOverlap: number,
+            tilesUrl: number,
+            fileFormat: number,
+            displayRects: number,
+            minLevel: number,
+            maxLevel: number,
+        );
+    }
+
+    export class IIIFTileSource extends TileSource {}
+
+    export class ImageLoader {
+        constructor(options: { jobLimit?: number; timeout?: number });
+
+        addJob(options: {
+            src?: string;
+            loadWithAjax?: string;
+            ajaxHeaders?: string;
+            crossOriginPolicy?: string | boolean;
+            ajaxWithCredentials?: boolean;
+            callback?: () => void;
+            abort?: () => void;
+        }): void;
+
+        clear(): void;
+    }
+
+    export class ImageTileSource extends TileSource {
+        constructor(options: {
+            url: string;
+            buildPyramid?: boolean;
+            crossOriginPolicy?: string | boolean;
+            ajaxWidthCredentials?: string | boolean;
+            useCanvas?: boolean;
+        });
+    }
+
+    export class LegacyTileSource extends TileSource {
+        constructor(
+            levels: {
+                url: string;
+                width: number;
+                height: number;
+            }[],
+        );
+    }
+
+    export interface MouseTrackerOptions {
+        element: Element | string;
+        startDisabled?: boolean;
+        clickTimeThreshold?: number;
+        clickDistThreshold?: number;
+        dblClickTimeThreshold?: number;
+        dblClickDistThreshold?: number;
+        stopDelay?: number;
+        enterHandler?: EventHandler;
+        exitHandler?: EventHandler;
+        pressHandler?: EventHandler;
+        nonPrimaryPressHandler?: EventHandler;
+        releaseHandler?: EventHandler;
+        nonPrimaryReleaseHandler?: EventHandler;
+        leaveHandler?: EventHandler;
+        moveHandler?: EventHandler;
+        scrollHandler?: EventHandler;
+        clickHandler?: EventHandler;
+        dblClickHandler?: EventHandler;
+        dragHandler?: EventHandler;
+        dragEndHandler?: EventHandler;
+        pinchHandler?: EventHandler;
+        keyDownHandler?: EventHandler;
+        keyUpHandler?: EventHandler;
+        keyHandler?: EventHandler;
+        focusHandler?: EventHandler;
+        blurHandler?: EventHandler;
+        userData?: object;
+    }
+
+    export class MouseTracker {
+        clickTimeThreshold: number;
+
+        clickDistThreshold: number;
+
+        dblClickTimeThreshold: number;
+
+        dblClickDistThreshold: number;
+
+        element: Element;
+
+        constructor(options: MouseTrackerOptions);
+
+        blurHandler: (event: OSDEvent) => void;
+
+        clickHandler: (event: OSDEvent) => void;
+
+        dblClickHandler: (event: OSDEvent) => void;
+
+        destroy(): void;
+
+        dragEndHandler: (event: OSDEvent) => void;
+
+        dragHandler: (event: OSDEvent) => void;
+
+        enterHandler: (event: OSDEvent) => void;
+
+        exitHandler: (event: OSDEvent) => void;
+
+        focusHandler: (event: OSDEvent) => void;
+
+        getActivePointerCount(): number;
+
+        getActivePointersListByType(type: string): GesturePointList;
+
+        getActivePointersListsExceptType(type: string): GesturePointList[];
+
+        keyDownHandler: (event: OSDEvent) => void;
+
+        keyHandler: (event: OSDEvent) => void;
+
+        keyUpHandler: (event: OSDEvent) => void;
+
+        leaveHandler: (event: OSDEvent) => void;
+
+        moveHandler: (event: OSDEvent) => void;
+
+        nonPrimaryPressHandler: (event: OSDEvent) => void;
+
+        nonPrimaryReleaseHandler: (event: OSDEvent) => void;
+
+        pinchHandler: (event: OSDEvent) => void;
+
+        pressHandler: (event: OSDEvent) => void;
+
+        releaseHandler: (event: OSDEvent) => void;
+
+        scrollHandler: (event: OSDEvent) => void;
+
+        setTracking(track: boolean): MouseTracker;
+
+        stopHandler: (event: OSDEvent) => void;
+    }
+
+    export type GesturePoint = {
+        id: number;
+        type: string;
+        captured: boolean;
+        isPrimary: boolean;
+        insideElementPressed: boolean;
+        insideElement: boolean;
+        speed: number;
+        direction: number;
+        contactPos: Point;
+        contactTime: number;
+        lastPos: Point;
+        lastTime: number;
+        currentPos: Point;
+        currentTime: number;
+    };
+
+    class GesturePointList {
+        buttons: Button[];
+
+        captureCount: number;
+
+        clicks: number;
+
+        contacts: number;
+
+        type: string;
+
+        constructor(type: string);
+
+        add(gesturePoint: GesturePoint): number;
+
+        addContact(): void;
+
+        asArray(): GesturePoint[];
+
+        getById(id: number): GesturePoint | null;
+
+        getByIndex(index: number): GesturePoint | null;
+
+        getLength(): number;
+
+        getPrimary(): GesturePoint | null;
+
+        removeById(id: number): number;
+
+        removeContact(): void;
+    }
+
+    export class Navigator extends Viewer {
+        setFlip(state: boolean): void;
+
+        update(viewport: Viewport): void;
+
+        updateSize(): void;
+    }
+
+    export class OsmTileSource extends TileSource {
+        constructor(width: number, height: number, tileSize: number, tileOverlap: number, tilesUrl: string);
+    }
+
+    type OnDrawCallback = (position: Point, size: Point, element: HTMLElement) => void;
+
+    export type OverlayOptions = {
+        element: HTMLElement;
+        location: Point | Rect;
+        placement?: Placement;
+        onDraw?: OnDrawCallback;
+        checkResize?: boolean;
+        width?: number;
+        height?: number;
+        rotationMode?: boolean;
+    };
+
+    export type SVGOptions = OverlayOptions & {};
+
+    export class Overlay {
+        constructor(options: OverlayOptions);
+
+        adjust(position: Point, size: Point): void;
+
+        destroy(): void;
+
+        drawHTML(container: HTMLElement): void;
+
+        getBounds(viewport: Viewport): Rect;
+
+        update(location: Point | Rect, placement: Placement): void;
+    }
+
+    export class TooltipOverlay extends Overlay {
+        redrawCanvas(): void;
+
+        reset(): void;
+    }
+
+    export class CanvasOverlay extends Overlay {
+        forceRedraw(): void;
+
+        reset(): void;
+    }
+
+    export class WebGLOverlay extends CanvasOverlay {}
+
+    export class SVGOverlay extends Overlay {
+        constructor(options: SVGOptions);
+    }
+
+    export class Point {
+        x: number;
+
+        y: number;
+
+        constructor(x?: number, y?: number);
+
+        apply(func: (v: number) => number): Point;
+
+        clone(): Point;
+
+        distanceTo(point: Point): number;
+
+        divide(factor: number): Point;
+
+        equals(point: Point): boolean;
+
+        minus(point: Point): Point;
+
+        negate(): Point;
+
+        plus(point: Point): Point;
+
+        rotate(degrees: number, pivot?: Point): Point;
+
+        squaredDistanceTo(point: Point): number;
+
+        times(factor: number): Rect;
+
+        toString(): string;
+    }
+
+    export class Rect {
+        x: number;
+
+        y: number;
+
         width: number;
+
         height: number;
-      }[]
-    );
-  }
-
-  export interface MouseTrackerOptions {
-    element: Element | string;
-    startDisabled?: boolean;
-    clickTimeThreshold?: number;
-    clickDistThreshold?: number;
-    dblClickTimeThreshold?: number;
-    dblClickDistThreshold?: number;
-    stopDelay?: number;
-    enterHandler?: EventHandler;
-    exitHandler?: EventHandler;
-    pressHandler?: EventHandler;
-    nonPrimaryPressHandler?: EventHandler;
-    releaseHandler?: EventHandler;
-    nonPrimaryReleaseHandler?: EventHandler;
-    leaveHandler?: EventHandler;
-    moveHandler?: EventHandler;
-    scrollHandler?: EventHandler;
-    clickHandler?: EventHandler;
-    dblClickHandler?: EventHandler;
-    dragHandler?: EventHandler;
-    dragEndHandler?: EventHandler;
-    pinchHandler?: EventHandler;
-    keyDownHandler?: EventHandler;
-    keyUpHandler?: EventHandler;
-    keyHandler?: EventHandler;
-    focusHandler?: EventHandler;
-    blurHandler?: EventHandler;
-    userData?: object;
-  }
-
-  export class MouseTracker {
-    clickTimeThreshold: number;
-    clickDistThreshold: number;
-    dblClickTimeThreshold: number;
-    dblClickDistThreshold: number;
-    element: Element;
-
-    constructor(options: MouseTrackerOptions);
-
-    blurHandler: (event: OSDEvent) => void;
-    clickHandler: (event: OSDEvent) => void;
-    dblClickHandler: (event: OSDEvent) => void;
-
-    destroy(): void;
-
-    dragEndHandler: (event: OSDEvent) => void;
-    dragHandler: (event: OSDEvent) => void;
-    enterHandler: (event: OSDEvent) => void;
-    exitHandler: (event: OSDEvent) => void;
-    focusHandler: (event: OSDEvent) => void;
-
-    getActivePointerCount(): number;
-
-    getActivePointersListByType(type: string): GesturePointList;
-
-    getActivePointersListsExceptType(type: string): GesturePointList[];
-
-    keyDownHandler: (event: OSDEvent) => void;
-    keyHandler: (event: OSDEvent) => void;
-    keyUpHandler: (event: OSDEvent) => void;
-    leaveHandler:(event: OSDEvent) => void;
-    moveHandler: (event: OSDEvent) => void;
-    nonPrimaryPressHandler: (event: OSDEvent) => void;
-    nonPrimaryReleaseHandler: (event: OSDEvent) => void;
-    pinchHandler: (event: OSDEvent) => void;
-    pressHandler: (event: OSDEvent) => void;
-    releaseHandler: (event: OSDEvent) => void;
-    scrollHandler: (event: OSDEvent) => void;
-
-    setTracking(track: boolean): MouseTracker;
-
-    stopHandler: (event: OSDEvent) => void;
-  }
-
-  export type GesturePoint = {
-    id: number;
-    type: string;
-    captured: boolean;
-    isPrimary: boolean;
-    insideElementPressed: boolean;
-    insideElement: boolean;
-    speed: number;
-    direction: number;
-    contactPos: Point;
-    contactTime: number;
-    lastPos: Point;
-    lastTime: number;
-    currentPos: Point;
-    currentTime: number;
-  };
-
-  class GesturePointList {
-    buttons: Button[];
-    captureCount: number;
-    clicks: number;
-    contacts: number;
-    type: string;
 
-    constructor(type: string);
+        degrees: number;
 
-    add(gesturePoint: GesturePoint): number;
+        constructor(x?: number, y?: number, width?: number, height?: number, degrees?: number);
 
-    addContact(): void;
+        clone(): Rect;
 
-    asArray(): GesturePoint[];
+        containsPoint(point: Point, epsilon?: number): boolean;
 
-    getById(id: number): GesturePoint | null;
+        equals(rectangle: Rect): boolean;
 
-    getByIndex(index: number): GesturePoint | null;
+        getAspectRatio(): number;
 
-    getLength(): number;
+        getBottomLeft(): Point;
 
-    getPrimary(): GesturePoint | null;
+        getBottomRight(): Point;
 
-    removeById(id: number): number;
+        getBoundingBox(): Rect;
 
-    removeContact(): void;
-  }
+        getCenter(): Point;
 
-  export class Navigator extends Viewer {
-    setFlip(state: boolean): void;
+        getIntegerBoundingBox(): Rect;
 
-    update(viewport: Viewport): void;
+        getSize(): Point;
 
-    updateSize(): void;
-  }
+        getTopLeft(): Point;
 
-  export class OsmTileSource extends TileSource {
-    constructor(
-      width: number,
-      height: number,
-      tileSize: number,
-      tileOverlap: number,
-      tilesUrl: string
-    );
-  }
+        getTopRight(): Point;
 
-  type OnDrawCallback = (
-    position: Point,
-    size: Point,
-    element: HTMLElement
-  ) => void;
+        intersection(rect: Rect): Rect;
 
-  export type OverlayOptions = {
-    element: HTMLElement;
-    location: Point | Rect;
-    placement?: Placement;
-    onDraw?: OnDrawCallback;
-    checkResize?: boolean;
-    width?: number;
-    height?: number;
-    rotationMode?: boolean;
-  };
+        rotate(degrees: number, pivot?: Rect): Rect;
 
-  export type SVGOptions = OverlayOptions & {}
+        times(factor: number): Rect;
 
-  export class Overlay {
-    constructor(options: OverlayOptions);
+        toString(): string;
 
-    adjust(position: Point, size: Point): void;
+        translate(delta: Point): Rect;
 
-    destroy(): void;
+        union(rect: Rect): Rect;
+    }
 
-    drawHTML(container: HTMLElement): void;
+    export class ReferenceStrip {
+        constructor(options: object);
 
-    getBounds(viewport: Viewport): Rect;
+        setFocus(): void;
 
-    update(location: Point | Rect, placement: Placement): void;
-  }
+        update(): void;
+    }
 
-  export class TooltipOverlay extends Overlay {
-    redrawCanvas(): void;
+    export class Spring {
+        animationTime: number;
 
-    reset(): void;
-  }
+        target: {
+            value: number;
+            time: number;
+        };
 
-  export class CanvasOverlay extends Overlay {
-    forceRedraw(): void;
+        current: {
+            value: number;
+            time: number;
+        };
 
-    reset(): void;
-  }
+        springStiffness: number;
 
-  export class WebGLOverlay extends CanvasOverlay {}
+        start: {
+            value: number;
+            time: number;
+        };
 
-  export class SVGOverlay extends Overlay {
-    constructor(options:SVGOptions)
-  }
+        constructor(options: {
+            springStiffness: number;
+            animationTime: number;
+            initial?: number;
+            exponential?: boolean;
+        });
 
-  export class Point {
-    x: number;
-    y: number;
+        isAtTargetValue(): boolean;
 
-    constructor(x?: number, y?: number);
+        resetTo(target: number): void;
 
-    apply(func: (v: number) => number): Point;
+        shiftBy(delta: number): void;
 
-    clone(): Point;
+        springTo(target: number): void;
 
-    distanceTo(point: Point): number;
+        update(): void;
+    }
 
-    divide(factor: number): Point;
+    export class Tile {
+        ajaxHeaders: object;
 
-    equals(point: Point): boolean;
+        beingDrawn: boolean;
 
-    minus(point: Point): Point;
+        blendStart: number;
 
-    negate(): Point;
+        bounds: Rect;
 
-    plus(point: Point): Point;
+        cacheKey: string;
 
-    rotate(degrees: number, pivot?: Point): Point;
+        context2D: CanvasRenderingContext2D;
 
-    squaredDistanceTo(point: Point): number;
+        element: Element;
 
-    times(factor: number): Rect;
+        exists: boolean;
 
-    toString(): string;
-  }
+        image: object;
 
-  export class Rect {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    degrees: number;
+        imgElement: HTMLImageElement;
 
-    constructor(
-      x?: number,
-      y?: number,
-      width?: number,
-      height?: number,
-      degrees?: number
-    );
+        isBottomMost: boolean;
 
-    clone(): Rect;
+        isRightMost: boolean;
 
-    containsPoint(point: Point, epsilon?: number): boolean;
+        lastTouchTime: number;
 
-    equals(rectangle: Rect): boolean;
+        level: number;
 
-    getAspectRatio(): number;
+        loaded: boolean;
 
-    getBottomLeft(): Point;
+        loading: boolean;
 
-    getBottomRight(): Point;
+        loadWithAjax: boolean;
 
-    getBoundingBox(): Rect;
+        opacity: number;
 
-    getCenter(): Point;
+        position: Point;
 
-    getIntegerBoundingBox(): Rect;
+        size: Point;
 
-    getSize(): Point;
+        sourceBounds: Rect;
 
-    getTopLeft(): Point;
+        style: string;
 
-    getTopRight(): Point;
+        url: string;
 
-    intersection(rect: Rect): Rect;
+        visibility: number;
 
-    rotate(degrees: number, pivot?: Rect): Rect;
+        x: number;
 
-    times(factor: number): Rect;
+        y: number;
 
-    toString(): string;
+        constructor(
+            level: number,
+            x: number,
+            y: number,
+            bounds: Rect,
+            exists: boolean,
+            url: string,
+            context2D: CanvasRenderingContext2D,
+            loadWithAjax: boolean,
+            ajaxHeaders: object,
+            sourceBounds: Rect,
+        );
 
-    translate(delta: Point): Rect;
+        drawCanvas(
+            context: CanvasRenderingContext2D,
+            drawingHandler: (context, tile, rendered) => void,
+            scale?: number,
+            translate?: Point,
+        ): void;
 
-    union(rect: Rect): Rect;
-  }
+        drawHTML(container: Element): void;
 
-  export class ReferenceStrip {
-    constructor(options: object);
+        getScaleForEdgeSmoothing(): number;
 
-    setFocus(): void;
+        getTranslationForEdgeSmoothing(scale?: number): Point;
 
-    update(): void;
-  }
+        toString(): string;
 
-  export class Spring {
-    animationTime: number;
-    target: {
-      value: number;
-      time: number;
+        unload(): void;
+    }
+
+    export class TileCache {
+        constructor(options: { maxImageCacheCount?: number });
+
+        cacheTile(options: {
+            tile: Tile;
+            image: HTMLImageElement; // TODO: check type
+            tiledImage: TiledImage;
+            cutoff?: number;
+        }): void;
+
+        clearTilesFor(tiledImage: TiledImage): void;
+
+        numTilesLoaded(): number;
+    }
+
+    export class TiledImage {
+        source: TileSource;
+
+        constructor(options: {
+            source: TileSource;
+            viewer: Viewer;
+            tileCache: TileCache;
+            drawer: Drawer;
+            imageLoader: ImageLoader;
+            x?: number;
+            y?: number;
+            width?: number;
+            height?: number;
+            fitBounds?: Rect;
+            fitBoundsPlacement?: Placement;
+            clip?: Rect;
+            springStiffness?: number;
+            animationTime?: boolean;
+            minZoomImageRatio?: number;
+            wrapHorizontal?: boolean;
+            wrapVertical?: boolean;
+            immediateRender?: boolean;
+            blendTime?: number;
+            alwaysBlend?: boolean;
+            minPixelRatio?: number;
+            smoothTileEdgesMinZoom?: number;
+            iOSDevice?: boolean;
+            opacity?: number;
+            preload?: boolean;
+            compositeOperation?: string;
+            debugMode?: boolean;
+            placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
+            crossOriginPolicy?: string | boolean;
+            ajaxWithCredentials?: boolean;
+            loadTilesWithAjax?: boolean;
+            ajaxHeaders?: object;
+        });
+
+        addHandler(eventName: string, handler: EventHandler, userData?: object): void;
+
+        addOnceHandler(eventName: string, handler: EventHandler, userData?: object): void;
+
+        destroy(): void;
+
+        draw(): void;
+
+        fitBounds(bounds: Rect, anchor?: Placement, immediately?: boolean): void;
+
+        getBounds(current?: boolean): Rect;
+
+        getBoundsNoRotate(current?: boolean): Rect;
+
+        getClip(): Rect | null;
+
+        getClippedBounds(current?: boolean): Rect;
+
+        getCompositeOperation(): string;
+
+        getContentSize(): Point;
+
+        getFullyLoaded(): boolean;
+
+        getHandler(eventName: string): (source, ...args) => void;
+
+        getOpacity(): number;
+
+        getPreload(): boolean;
+
+        getRotation(current?: boolean): number;
+
+        imageToViewerElementCoordinats(pixel: Point): Point;
+
+        imageToViewportCoordinates(position: Point, current?: boolean): Point;
+
+        imageToViewportCoordinates(imageX: number, imageY: number, current?: boolean): Point;
+
+        imageToViewportRectangle(
+            imageX: number,
+            imageY?: number,
+            pixelWidth?: number,
+            pixelHeight?: number,
+            current?: boolean,
+        ): Rect;
+
+        imageToViewportRectangle(position: Rect, pixelWidth?: number, pixelHeight?: number, current?: boolean): Rect;
+
+        imageToViewportZoom(imageZoom: number): number;
+
+        imageToWindowCoordinates(pixel: Point): Point;
+
+        needsDraw(): boolean;
+
+        raiseEvent(eventName: string, eventArgs: object): void;
+
+        removeAllHandlers(eventName: string): void;
+
+        removeHandler(eventName: string, handler: EventHandler): void;
+
+        reset(): void;
+
+        setClip(newClip: Rect | null): void;
+
+        setCompositeOperation(compositeOperation: string): void;
+
+        setHeight(height: number, immediately?: boolean): void;
+
+        setOpacity(opacity: number): void;
+
+        setPosition(position: Point, immediately?: boolean): void;
+
+        setPreload(preload: boolean): void;
+
+        setRotation(degrees: number, immediately?: boolean): void;
+
+        setWidth(width: number, immediately?: boolean): void;
+
+        update(): boolean;
+
+        viewerElementToImageCoordinates(pixel: Point): Point;
+
+        viewportToImageCoordinates(position: Point, current?: boolean): Point;
+
+        viewportToImageCoordinates(viewerX: number, viewerY: number, current?: boolean): Point;
+
+        viewportToImageRectangle(position: Rect): Rect;
+
+        viewportToImageRectangle(
+            viewportX: number,
+            viewportY: number,
+            pixelWidth?: number,
+            pixelHeight?: number,
+            current?: boolean,
+        ): Rect;
+
+        viewportToImageZoom(viewportZoom: number): number;
+
+        windowToImageCoordinates(pixel: Point): Point;
+    }
+
+    export class TileSource extends EventSource {
+        aspectRatio: number;
+
+        dimensions: Point;
+
+        maxLevel: number;
+
+        minlevel: number;
+
+        ready: boolean;
+
+        tileOverlap: number;
+
+        constructor(options: TileSourceOptions);
+
+        addHandler(eventName: string, handler: EventHandler, userData?: object): void;
+
+        addOnceHandler(eventName: string, handler: EventHandler, userData?: object, times?: number): void;
+
+        configure(data: string | object | any[] | Document): object;
+
+        getClosestLevel(): number;
+
+        getHandler(eventName: string): (event) => void;
+
+        getImageInfo(url: string): void;
+
+        getLevelScale(level: number): number;
+
+        getNumTiles(level: number): number;
+
+        getPixelRatio(level: number): number;
+
+        getTileAjaxHeaders(level: number, x: number, y: number): object;
+
+        getTileAtPoint(level: number, point: Point): Tile;
+
+        getTileBounds(level: number, x: number, y: number, isSource?: boolean): Rect;
+
+        getTileHeight(level: number): number;
+
+        getTileUrl(level: number, x: number, y: number): string;
+
+        getTileWidth(level: number): number;
+
+        raiseEvent(eventName: string, eventArgs: object): void;
+
+        removeAllHandlers(eventName: string): void;
+
+        removeHandler(eventName: string, handler: (event) => void): void;
+
+        supports(data: string | object | any[] | Document, url: string): boolean;
+
+        tileExists(level: number, x: number, y: number): boolean;
+    }
+
+    export class TmsTileSource extends TileSource {
+        constructor(width: number, height: number, tileSize: number, tileOverlap: number, tilesUrl: string);
+    }
+
+    type TiledImageOptions = {
+        tileSource: string | object;
+        index?: number;
+        replace?: boolean;
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+        fitBounds?: Rect;
+        fitBoundsPlacement?: Placement;
+        clip?: Rect;
+        opacity?: number;
+        preload?: boolean;
+        degrees?: number;
+        compositeOperation?: string;
+        crossOriginPolicy?: string;
+        ajaxWithCredentials?: boolean;
+        loadTilesWithAjax?: boolean;
+        ajaxHeaders?: object;
+        success?: (event) => void;
+        error?: (error) => void;
+        collectionImmediately?: boolean;
+        placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
     };
-    current: {
-      value: number;
-      time: number;
-    };
-    springStiffness: number;
-    start: {
-      value: number;
-      time: number;
-    };
-
-    constructor(options: {
-      springStiffness: number;
-      animationTime: number;
-      initial?: number;
-      exponential?: boolean;
-    });
-
-    isAtTargetValue(): boolean;
-
-    resetTo(target: number): void;
-
-    shiftBy(delta: number): void;
-
-    springTo(target: number): void;
-
-    update(): void;
-  }
-
-  export class Tile {
-    ajaxHeaders: object;
-    beingDrawn: boolean;
-    blendStart: number;
-    bounds: Rect;
-    cacheKey: string;
-    context2D: CanvasRenderingContext2D;
-    element: Element;
-    exists: boolean;
-    image: object;
-    imgElement: HTMLImageElement;
-    isBottomMost: boolean;
-    isRightMost: boolean;
-    lastTouchTime: number;
-    level: number;
-    loaded: boolean;
-    loading: boolean;
-    loadWithAjax: boolean;
-    opacity: number;
-    position: Point;
-    size: Point;
-    sourceBounds: Rect;
-    style: string;
-    url: string;
-    visibility: number;
-    x: number;
-    y: number;
-
-    constructor(
-      level: number,
-      x: number,
-      y: number,
-      bounds: Rect,
-      exists: boolean,
-      url: string,
-      context2D: CanvasRenderingContext2D,
-      loadWithAjax: boolean,
-      ajaxHeaders: object,
-      sourceBounds: Rect
-    );
-
-    drawCanvas(
-      context: CanvasRenderingContext2D,
-      drawingHandler: (context, tile, rendered) => void,
-      scale?: number,
-      translate?: Point
-    ): void;
-
-    drawHTML(container: Element): void;
-
-    getScaleForEdgeSmoothing(): number;
-
-    getTranslationForEdgeSmoothing(scale?: number): Point;
-
-    toString(): string;
-
-    unload(): void;
-  }
-
-  export class TileCache {
-    constructor(options: { maxImageCacheCount?: number });
-
-    cacheTile(options: {
-      tile: Tile;
-      image: HTMLImageElement; //TODO: check type
-      tiledImage: TiledImage;
-      cutoff?: number;
-    }): void;
-
-    clearTilesFor(tiledImage: TiledImage): void;
-
-    numTilesLoaded(): number;
-  }
-
-  export class TiledImage {
-    source: TileSource;
-
-    constructor(options: {
-      source: TileSource;
-      viewer: Viewer;
-      tileCache: TileCache;
-      drawer: Drawer;
-      imageLoader: ImageLoader;
-      x?: number;
-      y?: number;
-      width?: number;
-      height?: number;
-      fitBounds?: Rect;
-      fitBoundsPlacement?: Placement;
-      clip?: Rect;
-      springStiffness?: number;
-      animationTime?: boolean;
-      minZoomImageRatio?: number;
-      wrapHorizontal?: boolean;
-      wrapVertical?: boolean;
-      immediateRender?: boolean;
-      blendTime?: number;
-      alwaysBlend?: boolean;
-      minPixelRatio?: number;
-      smoothTileEdgesMinZoom?: number;
-      iOSDevice?: boolean;
-      opacity?: number;
-      preload?: boolean;
-      compositeOperation?: string;
-      debugMode?: boolean;
-      placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
-      crossOriginPolicy?: string | boolean;
-      ajaxWithCredentials?: boolean;
-      loadTilesWithAjax?: boolean;
-      ajaxHeaders?: object;
-    });
 
-    addHandler(
-      eventName: string,
-      handler: EventHandler,
-      userData?: object
-    ): void;
+    export class Viewer extends ControlDock {
+        canvas: HTMLElement;
 
-    addOnceHandler(
-      eventName: string,
-      handler: EventHandler,
-      userData?: object
-    ): void;
+        container: HTMLElement;
 
-    destroy(): void;
+        drawer: Drawer;
 
-    draw(): void;
+        element: HTMLElement;
 
-    fitBounds(bounds: Rect, anchor?: Placement, immediately?: boolean): void;
+        initialPage: number;
 
-    getBounds(current?: boolean): Rect;
+        navigator: Navigator;
 
-    getBoundsNoRotate(current?: boolean): Rect;
+        viewport: Viewport;
 
-    getClip(): Rect | null;
+        world: World;
 
-    getClippedBounds(current?: boolean): Rect;
+        referenceStrip: ReferenceStrip;
 
-    getCompositeOperation(): string;
+        constructor(options: Options);
 
-    getContentSize(): Point;
+        _cancelPendingImages(): void;
 
-    getFullyLoaded(): boolean;
+        addHandler(eventName: ViewerEventName, callback: (event) => any, userData?: object): void;
 
-    getHandler(eventName: string): (source, ...args) => void;
+        addOnceHandler(eventName: ViewerEventName, callback: (event) => any, userData?: object, times?: number): void;
 
-    getOpacity(): number;
+        addOverlay(
+            element: HTMLElement | string | object,
+            location?: Point | Rect,
+            placement?: Placement,
+            onDraw?: (element: HTMLElement, location: Location, placement: Placement) => void,
+        ): Viewer;
 
-    getPreload(): boolean;
+        addReferenceStrip(): void;
 
-    getRotation(current?: boolean): number;
+        addSimpleImage(options: TiledImageOptions): void; // TODO: check options type
 
-    imageToViewerElementCoordinats(pixel: Point): Point;
+        addTiledImage(options: TiledImageOptions): void;
 
-    imageToViewportCoordinates(position: Point, current?: boolean): Point;
-    imageToViewportCoordinates(
-      imageX: number,
-      imageY: number,
-      current?: boolean
-    ): Point;
+        bindSequenceControls(): Viewer;
 
-    imageToViewportRectangle(
-      imageX: number,
-      imageY?: number,
-      pixelWidth?: number,
-      pixelHeight?: number,
-      current?: boolean
-    ): Rect;
-    imageToViewportRectangle(
-      position: Rect,
-      pixelWidth?: number,
-      pixelHeight?: number,
-      current?: boolean
-    ): Rect;
+        bindStandardControls(): Viewer;
 
-    imageToViewportZoom(imageZoom: number): number;
+        clearOverlays(): Viewer;
 
-    imageToWindowCoordinates(pixel: Point): Point;
+        close(): Viewer;
 
-    needsDraw(): boolean;
+        currentPage(): number;
 
-    raiseEvent(eventName: string, eventArgs: object): void;
+        destroy(): void;
 
-    removeAllHandlers(eventName: string): void;
+        forceRedraw(): Viewer;
 
-    removeHandler(eventName: string, handler: EventHandler): void;
+        gestureSettingsByDeviceType(type: string): GestureSettings;
 
-    reset(): void;
+        getHandler(eventName: string): (event) => void;
 
-    setClip(newClip: Rect | null): void;
+        getOverlayById(element: Element | string): Overlay;
 
-    setCompositeOperation(compositeOperation: string): void;
+        goToPage(page: number): Viewer;
 
-    setHeight(height: number, immediately?: boolean): void;
+        isFullPage(): boolean;
 
-    setOpacity(opacity: number): void;
+        isMouseNavEnabled(): boolean;
 
-    setPosition(position: Point, immediately?: boolean): void;
+        isOpen(): boolean;
 
-    setPreload(preload: boolean): void;
+        isVisible(): boolean;
 
-    setRotation(degrees: number, immediately?: boolean): void;
+        open(tileSources: string | object | TileSource[], initialPage?: number): Viewer;
 
-    setWidth(width: number, immediately?: boolean): void;
+        raiseEvent(eventName: string, eventArgs?: object): void;
 
-    update(): boolean;
+        removeAllHandlers(eventName: string): void;
 
-    viewerElementToImageCoordinates(pixel: Point): Point;
+        removeHandler(eventName: string, handler: (event) => void): void;
 
-    viewportToImageCoordinates(position: Point, current?: boolean): Point;
-    viewportToImageCoordinates(
-      viewerX: number,
-      viewerY: number,
-      current?: boolean
-    ): Point;
+        removeOverlay(overlay: Element | string): Viewer;
 
-    viewportToImageRectangle(position: Rect): Rect;
-    viewportToImageRectangle(
-      viewportX: number,
-      viewportY: number,
-      pixelWidth?: number,
-      pixelHeight?: number,
-      current?: boolean
-    ): Rect;
+        removeReferenceStrip(): void;
 
-    viewportToImageZoom(viewportZoom: number): number;
+        setControlsEnabled(enabled: boolean): Viewer;
 
-    windowToImageCoordinates(pixel: Point): Point;
-  }
+        setDebugMode(debug: boolean): Viewer;
 
-  export class TileSource extends EventSource {
-    aspectRatio: number;
-    dimensions: Point;
-    maxLevel: number;
-    minlevel: number;
-    ready: boolean;
-    tileOverlap: number;
+        setFullPage(fullScreen: boolean): Viewer;
 
-    constructor(options: TileSourceOptions);
+        setFullScreen(fullScreen: boolean): Viewer;
 
-    addHandler(
-      eventName: string,
-      handler: EventHandler,
-      userData?: object
-    ): void;
+        setMouseNavEnabled(enabled: boolean): Viewer;
 
-    addOnceHandler(
-      eventName: string,
-      handler: EventHandler,
-      userData?: object,
-      times?: number
-    ): void;
+        setVisible(visible: boolean): Viewer;
 
-    configure(data: string | object | any[] | Document): object;
+        updateOverlay(element: Element | string, location: Point | Rect, placement?: Placement): Viewer;
 
-    getClosestLevel(): number;
+        scalebar: (options: {
+            pixelsPerMeter: number;
+            xOffset: number;
+            yOffset: number;
+            barThickness: number;
+            color: string;
+            fontColor: string;
+            backgroundColor: string;
+            location: number;
+        }) => void;
 
-    getHandler(eventName: string): (event) => void;
+        canvasOverlay: (options?: { onRedraw: () => void }) => CanvasOverlay;
 
-    getImageInfo(url: string): void;
+        webGLOverlay: (options?: { onRedraw: (x: number, y: number, zoom: number) => void }) => WebGLOverlay;
 
-    getLevelScale(level: number): number;
-
-    getNumTiles(level: number): number;
-
-    getPixelRatio(level: number): number;
-
-    getTileAjaxHeaders(level: number, x: number, y: number): object;
-
-    getTileAtPoint(level: number, point: Point): Tile;
-
-    getTileBounds(
-      level: number,
-      x: number,
-      y: number,
-      isSource?: boolean
-    ): Rect;
-
-    getTileHeight(level: number): number;
+        svgOverlay: () => SVGOverlay;
 
-    getTileUrl(level: number, x: number, y: number): string;
+        tooltipOverlay: (option?: { onRedraw: () => void; redrawOnUpdateViewport?: boolean }) => TooltipOverlay;
 
-    getTileWidth(level: number): number;
+        imageLoader: ImageLoader;
+    }
 
-    raiseEvent(eventName: string, eventArgs: object): void;
+    export class Viewport {
+        constructor(options: {
+            margins: object;
+            springStiffness?: number;
+            animationTime?: number;
+            minZoomImageRatio?: number;
+            maxZoomPixelRatio?: number;
+            visibilityRatio?: number;
+            wrapHorizontal?: boolean;
+            wrapVertical?: boolean;
+            defaultZoomLevel?: number;
+            minZoomLevel?: number;
+            maxZoomLevel?: number;
+            degrees?: number;
+            homeFillsViewer?: boolean;
+        });
 
-    removeAllHandlers(eventName: string): void;
+        applyConstraints(immediately?: boolean): Viewport;
 
-    removeHandler(eventName: string, handler: (event) => void): void;
+        deltaPixelsFromPoints(deltaPoints: Point, current?: boolean): Point;
 
-    supports(data: string | object | any[] | Document, url: string): boolean;
+        deltaPixelsFromPointsNoRotate(deltaPoints: Point, current?: boolean): Point;
 
-    tileExists(level: number, x: number, y: number): boolean;
-  }
+        deltaPointsFromPixels(deltaPoints: Point, current?: boolean): Point;
 
-  export class TmsTileSource extends TileSource {
-    constructor(
-      width: number,
-      height: number,
-      tileSize: number,
-      tileOverlap: number,
-      tilesUrl: string
-    );
-  }
+        deltaPointsFromPixelsNoRotate(deltaPoints: Point, current?: boolean): Point;
 
-  type TiledImageOptions = {
-    tileSource: string | object;
-    index?: number;
-    replace?: boolean;
-    x?: number;
-    y?: number;
-    width?: number;
-    height?: number;
-    fitBounds?: Rect;
-    fitBoundsPlacement?: Placement;
-    clip?: Rect;
-    opacity?: number;
-    preload?: boolean;
-    degrees?: number;
-    compositeOperation?: string;
-    crossOriginPolicy?: string;
-    ajaxWithCredentials?: boolean;
-    loadTilesWithAjax?: boolean;
-    ajaxHeaders?: object;
-    success?: (event) => void;
-    error?: (error) => void;
-    collectionImmediately?: boolean;
-    placeholderFillStyle?: string | CanvasGradient | CanvasPattern;
-  };
+        ensureVisible(immediately?: boolean): Viewport;
 
-  export class Viewer extends ControlDock {
-    canvas: HTMLElement;
-    container: HTMLElement;
-    drawer: Drawer;
-    element: HTMLElement;
-    initialPage: number;
-    navigator: Navigator;
-    viewport: Viewport;
-    world: World;
-    referenceStrip: ReferenceStrip;
+        fitBounds(bounds: Rect, immediately?: boolean): Viewport;
 
-    constructor(options: Options);
+        fitBoundsWithConstraints(bounds: Rect, immediately?: boolean): Viewport;
 
-    _cancelPendingImages(): void;
+        fitHorizontally(immediately?: boolean): Viewport;
 
-    addHandler(
-      eventName: ViewerEventName,
-      callback: (event) => any,
-      userData?: object
-    ): void;
+        fitVertically(immediately?: boolean): Viewport;
 
-    addOnceHandler(
-      eventName: ViewerEventName,
-      callback: (event) => any,
-      userData?: object,
-      times?: number
-    ): void;
+        getAspectRatio(): any; // TODO: determine return type
 
-    addOverlay(
-      element: HTMLElement | string | object,
-      location?: Point | Rect,
-      placement?: Placement,
-      onDraw?: (
-        element: HTMLElement,
-        location: Location,
-        placement: Placement
-      ) => void
-    ): Viewer;
+        getBounds(current?: boolean): Rect;
 
-    addReferenceStrip(): void;
+        getBoundsNoRotate(current?: boolean): Rect;
 
-    addSimpleImage(options: TiledImageOptions): void; //TODO: check options type
-    addTiledImage(options: TiledImageOptions): void;
+        getBoundsNoRotateWithMargins(current?: boolean): Rect;
 
-    bindSequenceControls(): Viewer;
+        getBoundsWithMargins(current?: boolean): Rect;
 
-    bindStandardControls(): Viewer;
+        getCenter(current?: boolean): Point;
 
-    clearOverlays(): Viewer;
+        getConstrainedBounds(current?: boolean): Rect;
 
-    close(): Viewer;
+        getContainerSize(): Point;
 
-    currentPage(): number;
+        getFlip(): boolean;
 
-    destroy(): void;
+        getHomeBounds(): Rect;
 
-    forceRedraw(): Viewer;
+        getHomeBoundsNoRotate(): Rect;
 
-    gestureSettingsByDeviceType(type: string): GestureSettings;
+        getHomeZoom(): number;
 
-    getHandler(eventName: string): (event) => void;
+        getMargins(): object;
 
-    getOverlayById(element: Element | string): Overlay;
+        getMaxZoom(): number;
 
-    goToPage(page: number): Viewer;
+        getMinZoom(): number;
 
-    isFullPage(): boolean;
+        getRotation(): number;
 
-    isMouseNavEnabled(): boolean;
+        getZoom(current?: boolean): number;
 
-    isOpen(): boolean;
+        goHome(immediately?: boolean): void;
 
-    isVisible(): boolean;
+        imageToViewerElementCoordinates(pixel: Point): Point;
 
-    open(
-      tileSources: string | object | TileSource[],
-      initialPage?: number
-    ): Viewer;
+        imageToViewportCoordinates(position: Point): Point;
 
-    raiseEvent(eventName: string, eventArgs?: object): void;
+        imageToViewportCoordinates(imageX: number, imageY: number): Point;
 
-    removeAllHandlers(eventName: string): void;
+        imageToViewportCoordinates(imageX: number, imageY: number, pixelWidth: number, pixelHeight: number): Point;
 
-    removeHandler(eventName: string, handler: (event) => void): void;
+        imageToViewportZoom(imageZoom: number): number;
 
-    removeOverlay(overlay: Element | string): Viewer;
+        imageToWindowCoordinates(pixel: Point): Point;
 
-    removeReferenceStrip(): void;
+        panBy(delta: Point, immediately?: boolean): Viewport;
 
-    setControlsEnabled(enabled: boolean): Viewer;
+        panTo(center: Point, immediately?: boolean): Viewport;
 
-    setDebugMode(debug: boolean): Viewer;
+        pixelFromPoint(point: Point, current?: boolean): Point;
 
-    setFullPage(fullScreen: boolean): Viewer;
+        pixelFromPointNoRotate(point: Point, current?: boolean): Point;
 
-    setFullScreen(fullScreen: boolean): Viewer;
+        pointFromPixel(point: Point, current?: boolean): Point;
 
-    setMouseNavEnabled(enabled: boolean): Viewer;
+        pointFromPixelNoRotate(point: Point, current?: boolean): Point;
 
-    setVisible(visible: boolean): Viewer;
+        resetContentSize(contentSize: Point): Viewport;
 
-    updateOverlay(
-      element: Element | string,
-      location: Point | Rect,
-      placement?: Placement
-    ): Viewer;
+        resize(): Viewport;
 
-    scalebar: (options: {
-      pixelsPerMeter: number;
-      xOffset: number;
-      yOffset: number;
-      barThickness: number;
-      color: string;
-      fontColor: string;
-      backgroundColor: string;
-      location: number;
-    }) => void;
-    canvasOverlay: (options?: { onRedraw: () => void }) => CanvasOverlay;
-    webGLOverlay: (options?: { onRedraw: (x:number, y:number, zoom:number) => void }) => WebGLOverlay;
-    svgOverlay:() => SVGOverlay;
-    tooltipOverlay: (option?: {
-      onRedraw: () => void;
-      redrawOnUpdateViewport?: boolean;
-    }) => TooltipOverlay;
-    imageLoader: ImageLoader;
-  }
+        setFlip(state: boolean): Viewport;
 
-  export class Viewport {
-    constructor(options: {
-      margins: object;
-      springStiffness?: number;
-      animationTime?: number;
-      minZoomImageRatio?: number;
-      maxZoomPixelRatio?: number;
-      visibilityRatio?: number;
-      wrapHorizontal?: boolean;
-      wrapVertical?: boolean;
-      defaultZoomLevel?: number;
-      minZoomLevel?: number;
-      maxZoomLevel?: number;
-      degrees?: number;
-      homeFillsViewer?: boolean;
-    });
+        setMargins(margins: object): void;
 
-    applyConstraints(immediately?: boolean): Viewport;
+        setRotation(degrees: number): Viewport;
 
-    deltaPixelsFromPoints(deltaPoints: Point, current?: boolean): Point;
+        toggleFlip(): Viewport;
 
-    deltaPixelsFromPointsNoRotate(deltaPoints: Point, current?: boolean): Point;
+        update(): boolean;
 
-    deltaPointsFromPixels(deltaPoints: Point, current?: boolean): Point;
+        viewerElementToImageCoordinates(pixel: Point): Point;
 
-    deltaPointsFromPixelsNoRotate(deltaPoints: Point, current?: boolean): Point;
+        viewerElementToViewportCoordinates(pixel: Point): Point;
 
-    ensureVisible(immediately?: boolean): Viewport;
+        viewerElementToViewportRectangle(rectangle: Rect): Rect;
 
-    fitBounds(bounds: Rect, immediately?: boolean): Viewport;
+        viewportToImageCoordinates(position: Point): Point;
 
-    fitBoundsWithConstraints(bounds: Rect, immediately?: boolean): Viewport;
+        viewportToImageCoordinates(viewerX: number, viewerY: number): Point;
 
-    fitHorizontally(immediately?: boolean): Viewport;
+        viewportToImageRectangle(rectangle: Rect): Rect;
 
-    fitVertically(immediately?: boolean): Viewport;
+        viewportToImageRectangle(viewerX: number, viewerY: number, pointWidth: number, pointHeight: number): Rect;
 
-    getAspectRatio(): any; //TODO: determine return type
-    getBounds(current?: boolean): Rect;
+        viewportToImageZoom(viewportZoom: number): number;
 
-    getBoundsNoRotate(current?: boolean): Rect;
+        viewportToViewerElementCoordinates(point: Point): Point;
 
-    getBoundsNoRotateWithMargins(current?: boolean): Rect;
+        viewportToViewerElementRectangle(rectangle: Rect): Rect;
 
-    getBoundsWithMargins(current?: boolean): Rect;
+        viewportToWindowCoordinates(point: Point): Point;
 
-    getCenter(current?: boolean): Point;
+        windowToImageCoordinates(pixel: Point): Point;
 
-    getConstrainedBounds(current?: boolean): Rect;
+        windowToViewportCoordinates(pixel: Point): Point;
 
-    getContainerSize(): Point;
+        zoomBy(factor: number, refPoint?: Point, immediately?: boolean): Viewport;
 
-    getFlip(): boolean;
+        zoomTo(factor: number, refPoint?: Point, immediately?: boolean): Viewport;
 
-    getHomeBounds(): Rect;
+        maxZoomLevel: number;
 
-    getHomeBoundsNoRotate(): Rect;
+        minZoomLevel: number;
 
-    getHomeZoom(): number;
+        centerSpringX: Spring;
 
-    getMargins(): object;
+        centerSpringY: Spring;
+    }
 
-    getMaxZoom(): number;
+    export class World extends EventSource {
+        constructor(options: object);
 
-    getMinZoom(): number;
+        addHandler(eventName: WorldEventName, callback: (event) => void, userData?: object): void;
 
-    getRotation(): number;
+        addItem(item: TiledImage, options?: { index?: number }): void;
 
-    getZoom(current?: boolean): number;
+        addOnceHandler(eventName: string, handler: EventHandler, userData?: object, times?: number): void;
 
-    goHome(immediately?: boolean): void;
+        arrange(options: {
+            immediately?: boolean;
+            layout?: 'horizontal' | 'vertical';
+            rows?: number;
+            columns?: number;
+            tileSize?: number;
+            tileMargin?: number;
+        }): void;
 
-    imageToViewerElementCoordinates(pixel: Point): Point;
+        draw(): void;
 
-    imageToViewportCoordinates(position: Point): Point;
-    imageToViewportCoordinates(imageX: number, imageY: number): Point;
-    imageToViewportCoordinates(
-      imageX: number,
-      imageY: number,
-      pixelWidth: number,
-      pixelHeight: number
-    ): Point;
+        getContentFactor(): number;
 
-    imageToViewportZoom(imageZoom: number): number;
+        getHandler(eventName: string): (event) => void;
 
-    imageToWindowCoordinates(pixel: Point): Point;
+        getHomeBounds(): Rect;
 
-    panBy(delta: Point, immediately?: boolean): Viewport;
+        getIndexOfItem(item: TiledImage): number;
 
-    panTo(center: Point, immediately?: boolean): Viewport;
+        getItemAt(id: number): TiledImage;
 
-    pixelFromPoint(point: Point, current?: boolean): Point;
+        getItemCount(): number;
 
-    pixelFromPointNoRotate(point: Point, current?: boolean): Point;
+        needsDraw(): boolean;
 
-    pointFromPixel(point: Point, current?: boolean): Point;
+        raiseEvent(eventName: string, eventArgs?: object): void;
 
-    pointFromPixelNoRotate(point: Point, current?: boolean): Point;
+        removeAll(): void;
 
-    resetContentSize(contentSize: Point): Viewport;
+        removeAllHandlers(eventName: string): void;
 
-    resize(): Viewport;
+        removeHandler(eventName: string, handler: (event) => void): void;
 
-    setFlip(state: boolean): Viewport;
+        removeItem(item: TiledImage): void;
 
-    setMargins(margins: object): void;
+        resetItems(): void;
 
-    setRotation(degrees: number): Viewport;
+        setAutoRefigureSizes(value?: boolean): void;
 
-    toggleFlip(): Viewport;
+        setItemIndex(item: TiledImage, index: number): void;
 
-    update(): boolean;
+        update(): void;
+    }
 
-    viewerElementToImageCoordinates(pixel: Point): Point;
+    export class ZoomifyTileSource extends TileSource {
+        constructor(width: number, height: number, tileSize: number, tilesUrl: string);
+    }
 
-    viewerElementToViewportCoordinates(pixel: Point): Point;
+    // TODO: use proper eventName type aliases, and OSDEvent where appropiate
 
-    viewerElementToViewportRectangle(rectangle: Rect): Rect;
+    type EventHandler = (event: OSDEvent) => void;
 
-    viewportToImageCoordinates(position: Point): Point;
-    viewportToImageCoordinates(viewerX: number, viewerY: number): Point;
+    export type ButtonEventName = 'blur' | 'click' | 'enter' | 'exit' | 'focus' | 'press' | 'release';
+    export type TiledImageEventName =
+        | 'bounds-change'
+        | 'clip-change'
+        | 'composite-operation-change'
+        | 'fully-loaded-change'
+        | 'opacity-change';
+    export type TileSourceEventname = 'open-failed' | 'ready';
+    export type ViewerEventName =
+        | 'add-item-failed'
+        | 'add-overlay'
+        | 'animation'
+        | 'animation-finish'
+        | 'animation-start'
+        | 'canvas-click'
+        | 'canvas-double-click'
+        | 'canvas-drag'
+        | 'canvas-drag-end'
+        | 'canvas-enter'
+        | 'canvas-exit'
+        | 'canvas-key'
+        | 'canvas-nonprimary-press'
+        | 'canvas-nonprimary-release'
+        | 'canvas-pinch'
+        | 'canvas-press'
+        | 'canvas-release'
+        | 'canvas-scroll'
+        | 'clear-overlay'
+        | 'close'
+        | 'constrain'
+        | 'container-enter'
+        | 'container-exit'
+        | 'controls-enabled'
+        | 'flip'
+        | 'full-page'
+        | 'full-screen'
+        | 'home'
+        | 'mouse-enabled'
+        | 'navigator-click'
+        | 'navigator-drag'
+        | 'navigator-scroll'
+        | 'open'
+        | 'open-failed'
+        | 'page'
+        | 'pan'
+        | 'pre-full-page'
+        | 'pre-full-screen'
+        | 'remove-overlay'
+        | 'reset-size'
+        | 'resize'
+        | 'rotate'
+        | 'tile-drawing'
+        | 'tile-drawn'
+        | 'tile-load-failed'
+        | 'tile-loaded'
+        | 'tile-unloaded'
+        | 'update-level'
+        | 'update-overlay'
+        | 'update-tile'
+        | 'update-viewport'
+        | 'viewport-change'
+        | 'visible'
+        | 'zoom';
+    export type WorldEventName = 'add-item' | 'item-index-change' | 'metrics-change' | 'remove-item';
 
-    viewportToImageRectangle(rectangle: Rect): Rect;
-    viewportToImageRectangle(
-      viewerX: number,
-      viewerY: number,
-      pointWidth: number,
-      pointHeight: number
-    ): Rect;
-
-    viewportToImageZoom(viewportZoom: number): number;
-
-    viewportToViewerElementCoordinates(point: Point): Point;
-
-    viewportToViewerElementRectangle(rectangle: Rect): Rect;
-
-    viewportToWindowCoordinates(point: Point): Point;
-
-    windowToImageCoordinates(pixel: Point): Point;
-
-    windowToViewportCoordinates(pixel: Point): Point;
-
-    zoomBy(factor: number, refPoint?: Point, immediately?: boolean): Viewport;
-
-    zoomTo(factor: number, refPoint?: Point, immediately?: boolean): Viewport;
-
-    maxZoomLevel: number;
-    minZoomLevel: number;
-    centerSpringX: Spring;
-    centerSpringY: Spring;
-  }
-
-  export class World extends EventSource {
-    constructor(options: object);
-
-    addHandler(
-      eventName: WorldEventName,
-      callback: (event) => void,
-      userData?: object
-    ): void;
-
-    addItem(item: TiledImage, options?: { index?: number }): void;
-
-    addOnceHandler(
-      eventName: string,
-      handler: EventHandler,
-      userData?: object,
-      times?: number
-    ): void;
-
-    arrange(options: {
-      immediately?: boolean;
-      layout?: "horizontal" | "vertical";
-      rows?: number;
-      columns?: number;
-      tileSize?: number;
-      tileMargin?: number;
-    }): void;
-
-    draw(): void;
-
-    getContentFactor(): number;
-
-    getHandler(eventName: string): (event) => void;
-
-    getHomeBounds(): Rect;
-
-    getIndexOfItem(item: TiledImage): number;
-
-    getItemAt(id: number): TiledImage;
-
-    getItemCount(): number;
-
-    needsDraw(): boolean;
-
-    raiseEvent(eventName: string, eventArgs?: object): void;
-
-    removeAll(): void;
-
-    removeAllHandlers(eventName: string): void;
-
-    removeHandler(eventName: string, handler: (event) => void): void;
-
-    removeItem(item: TiledImage): void;
-
-    resetItems(): void;
-
-    setAutoRefigureSizes(value?: boolean): void;
-
-    setItemIndex(item: TiledImage, index: number): void;
-
-    update(): void;
-  }
-
-  export class ZoomifyTileSource extends TileSource {
-    constructor(
-      width: number,
-      height: number,
-      tileSize: number,
-      tilesUrl: string
-    );
-  }
-
-  // TODO: use proper eventName type aliases, and OSDEvent where appropiate
-
-  type EventHandler = (event: OSDEvent) => void;
-
-  export type ButtonEventName =
-    | "blur"
-    | "click"
-    | "enter"
-    | "exit"
-    | "focus"
-    | "press"
-    | "release";
-  export type TiledImageEventName =
-    | "bounds-change"
-    | "clip-change"
-    | "composite-operation-change"
-    | "fully-loaded-change"
-    | "opacity-change";
-  export type TileSourceEventname = "open-failed" | "ready";
-  export type ViewerEventName =
-    | "add-item-failed"
-    | "add-overlay"
-    | "animation"
-    | "animation-finish"
-    | "animation-start"
-    | "canvas-click"
-    | "canvas-double-click"
-    | "canvas-drag"
-    | "canvas-drag-end"
-    | "canvas-enter"
-    | "canvas-exit"
-    | "canvas-key"
-    | "canvas-nonprimary-press"
-    | "canvas-nonprimary-release"
-    | "canvas-pinch"
-    | "canvas-press"
-    | "canvas-release"
-    | "canvas-scroll"
-    | "clear-overlay"
-    | "close"
-    | "constrain"
-    | "container-enter"
-    | "container-exit"
-    | "controls-enabled"
-    | "flip"
-    | "full-page"
-    | "full-screen"
-    | "home"
-    | "mouse-enabled"
-    | "navigator-click"
-    | "navigator-drag"
-    | "navigator-scroll"
-    | "open"
-    | "open-failed"
-    | "page"
-    | "pan"
-    | "pre-full-page"
-    | "pre-full-screen"
-    | "remove-overlay"
-    | "reset-size"
-    | "resize"
-    | "rotate"
-    | "tile-drawing"
-    | "tile-drawn"
-    | "tile-load-failed"
-    | "tile-loaded"
-    | "tile-unloaded"
-    | "update-level"
-    | "update-overlay"
-    | "update-tile"
-    | "update-viewport"
-    | "viewport-change"
-    | "visible"
-    | "zoom";
-  export type WorldEventName =
-    | "add-item"
-    | "item-index-change"
-    | "metrics-change"
-    | "remove-item";
-
-  interface OSDEvent extends Event {
-    originalEvent: object;
-    position?: Point;
-    clientX?: number;
-    clientY?: number;
-  }
+    interface OSDEvent extends Event {
+        originalEvent: object;
+        position?: Point;
+        clientX?: number;
+        clientY?: number;
+    }
 }
