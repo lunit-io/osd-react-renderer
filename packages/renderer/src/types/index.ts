@@ -167,8 +167,9 @@ export interface TiledImageProps extends NodeProps {
   tileSource?: OpenSeadragon.TileSource
   maxRetry?: number
   retryInterval?: number
-  tiledImageStateFetch?: () => string
-  tiledImageState?: Record<string, string>
+  index?: number
+  queryParams?: Record<string, string>
+  isVisible?: boolean
 }
 export interface TiledImageOverlayProps extends NodeProps {
   url?: string
@@ -176,8 +177,9 @@ export interface TiledImageOverlayProps extends NodeProps {
   tileSource?: OpenSeadragon.TileSource
   maxRetry?: number
   retryInterval?: number
-  isVisible: boolean
-  overlayIndex: number
+  index: number
+  queryParams?: Record<string, string>
+  isVisible?: boolean
 }
 
 export interface MouseTrackerProps extends MouseTrackerEventHandlers {

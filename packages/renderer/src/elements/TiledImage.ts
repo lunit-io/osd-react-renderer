@@ -1,4 +1,5 @@
 import OpenSeadragon from 'openseadragon'
+import { isEqual } from 'lodash'
 import { TiledImageProps } from '../types'
 import Base from './Base'
 
@@ -32,7 +33,9 @@ class TiledImage extends Base {
 
   _retryCount: number
 
-  panPoint: OpenSeadragon.Point
+  index: number
+
+  isVisible: boolean
 
   set parent(p: Base | null) {
     this._parent = p
@@ -43,12 +46,31 @@ class TiledImage extends Base {
     super(viewer)
     this.props = props
     this._retryCount = 0
-    this.panPoint = new OpenSeadragon.Point(0, 0)
+    this.index = props.index || 0
+    this.isVisible = props.isVisible ?? true
   }
 
   commitUpdate(props: TiledImageProps): void {
-    this.props = props
-    this._openImage()
+    // discard isVisible from comparison
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isVisible: _oldIsVisible, ...oldProps } = this.props
+    const { isVisible: newIsVisible, ...newProps } = props
+
+    if (!isEqual(oldProps, newProps)) {
+      this.props = props
+      this.isVisible = props.isVisible ?? true
+      this._closeImage()
+      this._openImage()
+    } else {
+      this.isVisible = newIsVisible ?? true
+      this.updateOpacity()
+    }
+  }
+
+  private updateOpacity() {
+    const world = this._parent?.viewer?.world
+    const layer = world?.getItemAt(this.index)
+    layer?.setOpacity(this.isVisible ? 1 : 0)
   }
 
   private static _stateToQuery(
@@ -65,7 +87,6 @@ class TiledImage extends Base {
     const viewer = this._parent?.viewer
     if (!viewer) return
     try {
-      // viewer.close()
       if (!this.props.tileSource && !this.props.tileUrlBase && this.props.url) {
         // Real-time tiling
         viewer.open(this.props.url)
@@ -74,19 +95,14 @@ class TiledImage extends Base {
         this.props.tileUrlBase &&
         this.props.url
       ) {
-        const old_zoom = this.viewer.viewport.getZoom()
-
         // Real-time tiling with custom tile url
         loadDZIMeta(this.props.url)
           .then(dziMeta => {
             const { format, ...tileSource } = dziMeta
-
             const imgOpts = {
               ...tileSource,
               getTileUrl: (level: number, x: number, y: number) => {
-                const queries = TiledImage._stateToQuery(
-                  this.props.tiledImageState
-                )
+                const queries = TiledImage._stateToQuery(this.props.queryParams)
                 const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
                   format || 'jpeg'
                 }`
@@ -96,25 +112,15 @@ class TiledImage extends Base {
                 return url
               },
             }
-
-            viewer.addTiledImage({ tileSource: imgOpts, index: 0 })
-
-            const bounds = this.viewer.viewport.getBounds()
-            this.panPoint = new OpenSeadragon.Point(
-              bounds.x + bounds.width / 2,
-              bounds.y + bounds.height / 2
-            )
-          })
-          .then(() => {
-            setTimeout(() => {
-              this.viewer.viewport.panTo(this.panPoint, true)
-              this.viewer.viewport.zoomTo(old_zoom, undefined, true)
-            }, 10)
+            viewer.addTiledImage({
+              tileSource: imgOpts,
+              index: this.index,
+              opacity: this.isVisible ? 1 : 0,
+            })
           })
           .catch(error => {
             this.handleError(error)
           })
-        // viewer.open({ url: this.props.url, getTileUrl: this.props.getTileUrl })
       } else if (this.props.tileSource) {
         // Static(Glob) tiling
         // https://github.com/openseadragon/openseadragon/issues/1032#issuecomment-248323573
@@ -126,6 +132,13 @@ class TiledImage extends Base {
     } catch (error) {
       this.handleError(error as Error)
     }
+  }
+
+  private _closeImage(): void {
+    const layer = this._parent?.viewer?.world.getItemAt(this.index)
+    if (!layer) return
+    layer?.destroy()
+    this._parent?.viewer?.world.removeItem(layer)
   }
 
   private handleError(error: Error): void {

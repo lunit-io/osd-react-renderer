@@ -22,7 +22,7 @@ const TiledImageSourceModTest = () => {
     handleViewportZoom,
   } = useOSDHandlers()
 
-  // const tiledImageLayer = useAtomValue(tiledImageLayerAtom)
+  const tiledImageLayer = useAtomValue(tiledImageLayerAtom)
   const isVisible = useAtomValue(tiledImageOverlayLayerAtom)
 
   return (
@@ -42,15 +42,21 @@ const TiledImageSourceModTest = () => {
             minZoomLevel={commonConfig.zoom.controllerMinZoom * scaleFactor}
           />
           <tiledImage {...tiledImageSource} />
-          <tiledImageOverlay
-            overlayIndex={1}
-            tileUrlBase="http://localhost:4444/img/003"
+          <tiledImage
+            index={1}
+            tileUrlBase="http://localhost:4444/img-query/001"
+            url="http://localhost:4444/meta/anything-here"
+            queryParams={{ layer: tiledImageLayer }}
+          />
+          <tiledImage
+            index={2}
+            tileUrlBase="http://localhost:4444/img-query/002"
             url="http://localhost:4444/meta/anything-here"
             isVisible={isVisible[0]}
           />
-          <tiledImageOverlay
-            overlayIndex={2}
-            tileUrlBase="http://localhost:4444/img/002"
+          <tiledImage
+            index={3}
+            tileUrlBase="http://localhost:4444/img-query/003"
             url="http://localhost:4444/meta/anything-here"
             isVisible={isVisible[1]}
           />

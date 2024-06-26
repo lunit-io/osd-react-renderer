@@ -55,17 +55,17 @@ class TiledImageOverlay extends Base {
 
     if (!isEqual(oldProps, newProps)) {
       this.props = props
-      this._isVisible = props.isVisible
+      this._isVisible = props.isVisible ?? true
       this._openImage()
     } else {
-      this._isVisible = newIsVisible
+      this._isVisible = newIsVisible ?? true
       this.updateOpacity()
     }
   }
 
   private updateOpacity() {
     const world = this._parent?.viewer?.world
-    const layer = world?.getItemAt(this.props.overlayIndex)
+    const layer = world?.getItemAt(this.props.index)
     layer?.setOpacity(this._isVisible ? 1 : 0)
   }
 
@@ -88,7 +88,7 @@ class TiledImageOverlay extends Base {
             const { format, ...tileSource } = dziMeta
             const imgOpts = {
               ...tileSource,
-              index: this.props.overlayIndex,
+              index: this.props.index,
               getTileUrl: (level: number, x: number, y: number) => {
                 const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
                   format || 'jpeg'
