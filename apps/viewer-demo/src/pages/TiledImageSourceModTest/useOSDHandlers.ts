@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import {
   CanvasOverlayProps,
   OSDViewerRef,
@@ -43,8 +43,6 @@ const useOSDHandlers = () => {
 
   const handleViewportZoom = useCallback<NonNullable<ViewportProps['onZoom']>>(
     ({ eventSource: viewer, zoom, refPoint }) => {
-      console.log('viewport zoom reset', zoom)
-
       if (viewer == null || zoom == null) {
         return
       }
@@ -53,10 +51,6 @@ const useOSDHandlers = () => {
     },
     [setViewportZoom]
   )
-
-  useEffect(() => {
-    console.log('zoom reset:', viewportZoom)
-  }, [viewportZoom])
 
   const onCanvasOverlayRedraw: NonNullable<CanvasOverlayProps['onRedraw']> = (
     canvas: HTMLCanvasElement

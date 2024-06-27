@@ -73,12 +73,10 @@ class TiledImage extends Base {
     layer?.setOpacity(this.isVisible ? 1 : 0)
   }
 
-  private static _stateToQuery(
-    stateObj: Record<string, string> | undefined
-  ): string {
-    if (!stateObj) return ''
+  private getQueryStringFromProps(): string {
+    if (!this.props.queryParams) return ''
 
-    const entries = Object.entries(stateObj)
+    const entries = Object.entries(this.props.queryParams)
     const queries = entries.map(([key, value]) => `${key}=${value}`).join('&')
     return `?${queries}`
   }
@@ -102,10 +100,10 @@ class TiledImage extends Base {
             const imgOpts = {
               ...tileSource,
               getTileUrl: (level: number, x: number, y: number) => {
-                const queries = TiledImage._stateToQuery(this.props.queryParams)
                 const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
                   format || 'jpeg'
                 }`
+                const queries = this.getQueryStringFromProps()
                 if (queries) {
                   return `${url}${queries}`
                 }
