@@ -85,9 +85,30 @@ class TiledImage extends Base {
     const viewer = this._parent?.viewer
     if (!viewer) return
     try {
-      if (!this.props.tileSource && !this.props.tileUrlBase && this.props.url) {
+      // Only supplies tile url base
+      if (!this.props.tileSource && !this.props.url && this.props.tileUrlBase) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          'TiledImage: url for tile metadata not provided. Using tileUrlBase only.\nIt is recommended to supply tile metadata url.'
+        )
         // Real-time tiling
-        viewer.open(this.props.url)
+        const imgOpts = {
+          getTileUrl: (level: number, x: number, y: number) => {
+            const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${'jpeg'}`
+            const queries = this.getQueryStringFromProps()
+            if (queries) {
+              return `${url}${queries}`
+            }
+            return url
+          },
+        }
+        viewer.addTiledImage({
+          tileSource: imgOpts,
+          index: this.index,
+          opacity: this.isVisible ? 1 : 0,
+        })
+
+        // Supplying (mate) url and the tile url base
       } else if (
         !this.props.tileSource &&
         this.props.tileUrlBase &&
@@ -119,10 +140,24 @@ class TiledImage extends Base {
           .catch(error => {
             this.handleError(error)
           })
+        // Supplying tile source (should include everything else)
       } else if (this.props.tileSource) {
         // Static(Glob) tiling
         // https://github.com/openseadragon/openseadragon/issues/1032#issuecomment-248323573
         // https://github.com/openseadragon/openseadragon/blob/master/test/modules/ajax-tiles.js
+
+        if (this.props.tileSource && !this.props.tileSource.getTileUrl) {
+          throw new Error('TileSource must include getTileUrl function')
+        }
+
+        const imgOpts = {
+          ...this.props.tileSource,
+        }
+        viewer.addTiledImage({
+          tileSource: imgOpts,
+          index: this.index,
+          opacity: this.isVisible ? 1 : 0,
+        })
         viewer.open(this.props.tileSource)
       } else {
         throw new Error('Either tileSource or url should be defined')
