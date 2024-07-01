@@ -92,23 +92,22 @@ class TiledImage extends Base {
           'TiledImage: url for tile metadata not provided. Using tileUrlBase only.\nIt is recommended to supply tile metadata url.'
         )
         // Real-time tiling
-        const imgOpts = {
-          getTileUrl: (level: number, x: number, y: number) => {
-            const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${'jpeg'}`
-            const queries = this.getQueryStringFromProps()
-            if (queries) {
-              return `${url}${queries}`
-            }
-            return url
-          },
-        }
         viewer.addTiledImage({
-          tileSource: imgOpts,
+          tileSource: {
+            getTileUrl: (level: number, x: number, y: number) => {
+              const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${'jpeg'}`
+              const queries = this.getQueryStringFromProps()
+              if (queries) {
+                return `${url}${queries}`
+              }
+              return url
+            },
+          },
           index: this.index,
           opacity: this.isVisible ? 1 : 0,
         })
 
-        // Supplying (mate) url and the tile url base
+        // Supplying (meta) url and the tile url base
       } else if (
         !this.props.tileSource &&
         this.props.tileUrlBase &&
@@ -118,21 +117,20 @@ class TiledImage extends Base {
         loadDZIMeta(this.props.url)
           .then(dziMeta => {
             const { format, ...tileSource } = dziMeta
-            const imgOpts = {
-              ...tileSource,
-              getTileUrl: (level: number, x: number, y: number) => {
-                const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
-                  format || 'jpeg'
-                }`
-                const queries = this.getQueryStringFromProps()
-                if (queries) {
-                  return `${url}${queries}`
-                }
-                return url
-              },
-            }
             viewer.addTiledImage({
-              tileSource: imgOpts,
+              tileSource: {
+                ...tileSource,
+                getTileUrl: (level: number, x: number, y: number) => {
+                  const url = `${this.props.tileUrlBase}_files/${level}/${x}_${y}.${
+                    format || 'jpeg'
+                  }`
+                  const queries = this.getQueryStringFromProps()
+                  if (queries) {
+                    return `${url}${queries}`
+                  }
+                  return url
+                },
+              },
               index: this.index,
               opacity: this.isVisible ? 1 : 0,
             })
@@ -149,12 +147,10 @@ class TiledImage extends Base {
         if (this.props.tileSource && !this.props.tileSource.getTileUrl) {
           throw new Error('TileSource must include getTileUrl function')
         }
-
-        const imgOpts = {
-          ...this.props.tileSource,
-        }
         viewer.addTiledImage({
-          tileSource: imgOpts,
+          tileSource: {
+            ...this.props.tileSource,
+          },
           index: this.index,
           opacity: this.isVisible ? 1 : 0,
         })
