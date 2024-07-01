@@ -5,7 +5,7 @@ import {
   ViewportProps,
 } from '@lunit/osd-react-renderer'
 import { commonConfig } from '../../utils/defaults'
-import { ZoomControllerProps } from '../../ZoomController'
+import { ZoomControllerProps } from '../../components/ZoomController/ZoomController'
 
 const useOSDHandlers = () => {
   const [viewportZoom, setViewportZoom] = useState<number>(1)
