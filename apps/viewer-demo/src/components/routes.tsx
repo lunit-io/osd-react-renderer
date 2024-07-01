@@ -9,6 +9,9 @@ import SVGOverlayTest, {
   SVGOverlayDescription,
 } from '../pages/SVGOverlayTest/SVGOverlayTest'
 import ScaleZoom, { ScaleDescription } from '../pages/ScaleZoom/ScaleZoom'
+import TiledImageSourceModTest, {
+  TiledImageSourceModTestDescription,
+} from '../pages/TiledImageSourceModTest/TiledImageSourceModTest'
 import TooltipOverlayTest, {
   TooltipDescription,
 } from '../pages/TooltipOverlayTest/TooltipOverlayTest'
@@ -24,6 +27,7 @@ enum DemoUrls {
   WEBGL = '/webgl-overlay',
   OFFSCREEN = '/offscreen',
   SVG = '/svg-overlay',
+  TILED_IMAGE_OVERLAY = '/tiled-image-overlay',
 }
 
 export const navLinks = [
@@ -34,6 +38,7 @@ export const navLinks = [
   { path: DemoUrls.WEBGL, label: 'WEBGL OVERLAY' },
   { path: DemoUrls.OFFSCREEN, label: 'OFFSCREEN OVERLAY' },
   { path: DemoUrls.SVG, label: 'SVG OVERLAY' },
+  { path: DemoUrls.TILED_IMAGE_OVERLAY, label: 'TILED IMAGE OVERLAY' },
 ]
 
 export const viewerDemos: Array<{ path: DemoUrls; element: React.ReactNode }> =
@@ -66,6 +71,10 @@ export const viewerDemos: Array<{ path: DemoUrls; element: React.ReactNode }> =
       path: DemoUrls.SVG,
       element: <SVGOverlayTest />,
     },
+    {
+      path: DemoUrls.TILED_IMAGE_OVERLAY,
+      element: <TiledImageSourceModTest />,
+    },
   ]
 
 export const descriptions: Array<{ path: DemoUrls; element: React.ReactNode }> =
@@ -97,5 +106,9 @@ export const descriptions: Array<{ path: DemoUrls; element: React.ReactNode }> =
     {
       path: DemoUrls.SVG,
       element: <SVGOverlayDescription />,
+    },
+    {
+      path: DemoUrls.TILED_IMAGE_OVERLAY,
+      element: <TiledImageSourceModTestDescription />,
     },
   ]

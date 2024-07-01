@@ -33,7 +33,7 @@ export const MouseTrackerEventHandlerNames = {
 } as const
 
 export type MouseTrackerEventHandlerNames = {
-  -readonly [N in keyof typeof MouseTrackerEventHandlerNames]: typeof MouseTrackerEventHandlerNames[N]
+  -readonly [N in keyof typeof MouseTrackerEventHandlerNames]: (typeof MouseTrackerEventHandlerNames)[N]
 }
 
 export const ViewerEventHandlerNames = {
@@ -95,7 +95,7 @@ export const ViewerEventHandlerNames = {
 } as const
 
 export type ViewerEventHandlerNames = {
-  -readonly [N in keyof typeof ViewerEventHandlerNames]: typeof ViewerEventHandlerNames[N]
+  -readonly [N in keyof typeof ViewerEventHandlerNames]: (typeof ViewerEventHandlerNames)[N]
 }
 
 export type MouseTrackerEventHandlerMap = {
@@ -167,6 +167,9 @@ export interface TiledImageProps extends NodeProps {
   tileSource?: OpenSeadragon.TileSource
   maxRetry?: number
   retryInterval?: number
+  index?: number
+  queryParams?: Record<string, string>
+  isVisible?: boolean
 }
 
 export interface MouseTrackerProps extends MouseTrackerEventHandlers {
